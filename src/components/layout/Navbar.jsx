@@ -1,5 +1,3 @@
-import React from 'react';
-
 function Navbar() {
     return (
         <div data-layer="globall_navbar" className="GloballNavbar w-[944px] px-8 py-6 bg-white rounded-[50px] inline-flex flex-col justify-center items-center gap-3">

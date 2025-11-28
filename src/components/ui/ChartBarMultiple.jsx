@@ -1,4 +1,3 @@
-import React from "react";
 import { TrendingUp } from "lucide-react";
 import { Bar, BarChart, CartesianGrid, XAxis } from "recharts";
 
@@ -10,14 +9,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
 } from "@/components/ui/chart";
-
-export const description = "A multiple bar chart";
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },

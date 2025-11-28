@@ -1,12 +1,15 @@
-import React from 'react';
-
-function VesselStatusCard() {
+function VesselStatusCard({
+    vesselsLoading,
+    vesselsWaiting,
+    vesselsNonDelayRisk,
+    vesselName,
+}) {
     return (
         <div data-layer="vessel_status_card" className="VesselStatusCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer size- flex flex-col justify-start items-start gap-[18px]">
                 <div data-layer="header_left_group" className="HeaderLeftGroup size- rounded-3xl inline-flex justify-center items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_ship" className="IconShip size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_ship" className="IconShip size-[18px]" src="/icons/icon_ship.png" />
                     </div>
                     <div data-layer="vessel_status_title" className="VesselStatusTitle justify-start text-black text-sm font-semibold">Kapal Aktif</div>
                 </div>

@@ -1,12 +1,14 @@
-import React from 'react';
+import ChartBarMultiple from '../ui/ChartBarMultiple';
 
-function DecisionImpactAnalysisCard() {
+function DecisionImpactAnalysisCard({
+    correlationResultInput
+}) {
     return (
         <div data-layer="decision_impact_analysis_card" className="DecisionImpactAnalysisCard w-[729px] h-[316px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="card_container" className="CardContainer w-[681px] h-[260px] flex flex-col justify-start items-start gap-6">
                 <div data-layer="header_left_group" className="HeaderLeftGroup w-[214px] inline-flex justify-start items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_decision" className="IconDecision size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_decision" className="IconDecision size-[18px]" src="/icons/icon_decision.png" />
                     </div>
                     <div data-layer="decision_analysis_title" className="DecisionAnalysisTitle justify-start text-black text-sm font-semibold">Decision Impact Analysis</div>
                 </div>
@@ -20,7 +22,10 @@ function DecisionImpactAnalysisCard() {
                         </div>
                     </div>
                     <div data-layer="chart_section" className="ChartSection w-[429px] h-[225px] relative">
-                        <img data-layer="decision_line_graph" className="DecisionLineGraph w-[383px] h-[250px] left-[46px] top-[-54px] absolute" src="https://placehold.co/383x250" />
+                        { /* Shadcn bar multiple */}
+                        <div className='DecisionLineGraph w-[383px] h-[250px] left-[46px] top-[-54px] absolute'>
+                            <ChartBarMultiple />
+                        </div>
                     </div>
                 </div>
             </div>

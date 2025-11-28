@@ -1,12 +1,18 @@
-import React from 'react';
+import ChartAreaGradient from '../ui/ChartAreaGradient';
 
-function ProductionWeatherOverview() {
+function ProductionWeatherOverview({
+    totalProductionInput,
+    targetProductionInput,
+    anomalyAiInput1Production,
+    anomalyAiInput2Production,
+    anomalyAiInput3Production,
+}) {
     return (
         <div data-layer="production_weather_overview_card" className="ProductionWeatherOverviewCard w-[807px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="card_container" className="CardContainer self-stretch flex flex-col justify-start items-start gap-6">
                 <div data-layer="header_left_group" className="HeaderLeftGroup w-[269px] inline-flex justify-start items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_overview" className="IconOverview size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_overview" className="IconOverview size-[18px]" src="/icons/icon_overview.png" />
                     </div>
                     <div data-layer="production_weather_title" className="ProductionWeatherTitle justify-start text-black text-sm font-semibold">Production & Weather Overview</div>
                 </div>
@@ -28,21 +34,24 @@ function ProductionWeatherOverview() {
                             <div data-layer="anomaly_ai_section_title" className="AnomalyAiSectionTitle self-stretch justify-start text-[#666666] text-xs font-normal">Anomali (AI flag)</div>
                             <div data-layer="anomaly_header" className="AnomalyHeader size- flex flex-col justify-start items-start gap-3">
                                 <div data-layer="anomaly_ai_item_1" className="AnomalyAiItem1 size- inline-flex justify-start items-center gap-2">
-                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="https://placehold.co/17x17" />
+                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
                                     <div data-layer="anomaly_ai_input_1_production" className="AnomalyAiInput1 justify-start text-black text-xs font-normal">{anomalyAiInput1Production}</div>
                                 </div>
                                 <div data-layer="anomaly_ai_item_2" className="AnomalyAiItem2 size- inline-flex justify-start items-center gap-2">
-                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="https://placehold.co/17x17" />
+                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
                                     <div data-layer="anomaly_ai_input_2_production" className="AnomalyAiInput2 justify-start text-black text-xs font-normal">{anomalyAiInput2Production}</div>
                                 </div>
                                 <div data-layer="anomaly_ai_item_3" className="AnomalyAiItem3 size- inline-flex justify-start items-center gap-2">
-                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="https://placehold.co/17x17" />
+                                    <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
                                     <div data-layer="anomaly_ai_input_3_production" className="AnomalyAiInput3 justify-start text-black text-xs font-normal">{anomalyAiInput3Production}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <img data-layer="production_weather_graph" className="ProductionWeatherGraph w-[457px] h-[325px]" src="https://placehold.co/457x325" />
+                    {/* Shadcn chart area gradient */}
+                    <div className="ProductionWeatherGraph w-[457px] h-[325px]">
+                        <ChartAreaGradient/>
+                    </div>
                 </div>
             </div>
         </div>

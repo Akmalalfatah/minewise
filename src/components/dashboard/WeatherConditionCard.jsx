@@ -1,12 +1,16 @@
-import React from 'react';
-
-function WeatherConditionCard() {
+function WeatherConditionCard({
+    rainProbPct,
+    windSpeedMps,
+    visibilityKm,
+    extremeFlag,
+    sourceLocation,
+}) {
     return (
         <div data-layer="weather_condition_card" className="WeatherConditionCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer w-[205px] h-[197px] flex flex-col justify-center items-start gap-3">
                 <div data-layer="header_left_group" className="HeaderLeftGroup size- rounded-3xl inline-flex justify-center items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 px-[7px] py-2 bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_rain" className="IconRain size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_rain" className="IconRain size-[18px]" src="/icons/icon_rain.png" />
                     </div>
                     <div data-layer="weather_condition_title" className="WeatherConditionTitle justify-start text-black text-sm font-semibold">Kondisi Cuaca</div>
                 </div>

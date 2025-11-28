@@ -1,12 +1,15 @@
-import React from 'react';
-
-function EfficiencyProductionCard() {
+function EfficiencyProductionCard({
+    effectiveHours,
+    maintananceHours,
+    efficiencyRate,
+    sourceLocation,
+}) {
     return (
         <div data-layer="efficiency_production_card.jsx" className="EfficiencyProductionCardJsx w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer size- flex flex-col justify-center items-start gap-[18px]">
                 <div data-layer="header_left_group" className="HeaderLeftGroup size- rounded-3xl inline-flex justify-center items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 px-[7px] py-2 bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_performance" className="IconPerformance size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_performance" className="IconPerformance size-[18px]" src="/icons/icon_performance.png" />
                     </div>
                     <div data-layer="efficiency_production_title" className="EfficiencyProductionTitle justify-start text-black text-sm font-semibold">Efisiensi Produksi</div>
                 </div>

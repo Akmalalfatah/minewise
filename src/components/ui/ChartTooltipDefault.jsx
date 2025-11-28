@@ -1,4 +1,3 @@
-import React from "react";
 import { Bar, BarChart, XAxis } from "recharts";
 
 import {
@@ -8,8 +7,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+
 import {
-  ChartConfig,
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
@@ -45,8 +44,11 @@ export function ChartTooltipDefault() {
     <Card>
       <CardHeader>
         <CardTitle>Tooltip - Default</CardTitle>
-        <CardDescription>Default tooltip with ChartTooltipContent.</CardDescription>
+        <CardDescription>
+          Default tooltip with ChartTooltipContent.
+        </CardDescription>
       </CardHeader>
+
       <CardContent>
         <ChartContainer config={chartConfig}>
           <BarChart accessibilityLayer data={chartData}>
@@ -55,12 +57,13 @@ export function ChartTooltipDefault() {
               tickLine={false}
               tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) => {
-                return new Date(value).toLocaleDateString("en-US", {
+              tickFormatter={(value) =>
+                new Date(value).toLocaleDateString("en-US", {
                   weekday: "short",
-                });
-              }}
+                })
+              }
             />
+
             <Bar
               dataKey="running"
               stackId="a"
@@ -73,6 +76,7 @@ export function ChartTooltipDefault() {
               fill="var(--color-swimming)"
               radius={[4, 4, 0, 0]}
             />
+
             <ChartTooltip
               content={<ChartTooltipContent />}
               cursor={false}

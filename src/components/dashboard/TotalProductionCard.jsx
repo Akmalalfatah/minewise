@@ -1,12 +1,16 @@
-import React from 'react';
-
-function TotalProductionCard() {
+function TotalProductionCard({
+    produceTon,
+    targetTon,
+    avgProductionPerDay,
+    deviationPct,
+    sourceLocation,
+}) {
     return (
         <div data-layer="total_production_card" className="TotalProductionCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer w-[205px] h-[199px] flex flex-col justify-center items-start gap-3">
                 <div data-layer="header_left_group" className="HeaderLeftGroup size- rounded-3xl inline-flex justify-start items-center gap-3">
                     <div data-layer="icon_wrapper" className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_factory" className="IconFactory size-[18px]" src="https://placehold.co/18x18" />
+                        <img data-layer="icon_factory" className="IconFactory size-[18px]" src="/icons/icon_factory.png" />
                     </div>
                     <div data-layer="total_production_title" className="TotalProductionTitle justify-start text-black text-sm font-semibold">Total Produksi</div>
                 </div>
