@@ -1,18 +1,19 @@
-function EnvironmentConditionTable({
-  area,
-  location,
-  rainfall,
-  temperature,
-  humidity,
-  wind,
-  pressure,
-  visibility,
-  lightning,
-  updated,
-  riskScore,
-  riskTitle,
-  riskSubtitle,
-}) {
+import React, { useEffect, useState } from "react";
+import { getEnvironmentConditions } from "../../services/minePlannerService";
+
+function EnvironmentConditionTable() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const result = await getEnvironmentConditions();
+      setData(result);
+    }
+    load();
+  }, []);
+
+  if (!data) return null;
+
   return (
     <div
       data-layer="environment_condition_card"
@@ -22,11 +23,12 @@ function EnvironmentConditionTable({
         data-layer="environment_condition_container"
         className="EnvironmentConditionContainer self-stretch inline-flex flex-col justify-center items-center gap-[7px]"
       >
-        {/* Header */}
+
         <div
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-3"
         >
+          {/* Header */}
           <div
             data-layer="header_container"
             className="HeaderContainer self-stretch flex flex-col justify-start items-start gap-2.5"
@@ -56,41 +58,30 @@ function EnvironmentConditionTable({
               </div>
 
               <button
-                type="button"
                 data-layer="header_action_button_filter"
-                className="HeaderActionButtonFilter size-8 px-2 py-[7px] bg-[#efefef] rounded-2xl inline-flex flex-col justify-center items-center"
+                className="HeaderActionButtonFilter size-8 px-2 py-[7px] bg-[#efefef] rounded-2xl flex justify-center items-center"
               >
-                <div
-                  data-layer="icon_filter"
-                  className="IconFilter size-[21px] relative"
-                />
+                <div data-layer="icon_filter" className="IconFilter size-[21px]" />
               </button>
             </div>
           </div>
 
-          {/* Area row */}
+          {/* Area */}
           <div
             data-layer="area_row_container"
             className="AreaRowContainer self-stretch inline-flex justify-between items-center"
           >
-            <div
-              data-layer="area_label"
-              className="AreaLabel text-black text-xs font-semibold"
-            >
+            <div data-layer="area_label" className="AreaLabel text-black text-xs font-semibold">
               Area:
             </div>
-            <div
-              data-layer="area_value"
-              className="AreaValue text-right text-black text-xs font-semibold"
-            >
-              {area}
+            <div data-layer="area_value" className="AreaValue text-right text-black text-xs font-semibold">
+              {data.area}
             </div>
           </div>
 
-          {/* Divider */}
           <div
             data-layer="divider_top"
-            className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
+            className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
           />
 
           {/* Info rows */}
@@ -98,45 +89,44 @@ function EnvironmentConditionTable({
             data-layer="info_rows_container"
             className="InfoRowsContainer self-stretch inline-flex justify-between items-start gap-6"
           >
-            {/* Label column */}
+            {/* Labels */}
             <div
               data-layer="label_column"
               className="LabelColumn inline-flex flex-col justify-start items-start gap-3 text-black text-sm font-semibold"
             >
-              <div data-layer="location_label">Location</div>
-              <div data-layer="rainfall_label">Rainfall</div>
-              <div data-layer="temperature_label">Temperature</div>
-              <div data-layer="humidity_label">Humidity</div>
-              <div data-layer="wind_label">Wind</div>
-              <div data-layer="pressure_label">Pressure</div>
-              <div data-layer="visibility_label">Visibility</div>
-              <div data-layer="lightning_label">Lightning</div>
-              <div data-layer="updated_label">Updated</div>
+              <div>Location</div>
+              <div>Rainfall</div>
+              <div>Temperature</div>
+              <div>Humidity</div>
+              <div>Wind</div>
+              <div>Pressure</div>
+              <div>Visibility</div>
+              <div>Lightning</div>
+              <div>Updated</div>
             </div>
 
-            {/* Value column */}
+            {/* Values */}
             <div
               data-layer="value_column"
               className="ValueColumn inline-flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold"
             >
-              <div data-layer="location_value">{location}</div>
-              <div data-layer="rainfall_value">{rainfall}</div>
-              <div data-layer="temperature_value">{temperature}</div>
-              <div data-layer="humidity_value">{humidity}</div>
-              <div data-layer="wind_value">{wind}</div>
-              <div data-layer="pressure_value">{pressure}</div>
-              <div data-layer="visibility_value">{visibility}</div>
-              <div data-layer="lightning_value">{lightning}</div>
-              <div data-layer="updated_value">{updated}</div>
+              <div>{data.location}</div>
+              <div>{data.rainfall}</div>
+              <div>{data.temperature}</div>
+              <div>{data.humidity}</div>
+              <div>{data.wind}</div>
+              <div>{data.pressure}</div>
+              <div>{data.visibility}</div>
+              <div>{data.lightning}</div>
+              <div>{data.updated}</div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Divider bottom */}
       <div
         data-layer="divider_bottom"
-        className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
+        className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
       />
 
       {/* Risk section */}
@@ -157,31 +147,22 @@ function EnvironmentConditionTable({
         >
           <div
             data-layer="risk_score_container"
-            className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#ffd4c7] flex justify-center items-center"
+            className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-[#ffd4c7]"
           >
-            <div
-              data-layer="risk_score_value"
-              className="RiskScoreValue text-center text-[#8f0b09] text-2xl font-semibold"
-            >
-              {riskScore}
+            <div className="RiskScoreValue text-[#8f0b09] text-2xl font-semibold">
+              {data.risk.score}
             </div>
           </div>
 
           <div
             data-layer="risk_description_container"
-            className="RiskDescriptionContainer flex-1 inline-flex flex-col justify-start items-start gap-0.5"
+            className="RiskDescriptionContainer flex-1 flex flex-col gap-0.5"
           >
-            <div
-              data-layer="risk_description_main"
-              className="RiskDescriptionMain text-black text-xs font-semibold"
-            >
-              {riskTitle}
+            <div className="RiskDescriptionMain text-black text-xs font-semibold">
+              {data.risk.title}
             </div>
-            <div
-              data-layer="risk_description_sub"
-              className="RiskDescriptionSub text-black/60 text-xs"
-            >
-              {riskSubtitle}
+            <div className="RiskDescriptionSub text-black/60 text-xs">
+              {data.risk.subtitle}
             </div>
           </div>
         </div>

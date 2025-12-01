@@ -1,12 +1,20 @@
+import React, { useEffect, useState } from "react";
+import { getProductionWeatherOverview } from "../../services/dashboardService";
 import ChartAreaGradient from '../ui/ChartAreaGradient';
 
-function ProductionWeatherOverview({
-    totalProductionInput,
-    targetProductionInput,
-    anomalyAiInput1Production,
-    anomalyAiInput2Production,
-    anomalyAiInput3Production,
-}) {
+function ProductionWeatherOverview() {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        async function load() {
+            const result = await getProductionWeatherOverview();
+            setData(result);
+        }
+        load();
+    }, []);
+
+    if (!data) return null;
+
     return (
         <div data-layer="production_weather_overview_card" className="ProductionWeatherOverviewCard w-[807px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="card_container" className="CardContainer self-stretch flex flex-col justify-start items-start gap-6">
@@ -24,33 +32,33 @@ function ProductionWeatherOverview({
                         </div>
                         <div data-layer="total_production_row" className="TotalProductionRow w-[225px] flex flex-col justify-start items-start gap-2">
                             <div data-layer="total_production_title" className="TotalProductionTitle self-stretch justify-start text-[#666666] text-xs font-normal">Total Produksi</div>
-                            <div data-layer="total_production_input" className="TotalProductionInput justify-start text-black text-2xl font-semibold">{totalProductionInput}</div>
+                            <div data-layer="total_production_input" className="TotalProductionInput justify-start text-black text-2xl font-semibold">{data.totalProductionInput}</div>
                         </div>
                         <div data-layer="target_row" className="TargetRow w-[225px] flex flex-col justify-start items-start gap-2">
                             <div data-layer="target_production_title" className="TargetProductionTitle self-stretch justify-start text-[#666666] text-xs font-normal">Target</div>
-                            <div data-layer="target_production_input" className="TotalProductionInput justify-start text-black text-2xl font-semibold">{targetProductionInput}</div>
+                            <div data-layer="target_production_input" className="TotalProductionInput justify-start text-black text-2xl font-semibold">{data.targetProductionInput}</div>
                         </div>
                         <div data-layer="anomaly_ai_section" className="AnomalyAiSection self-stretch flex flex-col justify-start items-start gap-3">
                             <div data-layer="anomaly_ai_section_title" className="AnomalyAiSectionTitle self-stretch justify-start text-[#666666] text-xs font-normal">Anomali (AI flag)</div>
                             <div data-layer="anomaly_header" className="AnomalyHeader size- flex flex-col justify-start items-start gap-3">
                                 <div data-layer="anomaly_ai_item_1" className="AnomalyAiItem1 size- inline-flex justify-start items-center gap-2">
                                     <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
-                                    <div data-layer="anomaly_ai_input_1_production" className="AnomalyAiInput1 justify-start text-black text-xs font-normal">{anomalyAiInput1Production}</div>
+                                    <div data-layer="anomaly_ai_input_1_production" className="AnomalyAiInput1 justify-start text-black text-xs font-normal">{data.anomalyAiInput1Production}</div>
                                 </div>
                                 <div data-layer="anomaly_ai_item_2" className="AnomalyAiItem2 size- inline-flex justify-start items-center gap-2">
                                     <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
-                                    <div data-layer="anomaly_ai_input_2_production" className="AnomalyAiInput2 justify-start text-black text-xs font-normal">{anomalyAiInput2Production}</div>
+                                    <div data-layer="anomaly_ai_input_2_production" className="AnomalyAiInput2 justify-start text-black text-xs font-normal">{data.anomalyAiInput2Production}</div>
                                 </div>
                                 <div data-layer="anomaly_ai_item_3" className="AnomalyAiItem3 size- inline-flex justify-start items-center gap-2">
                                     <img data-layer="icon_importance" className="IconImportance size-[17px]" src="/icons/icon_importance.png" />
-                                    <div data-layer="anomaly_ai_input_3_production" className="AnomalyAiInput3 justify-start text-black text-xs font-normal">{anomalyAiInput3Production}</div>
+                                    <div data-layer="anomaly_ai_input_3_production" className="AnomalyAiInput3 justify-start text-black text-xs font-normal">{data.anomalyAiInput3Production}</div>
                                 </div>
                             </div>
                         </div>
                     </div>
                     {/* Shadcn chart area gradient */}
                     <div className="ProductionWeatherGraph w-[457px] h-[325px]">
-                        <ChartAreaGradient/>
+                        <ChartAreaGradient />
                     </div>
                 </div>
             </div>
@@ -59,3 +67,4 @@ function ProductionWeatherOverview({
 }
 
 export default ProductionWeatherOverview;
+

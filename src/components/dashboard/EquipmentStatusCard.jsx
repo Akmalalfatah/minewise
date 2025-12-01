@@ -1,10 +1,19 @@
-function EquipmentStatusCard({
-    equipmentActive,
-    equipmentStandby,
-    equipmentUnderRepair,
-    equipmentMaintanance,
-    sourceLocation,
-}) {
+import React, { useEffect, useState } from "react";
+import { getEquipmentStatus } from "../../services/dashboardService";
+
+function EquipmentStatusCard() {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        async function load() {
+            const result = await getEquipmentStatus();
+            setData(result);
+        }
+        load();
+    }, []);
+
+    if (!data) return null;
+
     return (
         <div data-layer="equipment_status_card" className="EquipmentStatusCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer w-[205px] h-[204px] flex flex-col justify-center items-start gap-3">
@@ -23,16 +32,16 @@ function EquipmentStatusCard({
                             <div data-layer="equipment-maintanance_title" className="EquipmentMaintananceTitle justify-start text-black text-sm font-normal">Maintanance</div>
                         </div>
                         <div data-layer="value_container" className="ValueContainer w-[9px] inline-flex flex-col justify-start items-end gap-4">
-                            <div data-layer="equipment_active" className="EquipmentActive text-right justify-start text-black text-sm font-semibold">{equipmentActive}</div>
-                            <div data-layer="equipment_standby" className="EquipmentStandby text-right justify-start text-black text-sm font-semibold">{equipmentStandby}</div>
-                            <div data-layer="equipment_under_repair" className="EquipmentUnderRepair text-right justify-start text-black text-sm font-semibold">{equipmentUnderRepair}</div>
-                            <div data-layer="equipment-maintanance" className="EquipmentMaintanance text-right justify-start text-black text-sm font-semibold">{equipmentMaintanance}</div>
+                            <div data-layer="equipment_active" className="EquipmentActive text-right justify-start text-black text-sm font-semibold">{data.equipmentActive}</div>
+                            <div data-layer="equipment_standby" className="EquipmentStandby text-right justify-start text-black text-sm font-semibold">{data.equipmentStandby}</div>
+                            <div data-layer="equipment_under_repair" className="EquipmentUnderRepair text-right justify-start text-black text-sm font-semibold">{data.equipmentUnderRepair}</div>
+                            <div data-layer="equipment-maintanance" className="EquipmentMaintanance text-right justify-start text-black text-sm font-semibold">{data.equipmentMaintanance}</div>
                         </div>
                     </div>
                     <div data-layer="divider" className="Divider self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"></div>
                     <div data-layer="footer_container" className="FooterContainer self-stretch inline-flex justify-between items-center">
                         <div data-layer="source_location_title" className="SourceLocationTitle justify-start text-black/60 text-sm font-normal">Lokasi Source</div>
-                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-black/60 text-sm font-semibold">{sourceLocation}</div>
+                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-black/60 text-sm font-semibold">{data.sourceLocation}</div>
                     </div>
                 </div>
             </div>

@@ -1,12 +1,19 @@
-function AIRecommendationCard({
-  scenario1Title,
-  scenario1Description,
-  scenario2Title,
-  scenario2Description,
-  scenario3Title,
-  scenario3Description,
-  analysisSources,
-}) {
+import React, { useEffect, useState } from "react";
+import { getAIRecommendation } from "../../services/minePlannerService";
+
+function AIRecommendationCard() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const result = await getAIRecommendation();
+      setData(result);
+    }
+    load();
+  }, []);
+
+  if (!data) return null;
+
   return (
     <div
       data-layer="ai_recommendation_card"
@@ -16,6 +23,7 @@ function AIRecommendationCard({
         data-layer="ai_recommendation_container"
         className="AiRecommendationContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
+
         {/* Header */}
         <div
           data-layer="header_left_group"
@@ -50,6 +58,7 @@ function AIRecommendationCard({
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-6"
         >
+
           {/* Scenario list */}
           <div
             data-layer="scenario_list_container"
@@ -68,13 +77,13 @@ function AIRecommendationCard({
                   data-layer="scenario1_title"
                   className="Scenario1Title self-stretch text-black text-sm font-semibold"
                 >
-                  {scenario1Title}
+                  {data.scenarios[1].title}
                 </div>
                 <div
                   data-layer="scenario1_description"
                   className="Scenario1Description self-stretch text-black text-sm font-normal"
                 >
-                  {scenario1Description}
+                  {data.scenarios[1].description}
                 </div>
               </div>
             </div>
@@ -88,17 +97,11 @@ function AIRecommendationCard({
                 data-layer="scenario2_block"
                 className="Scenario2Block w-[815px] flex flex-col justify-start items-start gap-1"
               >
-                <div
-                  data-layer="scenario2_title"
-                  className="Scenario2Title self-stretch text-black text-sm font-semibold"
-                >
-                  {scenario2Title}
+                <div className="Scenario2Title text-black text-sm font-semibold">
+                  {data.scenarios[2].title}
                 </div>
-                <div
-                  data-layer="scenario2_description"
-                  className="Scenario2Description self-stretch text-black text-sm font-normal"
-                >
-                  {scenario2Description}
+                <div className="Scenario2Description text-black text-sm font-normal">
+                  {data.scenarios[2].description}
                 </div>
               </div>
             </div>
@@ -108,21 +111,12 @@ function AIRecommendationCard({
               data-layer="scenario3_wrapper"
               className="Scenario3Wrapper self-stretch h-[78px] px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
             >
-              <div
-                data-layer="scenario3_block"
-                className="Scenario3Block w-[817px] flex flex-col justify-start items-start gap-1"
-              >
-                <div
-                  data-layer="scenario3_title"
-                  className="Scenario3Title self-stretch text-black text-sm font-semibold"
-                >
-                  {scenario3Title}
+              <div className="Scenario3Block w-[817px] flex flex-col gap-1">
+                <div className="Scenario3Title text-black text-sm font-semibold">
+                  {data.scenarios[3].title}
                 </div>
-                <div
-                  data-layer="scenario3_description"
-                  className="Scenario3Description self-stretch text-black text-sm font-normal"
-                >
-                  {scenario3Description}
+                <div className="Scenario3Description text-black text-sm">
+                  {data.scenarios[3].description}
                 </div>
               </div>
             </div>
@@ -135,17 +129,18 @@ function AIRecommendationCard({
           >
             <div
               data-layer="analysis_title"
-              className="AnalysisTitle self-stretch text-black/60 text-sm font-normal"
+              className="AnalysisTitle text-black/60 text-sm font-normal"
             >
               Analysis Based On
             </div>
             <div
               data-layer="analysis_sources"
-              className="AnalysisSources w-[505px] text-black text-base font-semibold"
+              className="AnalysisSources text-black text-base font-semibold"
             >
-              {analysisSources}
+              {data.analysis_sources}
             </div>
           </div>
+
         </div>
       </div>
     </div>

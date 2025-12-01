@@ -1,41 +1,144 @@
+import React, { useState } from "react";
+
 function GlobalFilterBar() {
+    const [expanded, setExpanded] = useState(false);
+    const [showLocation, setShowLocation] = useState(false);
+    const [showTime, setShowTime] = useState(false);
+    const [showShift, setShowShift] = useState(false);
+
+    const [location, setLocation] = useState("PIT A");
+    const [timePeriod, setTimePeriod] = useState("Weekly");
+    const [shift, setShift] = useState("Shift 1");
+
     return (
-        <div data-layer="global_filter_bar" className="GlobalFilterBar w-[592px] h-[71px] px-[17px] py-3.5 bg-white rounded-[50px] inline-flex flex-col justify-center items-center gap-2.5">
-            <div data-layer="filter_bar_container" className="FilterBarContainer size- inline-flex justify-start items-center gap-[18px]">
-                <div data-layer="filter_button_container" className="FilterButtonContainer size- flex justify-start items-center gap-3">
-                    <div data-layer="icon_wrapper" className="IconWrapper size-[57px] bg-[#1c2534] rounded-[50px] flex justify-center items-center gap-2.5">
-                        <img data-layer="icon_filter_filter" className="IconFilterFilter size-[31px]" src="/icons/icon_filter_filter.png" />
-                    </div>
-                    <div data-layer="icon_expand_left" className="IconExpandLeft w-1.5 h-3 border-2 border-black" />
+        <div
+            data-layer="global_filter_bar"
+            className="GlobalFilterBar w-[592px] h-[71px] px-[22px] py-[17px] bg-white rounded-[15px] inline-flex justify-start items-center gap-[17px] relative overflow-visible"
+        >
+            <div
+                data-layer="filter_button_container"
+                onClick={() => {
+                    setExpanded(!expanded);
+                    setShowLocation(false);
+                    setShowTime(false);
+                    setShowShift(false);
+                }}
+                className="FilterButtonContainer flex justify-start items-center gap-3 cursor-pointer select-none"
+            >
+                <div className="w-[34px] h-[37px] relative overflow-hidden flex justify-center items-center">
+                    <img className="w-[18px] h-[18px]" src="/icons/icon_filter.png" />
                 </div>
-                <div data-layer="filter_groups_container" className="FilterGroupsContainer size- flex justify-start items-center gap-3">
-                    <div data-layer="filter_item_location" className="FilterItemLocation w-[138px] bg-[#efefef] rounded-3xl flex justify-start items-center gap-2">
-                        <div data-layer="filter_icon_wrapper" className="FilterIconWrapper size-11 bg-[#1c2534] rounded-[50px] flex justify-center items-center gap-2.5">
-                            <img data-layer="icon_location" className="IconLocation size-[27px]" src="/icons/icon_location.png" />
-                        </div>
-                        <div data-layer="filter_label_location" className="FilterLabelLocation size- flex justify-start items-center gap-3">
-                            <div data-layer="filter_location_title" className="FilterLocationTitle justify-start text-black text-base font-normal">PIT A</div>
-                            <div data-layer="icon_expand_right" className="IconExpandRight w-1.5 h-3 origin-top-left rotate-180 border-2 border-black" />
-                        </div>
+
+                <div className="text-black text-sm font-normal">
+                    Filters
+                </div>
+
+                <div
+                    className={`w-1.5 h-3 border-[1.5px] border-black transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+                ></div>
+            </div>
+
+            <div
+                className={`absolute left-[160px] top-[18px] flex justify-start items-center gap-3 origin-top transition-all duration-300 
+                ${expanded
+                        ? "opacity-100 scale-y-100 translate-y-2"
+                        : "opacity-0 scale-y-0 -translate-y-3 pointer-events-none"
+                    }`}
+            >
+                <div className="relative">
+                    <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
+                        <div className="text-black text-xs">{location}</div>
+                        <img
+                            onClick={() => {
+                                setShowLocation(!showLocation);
+                                setShowTime(false);
+                                setShowShift(false);
+                            }}
+                            className="w-4 h-4 cursor-pointer"
+                            src="/icons/icon_expand.png"
+                        />
                     </div>
-                    <div data-layer="filter_item_time" className="FilterItemTime w-[148px] bg-[#efefef] rounded-3xl flex justify-start items-center gap-2">
-                        <div data-layer="filter_icon_wrapper" className="FilterIconWrapper size-11 bg-[#1c2534] rounded-[50px] flex justify-center items-center gap-2.5">
-                            <img data-layer="icon_clock" className="IconClock size-[31px]" src="/icons/icon_clock.png" />
+
+                    {showLocation && (
+                        <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
+                            {["PIT A", "PIT B", "PIT C", "Port A", "Port B"].map((opt) => (
+                                <div
+                                    key={opt}
+                                    className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer"
+                                    onClick={() => {
+                                        setLocation(opt);
+                                        setShowLocation(false);
+                                    }}
+                                >
+                                    {opt}
+                                </div>
+                            ))}
                         </div>
-                        <div data-layer="filter_label_time" className="FilterLabelTime size- flex justify-start items-center gap-3">
-                            <div data-layer="filter_time_title" className="FilterTimeTitle justify-start text-black text-base font-normal">Weekly</div>
-                            <div data-layer="icon_expand_right" className="IconExpandRight w-1.5 h-3 origin-top-left rotate-180 border-2 border-black" />
-                        </div>
+                    )}
+                </div>
+
+                <div className="relative">
+                    <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
+                        <div className="text-black text-xs">{timePeriod}</div>
+                        <img
+                            onClick={() => {
+                                setShowTime(!showTime);
+                                setShowLocation(false);
+                                setShowShift(false);
+                            }}
+                            className="w-4 h-4 cursor-pointer"
+                            src="/icons/icon_expand.png"
+                        />
                     </div>
-                    <div data-layer="filter_item_shift" className="FilterItemShift w-[140px] bg-[#efefef] rounded-3xl flex justify-start items-center gap-2">
-                        <div data-layer="filter_icon_wrapper" className="FilterIconWrapper size-11 bg-[#1c2534] rounded-[50px] flex justify-center items-center gap-2.5">
-                            <img data-layer="icon_shift" className="IconShift size-[27px]" src="/icons/icon_shift.png" />
+
+                    {showTime && (
+                        <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
+                            {["Today", "Last 24 Hours", "Weekly", "Monthly"].map((opt) => (
+                                <div
+                                    key={opt}
+                                    className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer"
+                                    onClick={() => {
+                                        setTimePeriod(opt);
+                                        setShowTime(false);
+                                    }}
+                                >
+                                    {opt}
+                                </div>
+                            ))}
                         </div>
-                        <div data-layer="filter_label_shift" className="FilterLabelShift size- flex justify-start items-center gap-3">
-                            <div data-layer="filter_shift_title" className="FilterShiftTitle justify-start text-black text-base font-normal">Shift 1</div>
-                            <div data-layer="icon_expand_right" className="IconExpandRight w-1.5 h-3 origin-top-left rotate-180 border-2 border-black" />
-                        </div>
+                    )}
+                </div>
+
+                <div className="relative">
+                    <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
+                        <div className="text-black text-xs">{shift}</div>
+                        <img
+                            onClick={() => {
+                                setShowShift(!showShift);
+                                setShowLocation(false);
+                                setShowTime(false);
+                            }}
+                            className="w-4 h-4 cursor-pointer"
+                            src="/icons/icon_expand.png"
+                        />
                     </div>
+
+                    {showShift && (
+                        <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
+                            {["Shift 1", "Shift 2", "Shift 3"].map((opt) => (
+                                <div
+                                    key={opt}
+                                    className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer"
+                                    onClick={() => {
+                                        setShift(opt);
+                                        setShowShift(false);
+                                    }}
+                                >
+                                    {opt}
+                                </div>
+                            ))}
+                        </div>
+                    )}
                 </div>
             </div>
         </div>

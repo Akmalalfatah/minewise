@@ -1,14 +1,29 @@
-function MineRoadSegmentTable({
-  segmentName,
-  roadConditionLabel,
-  travelTime,
-  frictionIndex,
-  waterDepth,
-  speedLimit,
-  actualSpeed,
-  alertTitle,
-  alertDescription,
-}) {
+import React, { useEffect, useState } from "react";
+import { getMineRoadSegment } from "../../services/minePlannerService";
+
+function MineRoadSegmentTable() {
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const result = await getMineRoadSegment();
+      setData(result);
+    }
+    load();
+  }, []);
+
+  if (!data) return null;
+
+  const segmentName = data.segment_name;
+  const roadConditionLabel = data.road_condition_label;
+  const travelTime = data.travel_time;
+  const frictionIndex = data.friction_index;
+  const waterDepth = data.water_depth;
+  const speedLimit = data.speed_limit;
+  const actualSpeed = data.actual_speed;
+  const alertTitle = data.alert.title;
+  const alertDescription = data.alert.description;
+
   return (
     <div
       data-layer="road_condition_card"
@@ -18,7 +33,6 @@ function MineRoadSegmentTable({
         data-layer="road_condition_container"
         className="RoadConditionContainer size- flex flex-col justify-start items-start gap-3"
       >
-        {/* Header */}
         <div
           data-layer="header_container"
           className="HeaderContainer w-[442px] relative flex flex-col justify-center items-start gap-3"
@@ -63,7 +77,6 @@ function MineRoadSegmentTable({
           </button>
         </div>
 
-        {/* Segment & conditions */}
         <div
           data-layer="segment_section_container"
           className="SegmentSectionContainer w-[440px] h-[206px] relative overflow-hidden"
@@ -95,7 +108,6 @@ function MineRoadSegmentTable({
               data-layer="condition_metrics_container"
               className="ConditionMetricsContainer self-stretch inline-flex justify-start items-center gap-3.5"
             >
-              {/* Travel time */}
               <div
                 data-layer="travel_time_container"
                 className="TravelTimeContainer w-[136px] h-[92px] px-[19px] py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-center items-center gap-2.5"
@@ -119,7 +131,6 @@ function MineRoadSegmentTable({
                 </div>
               </div>
 
-              {/* Friction index */}
               <div
                 data-layer="friction_index_container"
                 className="FrictionIndexContainer w-[136px] h-[92px] px-5 py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-center items-center gap-2.5"
@@ -143,10 +154,9 @@ function MineRoadSegmentTable({
                 </div>
               </div>
 
-              {/* Water depth */}
               <div
                 data-layer="water_depth_container"
-                className="WaterDepthContainer w-[136px] h-[92px] px-6 py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-start items-start gap-2.5"
+                className="WaterDepthContainer w-[136px] h-[92px] px-6 py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-center items-center gap-2.5"
               >
                 <div
                   data-layer="water_depth_block"
@@ -170,13 +180,11 @@ function MineRoadSegmentTable({
           </div>
         </div>
 
-        {/* Divider middle */}
         <div
           data-layer="divider_middle"
           className="DividerMiddle w-[442px] h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
         />
 
-        {/* Speed section */}
         <div
           data-layer="speed_section_container"
           className="SpeedSectionContainer w-[440px] flex flex-col justify-start items-start gap-4"
@@ -192,7 +200,6 @@ function MineRoadSegmentTable({
             data-layer="speed_row_container"
             className="SpeedRowContainer self-stretch flex flex-col justify-start items-start gap-[39px]"
           >
-            {/* Speed limit vs actual */}
             <div
               data-layer="speed_limit_container"
               className="SpeedLimitContainer self-stretch inline-flex justify-between items-center"
@@ -234,7 +241,6 @@ function MineRoadSegmentTable({
               </div>
             </div>
 
-            {/* Alert section */}
             <div
               data-layer="alert_section_container"
               className="AlertSectionContainer self-stretch h-[82px] px-6 py-3.5 bg-[#ffedee] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#ffd4c7] flex flex-col justify-start items-start gap-2.5"
@@ -245,7 +251,6 @@ function MineRoadSegmentTable({
               >
                 <div
                   data-layer="alert_triangle"
-                  data-size="48"
                   className="AlertTriangle w-[49px] h-[46px] relative overflow-hidden"
                 >
                   <div
@@ -275,7 +280,8 @@ function MineRoadSegmentTable({
             </div>
           </div>
         </div>
-      </div>  
+
+      </div>
     </div>
   );
 }

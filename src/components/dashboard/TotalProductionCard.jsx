@@ -1,10 +1,19 @@
-function TotalProductionCard({
-    produceTon,
-    targetTon,
-    avgProductionPerDay,
-    deviationPct,
-    sourceLocation,
-}) {
+import React, { useEffect, useState } from "react";
+import { getTotalProduction } from "../../services/dashboardService";
+
+function TotalProductionCard() {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        async function load() {
+            const result = await getTotalProduction();
+            setData(result);
+        }
+        load();
+    }, []);
+
+    if (!data) return null;
+
     return (
         <div data-layer="total_production_card" className="TotalProductionCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer w-[205px] h-[199px] flex flex-col justify-center items-start gap-3">
@@ -23,16 +32,16 @@ function TotalProductionCard({
                             <div data-layer="deviation_pct_title" className="DeviationPctTitle self-stretch justify-start text-black text-sm font-normal">Deviasi (%)</div>
                         </div>
                         <div data-layer="value_column" className="ValueColumn w-[9px] inline-flex flex-col justify-start items-end gap-3">
-                            <div data-layer="produce_ton" className="ProduceTon text-right justify-start text-black text-sm font-semibold">{produceTon}</div>
-                            <div data-layer="target_ton" className="TargetTon text-right justify-start text-black text-sm font-semibold">{targetTon}</div>
-                            <div data-layer="avg_production_per_day" className="AvgProductionPerDay text-right justify-start text-black text-sm font-semibold">{avgProductionPerDay}</div>
-                            <div data-layer="deviation_pct" className="DeviationPct text-right justify-start text-black text-sm font-semibold">{deviationPct}</div>
+                            <div data-layer="produce_ton" className="ProduceTon text-right justify-start text-black text-sm font-semibold">{data.produceTon}</div>
+                            <div data-layer="target_ton" className="TargetTon text-right justify-start text-black text-sm font-semibold">{data.targetTon}</div>
+                            <div data-layer="avg_production_per_day" className="AvgProductionPerDay text-right justify-start text-black text-sm font-semibold">{data.avgProductionPerDay}</div>
+                            <div data-layer="deviation_pct" className="DeviationPct text-right justify-start text-black text-sm font-semibold">{data.deviationPct}</div>
                         </div>
                     </div>
                     <div data-layer="divider" className="Divider self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"></div>
                     <div data-layer="footer__containter" className="FooterContainter self-stretch inline-flex justify-between items-center">
                         <div data-layer="source_location_title" className="SourceLocationTitle justify-start text-black/60 text-sm font-normal">Lokasi Source</div>
-                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-black/60 text-sm font-semibold">{sourceLocation}</div>
+                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-black/60 text-sm font-semibold">{data.sourceLocation}</div>
                     </div>
                 </div>
             </div>
