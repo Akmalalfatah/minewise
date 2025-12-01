@@ -80,7 +80,7 @@ function App() {
                             />
 
                             <Route
-                                path="/simulation"
+                                path="/simulation-analysis"
                                 element={
                                     <ProtectedRoute>
                                         <SimulationPage />
