@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useGlobalFilter } from "../../context/GlobalFilterContext";
 
 function GlobalFilterBar() {
     const [expanded, setExpanded] = useState(false);
@@ -6,9 +7,14 @@ function GlobalFilterBar() {
     const [showTime, setShowTime] = useState(false);
     const [showShift, setShowShift] = useState(false);
 
-    const [location, setLocation] = useState("PIT A");
-    const [timePeriod, setTimePeriod] = useState("Weekly");
-    const [shift, setShift] = useState("Shift 1");
+    const {
+        location,
+        setLocation,
+        timePeriod,
+        setTimePeriod,
+        shift,
+        setShift
+    } = useGlobalFilter();
 
     return (
         <div
