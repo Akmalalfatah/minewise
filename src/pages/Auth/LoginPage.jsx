@@ -7,9 +7,12 @@ function LoginPage() {
     const navigate = useNavigate();
     const isAuthenticated = userStore((state) => state.isAuthenticated);
 
+    const setToken = userStore((state) => state.setToken);
+    const setUser = userStore((state) => state.setUser);
+
     useEffect(() => {
         if (isAuthenticated) navigate("/dashboard");
-    }, [isAuthenticated]);
+    }, [isAuthenticated, navigate]);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -17,6 +20,9 @@ function LoginPage() {
 
     async function handleLogin(e) {
         e.preventDefault();
+
+        setError("");
+
         if (!email || !password) {
             setError("Email dan password wajib diisi");
             return;
@@ -25,8 +31,27 @@ function LoginPage() {
             setError("Format email tidak valid");
             return;
         }
-        const res = await authService.login(email, password);
-        if (res) navigate("/dashboard");
+
+        try {
+            const res = await authService.login(email, password);
+
+            if (!res) {
+                setError("Login gagal, periksa kembali email dan password");
+                return;
+            }
+
+            if (res.accessToken) {
+                setToken(res.accessToken, res.refreshToken);
+            }
+            if (res.user) {
+                setUser(res.user);
+            }
+
+            navigate("/dashboard");
+        } catch (err) {
+            console.error(err);
+            setError("Terjadi kesalahan saat login. Coba lagi nanti.");
+        }
     }
 
     return (
@@ -90,7 +115,7 @@ function LoginPage() {
                                     className="text-[#ea454c] text-xs cursor-pointer"
                                     onClick={() => navigate("/register")}
                                 >
-                                    Sign up for free!
+                                    {" "}Sign up for free!
                                 </span>
                             </div>
 

@@ -9,7 +9,7 @@ function RegisterPage() {
 
     useEffect(() => {
         if (isAuthenticated) navigate("/dashboard");
-    }, [isAuthenticated]);
+    }, [isAuthenticated, navigate]);
 
     const [fullName, setFullName] = useState("");
     const [employeeId, setEmployeeId] = useState("");
@@ -19,6 +19,8 @@ function RegisterPage() {
 
     async function handleRegister(e) {
         e.preventDefault();
+
+        setError("");
 
         if (!fullName || !employeeId || !email || !password) {
             setError("Semua field wajib diisi");
@@ -33,13 +35,24 @@ function RegisterPage() {
             return;
         }
 
-        const res = await authService.register({
-            name: fullName,
-            employee_id: employeeId,
-            email,
-            password
-        });
-        if (res) navigate("/login");
+        try {
+            const res = await authService.register({
+                name: fullName,
+                employee_id: employeeId,
+                email,
+                password
+            });
+
+            if (!res) {
+                setError("Registrasi gagal. Coba lagi.");
+                return;
+            }
+
+            navigate("/login");
+        } catch (err) {
+            console.error(err);
+            setError("Terjadi kesalahan saat registrasi. Coba lagi nanti.");
+        }
     }
 
     return (
@@ -128,7 +141,7 @@ function RegisterPage() {
                                     className="text-[#ea454c] text-xs cursor-pointer"
                                     onClick={() => navigate("/login")}
                                 >
-                                    Simgn in!
+                                    {" "}Sign in!
                                 </span>
                             </div>
 
