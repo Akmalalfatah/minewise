@@ -47,4 +47,4 @@ function EfficiencyProductionCard() {
     );
 }
 
-export default EfficiencyProductionCard;;
+export default EfficiencyProductionCard;
