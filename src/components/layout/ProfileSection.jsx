@@ -2,7 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 
-function ProfileSection() {
+function ProfileSection({ profileImage }) {
     const navigate = useNavigate();
     const clearAuth = userStore((state) => state.clearAuth);
 
@@ -10,6 +10,8 @@ function ProfileSection() {
         clearAuth();
         navigate("/login");
     };
+
+    const imageSrc = profileImage || "https://placehold.co/57x57";
 
     return (
         <div
@@ -20,16 +22,19 @@ function ProfileSection() {
                 data-layer="profile_container"
                 className="ProfileContainer self-stretch inline-flex justify-center items-center gap-[18px]"
             >
-                <div
+                <img
                     data-layer="icon_expand_down"
-                    className="IconExpandDown w-1.5 h-3 origin-top-left -rotate-90 border-2 border-black"
+                    className="IconExpandDown w-1.5 h-3 origin-top-left -rotate-90"
+                    src="/icons/icon_expand_down.png"
+                    alt="expand"
                 />
 
-                {/* Profile picture — klik = logout */}
+                {/* Klik foto profile = logout */}
                 <img
                     data-layer="profile_picture"
                     className="ProfilePicture size-[57px] rounded-full cursor-pointer"
-                    src="https://placehold.co/57x57"
+                    src={imageSrc}
+                    alt="profile"
                     onClick={handleLogout}
                     title="Click to logout"
                 />
