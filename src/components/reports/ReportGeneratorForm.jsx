@@ -1,18 +1,24 @@
-function GenerateCustomReportCard({
+import React from "react";
+
+function ReportGeneratorForm({
 reportTypeValue,
 timePeriodValue,
-formatValue,
-detailLevelValue,
+onGenerateReport,
+onDownloadReport,
 }) {
 return (
-<div className="w-[876px] h-[1215px] p-6 bg-white/70 rounded-3xl inline-flex flex-col justify-center items-center gap-8">
-    <div className="self-stretch flex flex-col justify-start items-start gap-8">
+<div
+    data-layer="report_generator_form"
+    className="ReportGeneratorForm w-[1365px] h-[1029px] p-6 bg-white/70 rounded-3xl inline-flex flex-col justify-center items-center gap-8"
+>
+    <div className="self-stretch h-[976px] flex flex-col justify-start items-start gap-8">
     <div className="inline-flex justify-start items-center gap-3">
         <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl flex justify-center items-center gap-2.5">
         <img
-            data-layer="icon_pen"
+            data-layer="icon_pen_report"
             className="w-5 h-5"
             src="src/icons/icon_pen.png"
+            alt=""
         />
         </div>
         <div className="justify-start text-black text-sm font-semibold font-['Inter']">
@@ -20,92 +26,55 @@ return (
         </div>
     </div>
 
-    <div className="self-stretch flex flex-col justify-start items-start gap-8">
-        <div className="self-stretch justify-start text-black/60 text-sm font-normal font-['Inter']">
+    <div className="self-stretch h-[987px] relative">
+        <div className="w-[1317px] left-0 top-0 absolute justify-start text-black/60 text-sm font-normal font-['Inter']">
         Select sections and configure your report
         </div>
 
-        <div className="self-stretch inline-flex justify-center items-center gap-20 flex-wrap content-center">
-        <div className="w-96 inline-flex flex-col justify-center items-center gap-3">
+        <div className="w-[1317px] h-16 left-0 top-[49px] absolute">
+        <div className="w-[593px] left-[20px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
             <div className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
             Report Type
             </div>
             <div className="self-stretch h-9 px-1.5 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
             <div className="text-black text-sm font-normal font-['Inter']">
-                {reportTypeValue}
+                {reportTypeValue || "Select report type"}
             </div>
             <div className="w-6 h-6 flex items-center justify-center">
                 <img
-                data-layer="icon_dropdown"
+                data-layer="icon_dropdown_report_type"
                 className="w-6 h-6"
                 src="src/icons/icon_dropdown.png"
+                alt=""
                 />
             </div>
             </div>
         </div>
 
-        <div className="w-96 inline-flex flex-col justify-center items-center gap-3">
+        <div className="w-[593px] left-[705px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
             <div className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
             Time Period
             </div>
-            <div className="self-stretch h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
+            <div className="w-[593px] h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
             <div className="text-black text-sm font-normal font-['Inter']">
-                {timePeriodValue}
+                {timePeriodValue || "Select time period"}
             </div>
             <div className="w-6 h-6 flex items-center justify-center">
                 <img
-                data-layer="icon_dropdown"
+                data-layer="icon_dropdown_time_period"
                 className="w-6 h-6"
                 src="src/icons/icon_dropdown.png"
-                />
-            </div>
-            </div>
-        </div>
-
-        <div className="w-96 inline-flex flex-col justify-center items-center gap-3">
-            <div className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-            Format
-            </div>
-            <div className="self-stretch h-9 px-1.5 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
-            <div className="text-black text-sm font-normal font-['Inter']">
-                {formatValue}
-            </div>
-            <div className="w-6 h-6 flex items-center justify-center">
-                <img
-                data-layer="icon_dropdown"
-                className="w-6 h-6"
-                src="src/icons/icon_dropdown.png"
-                />
-            </div>
-            </div>
-        </div>
-
-        <div className="w-96 inline-flex flex-col justify-center items-center gap-3">
-            <div className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-            Detail Level
-            </div>
-            <div className="self-stretch h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
-            <div className="text-black text-sm font-normal font-['Inter']">
-                {detailLevelValue}
-            </div>
-            <div className="w-6 h-6 flex items-center justify-center">
-                <img
-                data-layer="icon_dropdown"
-                className="w-6 h-6"
-                src="src/icons/icon_dropdown.png"
+                alt=""
                 />
             </div>
             </div>
         </div>
         </div>
 
-        <div className="self-stretch flex flex-col justify-start items-start gap-6">
+        <div className="w-[1317px] left-0 top-[152px] absolute inline-flex flex-col justify-start items-start gap-6">
         <div className="self-stretch inline-flex justify-between items-center">
             <div className="justify-start text-black text-sm font-semibold font-['Inter']">
             Report Section
-            </div>
-            <div className="justify-start text-black text-sm font-semibold font-['Inter']">
-            Select All
             </div>
         </div>
 
@@ -208,20 +177,6 @@ return (
             </div>
             </div>
 
-            <div className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-            <div className="inline-flex justify-start items-center gap-3">
-                <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                <div className="w-40 inline-flex flex-col justify-start items-start gap-0.5">
-                <div className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                    Cost Analysis
-                </div>
-                <div className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                    Financial impact and savings
-                </div>
-                </div>
-            </div>
-            </div>
-
             <div className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
             <div className="inline-flex justify-start items-center gap-3">
                 <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
@@ -238,42 +193,26 @@ return (
         </div>
         </div>
 
-        <div className="inline-flex justify-start items-center gap-3">
-        <div className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center gap-2.5">
-            <div className="justify-start text-white text-sm font-semibold font-['Inter']">
+        <div className="left-0 top-[849px] absolute inline-flex justify-start items-center gap-3">
+        <button
+            type="button"
+            onClick={onGenerateReport}
+            className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center gap-2.5"
+        >
+            <span className="text-white text-sm font-semibold font-['Inter']">
             Generate Report
-            </div>
-        </div>
+            </span>
+        </button>
 
-        <div className="w-40 h-14 px-3 py-4 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 inline-flex flex-col justify-start items-start gap-2.5">
-            <div className="inline-flex justify-start items-start gap-2">
-            <div className="w-4 h-4 flex items-center justify-center">
-                <img
-                data-layer="icon_calendar"
-                className="w-4 h-4"
-                src="src/icons/icon_calendar.png"
-                />
-            </div>
-            <div className="justify-start text-gray-800 text-sm font-semibold font-['Inter']">
-                Schedule Report
-            </div>
-            </div>
-        </div>
-
-        <div className="w-36 h-14 px-3 py-4 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 inline-flex flex-col justify-start items-start gap-2.5">
-            <div className="inline-flex justify-start items-start gap-2">
-            <div className="w-4 h-4 flex items-center justify-center">
-                <img
-                data-layer="icon_envelope"
-                className="w-4 h-4"
-                src="src/icons/icon_envelope.png"
-                />
-            </div>
-            <div className="justify-start text-gray-800 text-sm font-semibold font-['Inter']">
-                Email Report
-            </div>
-            </div>
-        </div>
+        <button
+            type="button"
+            onClick={onDownloadReport}
+            className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] inline-flex justify-center items-center gap-2.5"
+        >
+            <span className="text-white text-sm font-semibold font-['Inter']">
+            Download
+            </span>
+        </button>
         </div>
     </div>
     </div>
@@ -281,4 +220,4 @@ return (
 );
 }
 
-export default GenerateCustomReportCard;
+export default ReportGeneratorForm;
