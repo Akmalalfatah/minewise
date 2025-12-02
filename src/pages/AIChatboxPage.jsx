@@ -1,4 +1,3 @@
-// src/pages/AIChatboxPage.jsx
 import React, { useState } from "react";
 import ChatMessage from "../components/chatbox/ChatMessage";
 import ReasoningChainPanel from "../components/chatbox/ReasoningChainPanel";
