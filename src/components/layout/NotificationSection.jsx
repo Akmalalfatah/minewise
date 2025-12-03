@@ -23,8 +23,4 @@ return (
 );
 }
 
-<<<<<<< HEAD
 export default NotificationSection;
-=======
-export default NotificationSection;
->>>>>>> athira-febe

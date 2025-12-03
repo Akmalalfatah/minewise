@@ -73,8 +73,4 @@ return (
 );
 }
 
-<<<<<<< HEAD
 export default NotificationCard;
-=======
-export default NotificationCard;
->>>>>>> athira-febe
