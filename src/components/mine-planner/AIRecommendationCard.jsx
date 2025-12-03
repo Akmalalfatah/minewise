@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getAIRecommendation } from "../../services/minePlannerService";
+import { getAIMineRecommendation } from "../../services/minePlannerService";
 
 function AIRecommendationCard() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     async function load() {
-      const result = await getAIRecommendation();
+      const result = await getAIMineRecommendation();
       setData(result);
     }
     load();

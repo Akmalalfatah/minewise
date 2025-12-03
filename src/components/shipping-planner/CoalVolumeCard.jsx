@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getCoalVolumeReadyToShip } from "../../services/shippingPlannerService";
+import { getCoalVolumeReady } from "../../services/shippingPlannerService";
 
 function CoalVolumeCard({ onSeeMore }) {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     async function load() {
-      const result = await getCoalVolumeReadyToShip();
+      const result = await getCoalVolumeReady();
       setData(result);
     }
     load();
