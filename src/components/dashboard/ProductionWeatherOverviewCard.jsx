@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getProductionWeatherOverview } from "../../services/dashboardService";
-import ChartAreaGradient from '../ui/ChartAreaGradient';
+import { ChartAreaGradient } from '../ui/ChartAreaGradient';
 
 function ProductionWeatherOverview() {
     const [data, setData] = useState(null);

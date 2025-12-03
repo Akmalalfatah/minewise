@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getCausesOfDowntime } from "../../services/dashboardService";
-import ChartPieInteractive from '../ui/ChartPieInteractive';
+import { ChartPieInteractive } from '../ui/ChartPieInteractive';
 
 function CausesOfDowntimeCard() {
     const [data, setData] = useState(null);
