@@ -220,4 +220,8 @@ return (
 );
 }
 
+<<<<<<< HEAD
 export default ReportGeneratorForm;
+=======
+export default ReportGeneratorForm;
+>>>>>>> athira-febe

@@ -1,11 +1,19 @@
 import React from "react";
 
 function ProfileCard({
+<<<<<<< HEAD
   profileName,
   profileEmail,
   profileImage,
   employeeId,
   role,
+=======
+profileName,
+profileEmail,
+profileImage,
+employeeId,
+role,
+>>>>>>> athira-febe
 }) {
 return (
 <div className="w-96 h-72 px-7 py-8 relative shadow-[0px_0px_30px_0px_rgba(0,0,0,0.10)] inline-flex flex-col justify-center items-center gap-4">
@@ -70,4 +78,8 @@ return (
 );
 }
 
+<<<<<<< HEAD
 export default ProfileCard;
+=======
+export default ProfileCard;
+>>>>>>> athira-febe
