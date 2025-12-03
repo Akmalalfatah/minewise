@@ -7,7 +7,7 @@ import PortWeatherConditions from "../components/shipping-planner/PortWeatherCon
 import AIShippingRecommendationCard from "../components/shipping-planner/AIShippingRecommendationCard";
 import VesselScheduleOverview from "../components/shipping-planner/VesselScheduleOverview";
 import CoalVolumeCard from "../components/shipping-planner/CoalVolumeCard";
-import LoadingProgressMonitoringCard from "../components/shipping-planner/LoadingProgressMonitoringCard";
+import LoadingProgressMonitoring from "../components/shipping-planner/LoadingProgressMonitoring";
 import PortCongestionStatus from "../components/shipping-planner/PortCongestionStatus";
 
 function ShippingPlannerPage() {
@@ -94,7 +94,7 @@ function ShippingPlannerPage() {
         {/* ROW 3: Loading Progress + Port Congestion Status */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <section>
-            <LoadingProgressMonitoringCard />
+            <LoadingProgressMonitoring />
           </section>
 
           <section>
