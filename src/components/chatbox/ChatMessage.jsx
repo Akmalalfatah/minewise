@@ -31,7 +31,7 @@ function ChatMessage() {
 
             <div className="w-48 h-8 left-[31.80px] top-[14.56px] absolute inline-flex justify-start items-center gap-3">
                 <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl flex justify-center items-center">
-                    <img className="w-4 h-4" src="src/icons/icon_bot.png" />
+                    <img className="w-4 h-4" src="/icons/icon_bot.png" alt="Bot Icon" />
                 </div>
                 <div className="text-black text-sm font-semibold">MineWise AI Assistant</div>
             </div>
@@ -40,7 +40,7 @@ function ChatMessage() {
 
             <div className="w-[639px] h-28 left-[29px] top-[129px] absolute">
                 <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl absolute flex justify-center items-center">
-                    <img className="w-4 h-4" src="src/icons/icon_bot.png" />
+                    <img className="w-4 h-4" src="/icons/icon_bot.png" alt="Bot Icon" />
                 </div>
                 <div className="w-[595px] left-[44px] absolute flex flex-col gap-2.5">
                     <div className="h-24 px-5 py-7 bg-red-400 rounded-[20px] flex items-center">
@@ -57,7 +57,7 @@ function ChatMessage() {
                     </div>
                     <div className="text-black text-xs text-right">{data.human_time}</div>
                 </div>
-                <img className="w-8 h-8 rounded-full" src="src/icons/icon_user.png" />
+                <img className="w-8 h-8 rounded-full" src="/icons/icon_user.png" alt="User Icon" />
             </div>
 
             <div className="w-[933px] h-44 left-0 top-[452px] absolute flex flex-col gap-4">
@@ -79,7 +79,7 @@ function ChatMessage() {
                             className="w-12 h-10 px-2.5 py-2 bg-gray-800 rounded-[10px] flex justify-center items-center"
                             onClick={handleSend}
                         >
-                            <img className="w-5 h-5" src="src/icons/icon_send.png" />
+                            <img className="w-5 h-5" src="/icons/icon_send.png" alt="Send Icon" />
                         </div>
                     </div>
 

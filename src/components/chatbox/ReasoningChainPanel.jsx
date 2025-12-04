@@ -15,9 +15,10 @@ function AiReasoningChainCard() {
     if (!data) return null;
 
     return (
-        <div data-layer="ai_reasoning_chain_card"
-            className="w-96 h-[625px] px-6 py-8 bg-white rounded-3xl inline-flex justify-center items-center">
-
+        <div
+            data-layer="ai_reasoning_chain_card"
+            className="w-96 h-[625px] px-6 py-8 bg-white rounded-3xl inline-flex justify-center items-center"
+        >
             <div className="w-96 h-[563px] flex flex-col gap-10">
 
                 {/* Header */}
@@ -25,7 +26,7 @@ function AiReasoningChainCard() {
                     <div className="flex flex-col gap-3">
                         <div className="inline-flex items-center gap-[3px]">
                             <div className="w-8 h-8 flex justify-center items-center">
-                                <img className="w-4 h-4" src="src/icons/reasoning_icon.png" />
+                                <img className="w-4 h-4" src="/icons/reasoning_icon.png" alt="Reasoning Icon" />
                             </div>
                             <div className="text-black text-sm font-semibold">
                                 AI Reasoning Chain
@@ -40,41 +41,16 @@ function AiReasoningChainCard() {
                     {/* Steps */}
                     <div className="flex flex-col gap-7">
 
-                        <div className="inline-flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                                <div className="text-white text-sm">1</div>
+                        {[0, 1, 2, 3].map(index => (
+                            <div key={index} className="inline-flex items-center gap-2">
+                                <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
+                                    <div className="text-white text-sm">{index + 1}</div>
+                                </div>
+                                <div className="w-72 text-black text-sm">
+                                    {data.reasoning_steps[index]}
+                                </div>
                             </div>
-                            <div className="w-72 text-black text-sm">
-                                {data.reasoning_steps[0]}
-                            </div>
-                        </div>
-
-                        <div className="inline-flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                                <div className="text-white text-sm">2</div>
-                            </div>
-                            <div className="w-72 text-black text-sm">
-                                {data.reasoning_steps[1]}
-                            </div>
-                        </div>
-
-                        <div className="inline-flex items-center gap-2">
-                            <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                                <div className="text-white text-sm">3</div>
-                            </div>
-                            <div className="w-72 text-black text-sm">
-                                {data.reasoning_steps[2]}
-                            </div>
-                        </div>
-
-                        <div className="inline-flex items-start gap-2">
-                            <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                                <div className="text-white text-sm">4</div>
-                            </div>
-                            <div className="w-72 text-black text-sm">
-                                {data.reasoning_steps[3]}
-                            </div>
-                        </div>
+                        ))}
 
                     </div>
                 </div>
@@ -125,7 +101,6 @@ function AiReasoningChainCard() {
                 </div>
 
             </div>
-
         </div>
     );
 }
