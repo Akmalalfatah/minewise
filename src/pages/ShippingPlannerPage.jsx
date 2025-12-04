@@ -7,7 +7,7 @@ import PortWeatherConditions from "../components/shipping-planner/PortWeatherCon
 import AIShippingRecommendationCard from "../components/shipping-planner/AIShippingRecommendationCard";
 import VesselScheduleOverview from "../components/shipping-planner/VesselScheduleOverview";
 import CoalVolumeCard from "../components/shipping-planner/CoalVolumeCard";
-import LoadingProgressMonitoringCard from "../components/shipping-planner/LoadingProgressMonitoring";
+import LoadingProgressMonitoring from "../components/shipping-planner/LoadingProgressMonitoring";
 import PortCongestionStatus from "../components/shipping-planner/PortCongestionStatus";
 
 function ShippingPlannerPage() {
