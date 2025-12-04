@@ -15,7 +15,7 @@ function VesselScheduleOverview({ onSeeMore }) {
   const vessels = data?.vessels || [];
 
   return (
-    <div
+    <section
       data-layer="vessel_schedule_card"
       className="VesselScheduleCard w-[668px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
     >
@@ -24,7 +24,8 @@ function VesselScheduleOverview({ onSeeMore }) {
         className="VesselScheduleContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
 
-        <div
+        {/* Header */}
+        <header
           data-layer="header_container"
           className="HeaderContainer w-[620px] h-8 inline-flex justify-between items-center"
         >
@@ -32,7 +33,7 @@ function VesselScheduleOverview({ onSeeMore }) {
             data-layer="header_left_group"
             className="HeaderLeftGroup w-56 flex justify-start items-center gap-3"
           >
-            <div
+            <figure
               data-layer="icon_wrapper"
               className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center"
             >
@@ -41,10 +42,10 @@ function VesselScheduleOverview({ onSeeMore }) {
                 src="/icons/icon_cargo_ship.png"
                 alt="Cargo ship icon"
               />
-            </div>
-            <div className="HeaderTitle text-black text-sm font-semibold">
+            </figure>
+            <h2 className="HeaderTitle text-black text-sm font-semibold">
               Vessel Schedule Overview
-            </div>
+            </h2>
           </div>
 
           <button
@@ -52,22 +53,23 @@ function VesselScheduleOverview({ onSeeMore }) {
             onClick={onSeeMore}
             className="SeeMoreContainer inline-flex justify-start items-center gap-1"
           >
-            <div className="SeeMoreLabel text-black text-xs font-semibold">
+            <span className="SeeMoreLabel text-black text-xs font-semibold">
               See More
-            </div>
+            </span>
             <div className="IconExpandRight size-6 relative">
               <div className="IconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black" />
             </div>
           </button>
-        </div>
+        </header>
 
-        <div
+        {/* Vessel cards */}
+        <section
           data-layer="vessel_cards_container"
           className="VesselCardsContainer w-[620px] inline-flex justify-start items-center gap-3"
         >
           {(vessels.length > 0 ? vessels.slice(0, 2) : [1, 2]).map(
             (vessel, idx) => (
-              <div
+              <article
                 key={vessel?.id || idx}
                 className="VesselCardContainer w-[304px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
               >
@@ -75,74 +77,74 @@ function VesselScheduleOverview({ onSeeMore }) {
 
                   <div className="VesselCardHeaderGroup self-stretch flex flex-col justify-start items-start gap-4">
 
-                    <div className="VesselCardIconWrapper self-stretch h-8 relative">
-                      <div className="VesselCardName left-[44px] top-[7.50px] absolute text-black text-sm font-semibold">
+                    <header className="VesselCardIconWrapper self-stretch h-8 relative">
+                      <h3 className="VesselCardName left-[44px] top-[7.50px] absolute text-black text-sm font-semibold">
                         {vessel?.name || "Loading..."}
-                      </div>
-                      <div className="VesselCardIconShip size-8 p-[7px] left-0 top-0 absolute bg-[#1c2534] rounded-2xl inline-flex justify-center items-center">
+                      </h3>
+                      <figure className="VesselCardIconShip size-8 p-[7px] left-0 top-0 absolute bg-[#1c2534] rounded-2xl inline-flex justify-center items-center">
                         <img
                           className="IconCargoShip size-[18px]"
                           src="/icons/icon_cargo_ship.png"
                           alt="Vessel icon"
                         />
-                      </div>
-                    </div>
+                      </figure>
+                    </header>
 
                     <div className="VesselCardInfoContainer self-stretch flex flex-col justify-start items-start gap-6">
                       <div className="VesselCardInfoGroup self-stretch flex flex-col justify-center items-start gap-4">
 
                         <div className="VesselCardDestinationGroup self-stretch inline-flex justify-start items-center gap-[54px]">
-                          <div className="DestinationLabel text-black text-sm">
+                          <span className="DestinationLabel text-black text-sm">
                             Destination
-                          </div>
-                          <div className="DestinationValue text-black text-sm font-semibold">
+                          </span>
+                          <span className="DestinationValue text-black text-sm font-semibold">
                             {vessel?.destination || "-"}
-                          </div>
+                          </span>
                         </div>
 
                         <div className="VesselCardPlannedLoadGroup self-stretch inline-flex justify-start items-center gap-[59px]">
-                          <div className="PlannedLoadLabel text-black text-sm">
+                          <span className="PlannedLoadLabel text-black text-sm">
                             Planned Load
-                          </div>
-                          <div className="PlannedLoadValue text-right text-black text-sm font-semibold whitespace-pre-line">
+                          </span>
+                          <span className="PlannedLoadValue text-right text-black text-sm font-semibold whitespace-pre-line">
                             {vessel?.loaded
                               ? `${vessel?.plannedLoad}\nLoaded: ${vessel?.loaded}`
                               : vessel?.plannedLoad || "-"}
-                          </div>
+                          </span>
                         </div>
 
                         <div className="VesselCardStatusGroup self-stretch h-[19px] py-[7px] inline-flex justify-between items-center">
-                          <div className="StatusLabel text-black text-sm">
+                          <span className="StatusLabel text-black text-sm">
                             Status
-                          </div>
+                          </span>
                           <div className="VesselCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
-                            <div className="StatusValue text-white text-xs font-semibold">
+                            <span className="StatusValue text-white text-xs font-semibold">
                               {vessel?.status || "-"}
-                            </div>
+                            </span>
                           </div>
                         </div>
 
                       </div>
 
                       <div className="VesselCardScheduleGroup self-stretch inline-flex justify-start items-center gap-[26px]">
-                        <div className="EtaValue text-black text-sm">
+                        <span className="EtaValue text-black text-sm">
                           ETA: {vessel?.eta || "-"}
-                        </div>
-                        <div className="EtdValue text-black text-sm">
+                        </span>
+                        <span className="EtdValue text-black text-sm">
                           ETD: {vessel?.etd || "-"}
-                        </div>
+                        </span>
                       </div>
 
                     </div>
 
                   </div>
                 </div>
-              </div>
+              </article>
             )
           )}
-        </div>
+        </section>
       </div>
-    </div>
+    </section>
   );
 }
 
