@@ -88,3 +88,5 @@ export function ChartTooltipDefault() {
     </Card>
   );
 }
+
+export default ChartTooltipDefault;

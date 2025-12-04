@@ -74,3 +74,5 @@ export function ChartBarMultiple() {
     </Card>
   );
 }
+
+export default ChartBarMultiple;

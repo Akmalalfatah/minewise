@@ -11,17 +11,6 @@ export async function getEnvironmentConditions(filters) {
     return res.data.environment_conditions;
 }
 
-export async function getAIMineRecommendation(filters) {
-    const res = await apiClient.get("/mine-planner/ai-recommendation", {
-        params: {
-            location: filters.location,
-            time: filters.timePeriod,
-            shift: filters.shift
-        }
-    });
-    return res.data.ai_mine_recommendation;
-}
-
 export async function getMineRoadConditions(filters) {
     const res = await apiClient.get("/mine-planner/road-conditions", {
         params: {
@@ -42,4 +31,15 @@ export async function getEquipmentStatusMine(filters) {
         }
     });
     return res.data.equipment_status;
+}
+
+export async function getAIRecommendation(filters) {
+    const res = await apiClient.get("/mine-planner/ai-recommendation", {
+        params: {
+            location: filters.location,
+            time: filters.timePeriod,
+            shift: filters.shift
+        }
+    });
+    return res.data.ai_mine_recommendation;
 }

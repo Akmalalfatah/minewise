@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getMineRoadSegment } from "../../services/minePlannerService";
+import { getMineRoadConditions } from "../../services/minePlannerService";
 
 function MineRoadSegmentTable() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     async function load() {
-      const result = await getMineRoadSegment();
+      const result = await getMineRoadConditions();
       setData(result);
     }
     load();

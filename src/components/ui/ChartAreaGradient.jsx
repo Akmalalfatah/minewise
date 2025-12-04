@@ -116,3 +116,5 @@ export function ChartAreaGradient() {
     </Card>
   );
 }
+
+export default ChartAreaGradient;

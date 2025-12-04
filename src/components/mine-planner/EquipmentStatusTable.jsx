@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { getEquipmentStatusTable } from "../../services/minePlannerService";
+import { getEquipmentStatusMine } from "../../services/minePlannerService";
 
 function EquipmentStatusTable() {
   const [data, setData] = useState(null);
 
   useEffect(() => {
     async function load() {
-      const result = await getEquipmentStatusTable();
+      const result = await getEquipmentStatusMine();
       setData(result);
     }
     load();

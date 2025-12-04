@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getRoadConditionOverview } from "../../services/dashboardService";
-import ChartTooltip from "../ui/ChartTooltip";
+import ChartTooltip from "../ui/ChartTooltipDefault";
 
 function RoadConditionOverviewCard() {
     const [data, setData] = useState(null);
