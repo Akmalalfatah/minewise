@@ -18,42 +18,48 @@ function Navbar() {
     location.pathname === path || location.pathname.startsWith(path + "/");
 
   return (
-    <div
-      data-layer="globall_navbar"
+    <nav
+      data-layer="global_navbar"
+      aria-label="Main navigation"
       className="GloballNavbar w-[944px] px-8 py-6 bg-white rounded-[50px] inline-flex flex-col justify-center items-center gap-3"
     >
       <div
         data-layer="navbar_container"
         className="NavbarContainer self-stretch inline-flex justify-between items-center"
       >
-        <div
+        {/* Logo */}
+        <button
+          type="button"
           data-layer="navbar_logo"
-          className="NavbarLogo justify-start text-[#ff7b54] text-2xl font-semibold cursor-pointer"
           onClick={() => navigate("/dashboard")}
+          className="NavbarLogo justify-start text-[#ff7b54] text-2xl font-semibold cursor-pointer"
         >
           MineWise
-        </div>
+        </button>
 
-        <div
+        {/* Menu List */}
+        <ul
           data-layer="navbar_menu_list"
           className="NavbarMenuList w-[683px] flex justify-center items-center gap-[58px]"
         >
           {menuItems.map((item) => (
-            <div
-              key={item.path}
-              onClick={() => navigate(item.path)}
-              className={`cursor-pointer text-base font-normal ${
-                isActive(item.path)
-                  ? "text-black font-semibold"
-                  : "text-[#666666]"
-              }`}
-            >
-              {item.label}
-            </div>
+            <li key={item.path}>
+              <button
+                type="button"
+                onClick={() => navigate(item.path)}
+                className={`cursor-pointer text-base font-normal ${
+                  isActive(item.path)
+                    ? "text-black font-semibold"
+                    : "text-[#666666]"
+                }`}
+              >
+                {item.label}
+              </button>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
-    </div>
+    </nav>
   );
 }
 
