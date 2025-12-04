@@ -1,9 +1,19 @@
-function EfficiencyProductionCard({
-    effectiveHours,
-    maintananceHours,
-    efficiencyRate,
-    sourceLocation,
-}) {
+import React, { useEffect, useState } from "react";
+import { getProductionEfficiency } from "../../services/dashboardService";
+
+function EfficiencyProductionCard() {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        async function load() {
+            const result = await getProductionEfficiency();
+            setData(result);
+        }
+        load();
+    }, []);
+
+    if (!data) return null;
+
     return (
         <div data-layer="efficiency_production_card.jsx" className="EfficiencyProductionCardJsx w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
             <div data-layer="header_container" className="HeaderContainer size- flex flex-col justify-center items-start gap-[18px]">
@@ -21,15 +31,15 @@ function EfficiencyProductionCard({
                             <div data-layer="efficiency_rate_title" className="EfficiencyRateTitle self-stretch justify-start text-black text-sm font-normal">Efficiency Rate</div>
                         </div>
                         <div data-layer="value_container" className="ValueContainer w-[9px] h-[75px] inline-flex flex-col justify-center items-end gap-5">
-                            <div data-layer="effective_hours" className="EffectiveHours text-right justify-start text-black text-sm font-semibold">{effectiveHours}</div>
-                            <div data-layer="maintanance_hours" className="MaintananceHours text-right justify-start text-black text-sm font-semibold">{maintananceHours}</div>
-                            <div data-layer="efficiency_rate" className="EfficiencyRate text-right justify-start text-[#4caf50] text-sm font-semibold">{efficiencyRate}</div>
+                            <div data-layer="effective_hours" className="EffectiveHours text-right justify-start text-black text-sm font-semibold">{data.effectiveHours}</div>
+                            <div data-layer="maintanance_hours" className="MaintananceHours text-right justify-start text-black text-sm font-semibold">{data.maintananceHours}</div>
+                            <div data-layer="efficiency_rate" className="EfficiencyRate text-right justify-start text-[#4caf50] text-sm font-semibold">{data.efficiencyRate}</div>
                         </div>
                     </div>
                     <div data-layer="divider" className="Divider w-[205px] h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"></div>
                     <div data-layer="footer_container" className="FooterContainer w-[205px] h-[17px] inline-flex justify-between items-center">
                         <div data-layer="source_location_title" className="SourceLocationTitle justify-start text-black/60 text-sm font-normal">Lokasi Source</div>
-                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-[#666666] text-sm font-semibold">{sourceLocation}</div>
+                        <div data-layer="source_location" className="SourceLocation text-right justify-start text-[#666666] text-sm font-semibold">{data.sourceLocation}</div>
                     </div>
                 </div>
             </div>
@@ -37,4 +47,4 @@ function EfficiencyProductionCard({
     );
 }
 
-export default EfficiencyProductionCard;;
+export default EfficiencyProductionCard;
