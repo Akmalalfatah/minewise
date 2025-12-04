@@ -1,0 +1,50 @@
+{
+    "port_weather_conditions": {
+        "wind_kmh": 32,
+        "wave_height_m": 1.8,
+        "visibility_km": 2.1,
+        "rainfall_mm": 12,
+        "risk_score": 67
+    },
+    "ai_recommendation": {
+        "scenario_1": {
+            "title": "Shift berthing schedule",
+            "description": "High winds expected in the next 3 hours."
+        },
+        "scenario_2": {
+            "title": "Reduce crane speed",
+            "description": "Gusty wind conditions detected."
+        }
+    },
+    "vessel_schedule_overview": [
+        {
+            "name": "MV Nusantara",
+            "destination": "China",
+            "planned_load": 12000,
+            "status": "Loading",
+            "eta": "2025-02-17 08:00"
+        }
+    ],
+    "coal_volume_ready": [
+        {
+            "stockpile": "SP-1",
+            "volume_ton": 6800,
+            "cv": 5200,
+            "moisture_pct": 18,
+            "status": "Ready",
+            "eta": "2025-02-17 06:00"
+        }
+    ],
+    "loading_progress": {
+        "vessel": "MV Kalimantan Pride",
+        "progress_pct": 68,
+        "loaded_ton": 13640,
+        "target_ton": 20000
+    },
+    "port_congestion": {
+        "loading": 2,
+        "waiting": 3,
+        "delayed": 1,
+        "ai_estimation": "HIGH"
+    }
+}

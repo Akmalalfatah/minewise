@@ -1,17 +1,21 @@
-const express = require("express");
-const dashboardRoutes = require("./routes/dashboardRoutes");
-const aiRoutes = require("./routes/aiRoutes");
-const shippingRoutes = require("./routes/shippingRoutes");
-const reportsRoutes = require("./routes/reportsRoutes");
-const minePlannerRoutes = require("./routes/minePlannerRoutes");
+import express from "express";
+import cors from "cors";
+
+import dashboardRoutes from "./routes/dashboardRoutes.js";
+import minePlannerRoutes from "./routes/minePlannerRoutes.js";
+import shippingPlannerRoutes from "./routes/shippingPlannerRoutes.js";
+import reportsRoutes from "./routes/reportsRoutes.js";
+import aiChatRoutes from "./routes/aiChatRoutes.js";
 
 const app = express();
-app.use(express.json());
-app.use("/api/dashboard", dashboardRoutes);
-app.use("/api/ai", aiRoutes);
-app.use("/api/shipping-planner", shippingRoutes);
-app.use("/api/reports", reportsRoutes);
-app.use("/api/mine-planner", minePlannerRoutes);
 
-app.get("/", (req, res) => res.json({ ok: true }));
-module.exports = app;
+app.use(cors());
+app.use(express.json());
+
+app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/mine-planner", minePlannerRoutes);
+app.use("/api/shipping-planner", shippingPlannerRoutes);
+app.use("/api/reports", reportsRoutes);
+app.use("/api/ai", aiChatRoutes);
+
+export default app;
