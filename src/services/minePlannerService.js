@@ -33,7 +33,7 @@ export async function getEquipmentStatusMine(filters) {
     return res.data.equipment_status;
 }
 
-export async function getAIRecommendation(filters) {
+export async function getAIMineRecommendation(filters) {
     const res = await apiClient.get("/mine-planner/ai-recommendation", {
         params: {
             location: filters.location,
