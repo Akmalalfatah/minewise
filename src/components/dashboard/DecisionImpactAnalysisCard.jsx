@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getDecisionImpact } from "../../services/dashboardService";
-import ChartBarMultiple from '../ui/ChartBarMultiple';
+import { ChartBarMultiple } from '../ui/ChartBarMultiple';
 
 function DecisionImpactAnalysisCard() {
     const [data, setData] = useState(null);
