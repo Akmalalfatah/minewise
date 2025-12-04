@@ -57,10 +57,8 @@ function RegisterPage() {
 
     return (
         <div data-layer="RegisterPage" className="Registerpage w-[1440px] h-[1024px] relative bg-[#eff1f6] overflow-hidden">
-            <img className="BackgroundRightImgAuth w-[797px] h-[1024px] left-[643px] top-0 absolute" src="src/icons/background_right_img_auth.png" />
+            <img data-layer="background_auth" className="BackgroundAuth w-[1440px] h-[1024px] left-0 top-0 absolute" src="/icons/background_auth.png" />
             <div className="AuthLeft w-[644px] h-[1023.21px] left-0 top-0 absolute">
-                <img className="BackgroundLeftImgAuth2 w-[643px] h-[1024px] left-[1.50px] top-[-0.39px] absolute" src="src/icons/background_left_img_auth.png" />
-
                 <form onSubmit={handleRegister} className="AuthTextContent w-[442px] left-[101px] top-[163px] absolute inline-flex flex-col justify-start items-center gap-[63px]">
 
                     <div className="Headline flex flex-col items-center gap-2.5">

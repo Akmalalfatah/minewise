@@ -56,9 +56,8 @@ function LoginPage() {
 
     return (
         <div data-layer="LoginPage" className="Loginpage w-[1440px] h-[1024px] relative bg-[#0048ff] overflow-hidden">
-            <img data-layer="background_right_img_auth" className="BackgroundRightImgAuth w-[797px] h-[1024px] left-[643px] top-0 absolute" src="src/icons/background_right_img_auth.png" />
+            <img data-layer="background_auth" className="BackgroundAuth w-[1440px] h-[1024px] left-0 top-0 absolute" src="/icons/background_auth.png" />
             <div data-layer="auth_left" className="AuthLeft w-[643px] h-[1024px] left-0 top-0 absolute">
-                <img data-layer="background_left_img_auth" className="BackgroundLeftImgAuth1 w-[643px] h-[1024px] left-0 top-0 absolute" src="src/icons/background_left_img_auth.png" />
 
                 <form onSubmit={handleLogin} className="AuthTextContent w-[442px] left-[100.50px] top-[220px] absolute inline-flex flex-col justify-start items-center gap-[63px]">
 

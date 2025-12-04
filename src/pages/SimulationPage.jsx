@@ -1,4 +1,3 @@
-// src/pages/SimulationPage.jsx
 import React, { useState } from "react";
 
 function SimulationPage() {
