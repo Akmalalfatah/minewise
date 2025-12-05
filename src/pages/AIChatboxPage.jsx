@@ -44,7 +44,6 @@ function AIChatboxPage() {
       })
     };
 
-    // sementara: tambahkan placeholder respons AI
     const aiReply = {
       id: Date.now() + 1,
       role: "assistant",
@@ -70,10 +69,11 @@ function AIChatboxPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TOP BAR */}
-        <div className="flex justify-between items-center">
+
+        {/* HEADER / TOP BAR */}
+        <header className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-semibold text-gray-900">
               AI Chatbox
@@ -88,18 +88,24 @@ function AIChatboxPage() {
             <NotificationSection />
             <ProfileSection />
           </div>
-        </div>
+        </header>
 
-        {/* MAIN LAYOUT: CHAT (LEFT) + REASONING PANEL (RIGHT) */}
+        {/* MAIN CONTENT AREA */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* CHAT AREA */}
-          <section className="xl:col-span-2 flex flex-col gap-4">
+
+          {/* CHAT SECTION */}
+          <section aria-label="Chat area" className="xl:col-span-2 flex flex-col gap-4">
             <div className="bg-white rounded-3xl shadow-sm flex flex-col h-[520px] overflow-hidden">
+
               {/* Chat header */}
-              <div className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-xs">
+              <header className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
+                <div
+                  className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-xs"
+                  aria-hidden="true"
+                >
                   MW
                 </div>
+
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
                     MineWise AI Assistant
@@ -108,10 +114,13 @@ function AIChatboxPage() {
                     Ask about operations, risks, and optimization strategies.
                   </p>
                 </div>
-              </div>
+              </header>
 
               {/* Chat messages */}
-              <div className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-[#fafafa]">
+              <div
+                className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-[#fafafa]"
+                aria-live="polite"
+              >
                 {messages.map((msg) => (
                   <ChatMessage
                     key={msg.id}
@@ -122,10 +131,11 @@ function AIChatboxPage() {
                 ))}
               </div>
 
-              {/* Input area */}
+              {/* Chat input */}
               <form
                 onSubmit={handleSubmit}
                 className="border-t border-gray-100 px-6 py-4 bg-white flex items-center gap-3"
+                aria-label="Chat input"
               >
                 <input
                   type="text"
@@ -133,7 +143,9 @@ function AIChatboxPage() {
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about operations, request recommendations..."
                   className="flex-1 text-sm px-4 py-2 rounded-2xl bg-[#f3f4f6] outline-none border border-transparent focus:border-[#ff7b54] transition-colors"
+                  aria-label="Message input"
                 />
+
                 <button
                   type="submit"
                   className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg hover:bg-black transition-colors"
@@ -144,28 +156,30 @@ function AIChatboxPage() {
               </form>
             </div>
 
-            {/* Suggestions */}
-            <div className="flex flex-wrap gap-3">
-              {SUGGESTIONS.map((s) => (
-                <button
-                  key={s}
-                  type="button"
-                  onClick={() => handleSuggestionClick(s)}
-                  className="px-4 py-2 rounded-full bg-white text-xs text-gray-800 shadow-sm hover:bg-gray-50 transition-colors"
-                >
-                  {s}
-                </button>
-              ))}
-            </div>
+            {/* Suggested prompts */}
+            <nav aria-label="Suggested prompts">
+              <div className="flex flex-wrap gap-3">
+                {SUGGESTIONS.map((s) => (
+                  <button
+                    key={s}
+                    type="button"
+                    onClick={() => handleSuggestionClick(s)}
+                    className="px-4 py-2 rounded-full bg-white text-xs text-gray-800 shadow-sm hover:bg-gray-50 transition-colors"
+                  >
+                    {s}
+                  </button>
+                ))}
+              </div>
+            </nav>
           </section>
 
-          {/* REASONING CHAIN PANEL */}
-          <section className="xl:col-span-1">
+          {/* REASONING PANEL */}
+          <section aria-label="Reasoning chain panel" className="xl:col-span-1">
             <ReasoningChainPanel />
           </section>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
 
