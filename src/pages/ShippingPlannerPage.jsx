@@ -14,10 +14,11 @@ function ShippingPlannerPage() {
   const { location, timePeriod, shift } = useGlobalFilter();
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TOP BAR */}
-        <div className="flex justify-between items-start gap-4">
+
+        {/* HEADER */}
+        <header className="flex justify-between items-start gap-4">
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold text-gray-900">
               Shipping Planner View
@@ -47,10 +48,13 @@ function ShippingPlannerPage() {
             <NotificationSection />
             <ProfileSection />
           </div>
-        </div>
+        </header>
 
         {/* GLOBAL FILTER BAR + VIEW TOGGLE */}
-        <div className="flex justify-between items-center gap-4">
+        <section
+          aria-label="Global filters and view toggle"
+          className="flex justify-between items-center gap-4"
+        >
           <GlobalFilterBar />
 
           <div className="inline-flex bg-white rounded-full p-1 shadow-sm">
@@ -67,42 +71,52 @@ function ShippingPlannerPage() {
               Shipping Planner View
             </button>
           </div>
-        </div>
+        </section>
 
         {/* ROW 1: Weather + AI Recommendation */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-          <section className="lg:col-span-1">
+        <section
+          aria-label="Port weather and AI shipping recommendations"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-5"
+        >
+          <div className="lg:col-span-1">
             <PortWeatherConditions />
-          </section>
+          </div>
 
-          <section className="lg:col-span-2">
+          <div className="lg:col-span-2">
             <AIShippingRecommendationCard />
-          </section>
-        </div>
+          </div>
+        </section>
 
         {/* ROW 2: Vessel Schedule + Coal Volume */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <section>
+        <section
+          aria-label="Vessel schedule and coal volume ready to ship"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+        >
+          <div>
             <VesselScheduleOverview />
-          </section>
+          </div>
 
-          <section>
+          <div>
             <CoalVolumeCard />
-          </section>
-        </div>
+          </div>
+        </section>
 
         {/* ROW 3: Loading Progress + Port Congestion Status */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-          <section>
+        <section
+          aria-label="Loading progress monitoring and port congestion status"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+        >
+          <div>
             <LoadingProgressMonitoring />
-          </section>
+          </div>
 
-          <section>
+          <div>
             <PortCongestionStatus />
-          </section>
-        </div>
+          </div>
+        </section>
+
       </div>
-    </div>
+    </main>
   );
 }
 
