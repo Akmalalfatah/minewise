@@ -1,0 +1,35 @@
+chatbox API JSON contoh:
+
+chat message:
+{
+  "ai_answer": "Berdasarkan kondisi saat ini, produksi menurun 12% karena hujan intensitas tinggi dan kecepatan alat melambat di Road C. Saya sarankan penggunaan alternatif rute Road A untuk menjaga cycle time tetap stabil.",
+  "ai_time": "Today at 11:42 AM",
+
+  "human_answer": "Kenapa produksi kita turun hari ini?",
+  "human_time": "Today at 11:41 AM",
+
+  "quick_questions": [
+    "Berikan optimasi rute berdasarkan cuaca hari ini",
+    "Laporan efisiensi alat 24 jam terakhir",
+    "Apakah ada kapal yang berisiko delay?",
+    "Tampilkan prediksi produksi besok"
+  ]
+}
+
+
+reasoning chain panel:
+{
+  "reasoning_steps": [
+    "Menganalisis data cuaca 6 jam terakhir, termasuk curah hujan (mm), kecepatan angin, dan visibilitas.",
+    "Menghitung performa alat berdasarkan sensor engine load, cycle time, dan waktu idle dari unit hauling.",
+    "Memetakan kondisi jalan (water depth, friction, speed) untuk menentukan rute paling efisien.",
+    "Membandingkan jadwal dan status kapal untuk menilai potensi bottleneck di pelabuhan."
+  ],
+
+  "data_sources": {
+    "weather": "Operational",
+    "equipment": "Operational",
+    "road": "Operational",
+    "vessel": "Operational"
+  }
+}

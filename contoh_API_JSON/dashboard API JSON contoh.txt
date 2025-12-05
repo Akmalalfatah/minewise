@@ -1,0 +1,193 @@
+dashboard API JSON contoh:
+
+total production card:
+{
+  "produce_ton": 4280,
+  "target_ton": 5000,
+  "avg_production_per_day": 612,
+  "deviation_pct": -14.4,
+  "source_location": "Pit A",
+
+  "dataset_reference": "plan_produksi_harian"
+}
+
+
+weather condition card:
+{
+  "rain_probability_pct": 62,
+  "wind_speed_kmh": 18,
+  "visibility_km": 4.2,
+  "extreme_weather_flag": false,
+
+  "weather_text": "Moderate rainfall expected. Wind stable at 18 km/h.",
+  "dataset_reference": "dim_cuaca_harian_rel"
+}
+
+
+production efficiency card:
+{
+  "effective_hours": 17.2,
+  "maintenance_hours": 2.1,
+  "efficiency_rate_pct": 89.4,
+
+  "dataset_reference": ["fct_operasional_alat_rel", "fct_biaya_operasional", "plan_produksi_harian"]
+}
+
+
+equipment status card:
+{
+  "active_operating": 27,
+  "standby": 6,
+  "under_repair": 3,
+  "maintenance": 4,
+
+  "dataset_reference": ["dim_alat_berat_rel", "fct_operasional_alat_rel"]
+}
+
+
+active vessel card:
+{
+  "loading": 3,
+  "waiting": 2,
+  "non_delay_risk": true,
+
+  "dataset_reference": ["dim_kapal", "fct_pemuatan_kapal"]
+}
+
+
+production weather overview:
+{
+  "summary": {
+    "total_production_ton": 4280,
+    "target_production_ton": 5000,
+    "anomaly_flag": true,
+    "ai_tag": "Production drop detected near heavy rainfall window"
+  },
+
+  "chart_data": [
+    { "day": "Mon", "production": 620, "target": 700, "rain_intensity_mm": 6 },
+    { "day": "Tue", "production": 610, "target": 700, "rain_intensity_mm": 4 },
+    { "day": "Wed", "production": 580, "target": 700, "rain_intensity_mm": 12 },
+    { "day": "Thu", "production": 540, "target": 700, "rain_intensity_mm": 18 },
+    { "day": "Fri", "production": 500, "target": 700, "rain_intensity_mm": 22 }
+  ],
+
+  "dataset_reference": ["plan_produksi_harian", "dim_cuaca_harian_rel"]
+}
+
+
+road condition overview:
+{
+  "road_segment_summary": [
+    {
+      "road": "Road A",
+      "status": "Normal",
+      "speed_kmh": 32,
+      "friction": 0.45,
+      "water_cm": 0
+    },
+    {
+      "road": "Road B",
+      "status": "Slippery",
+      "speed_kmh": 22,
+      "friction": 0.33,
+      "water_cm": 4
+    },
+    {
+      "road": "Road C",
+      "status": "Flooded",
+      "speed_kmh": 14,
+      "friction": 0.28,
+      "water_cm": 10
+    }
+  ],
+
+  "route_efficiency_score": {
+    "score": 62,
+    "label": "Moderate Risk",
+    "ai_processing": true,
+    "ai_flag": [
+      "Road B friction low at 0.33",
+      "Road C flooded with >10cm water",
+      "Cycle time increased by 18%"
+    ]
+  },
+
+  "surface_type_distribution": [
+    { "surface": "Asphalt", "segments": 8, "risk": "Safe" },
+    { "surface": "Gravel", "segments": 12, "risk": "Watch" },
+    { "surface": "Coal Road", "segments": 6, "risk": "Risk" },
+    { "surface": "Laterite", "segments": 4, "risk": "Limited" }
+  ],
+
+  "dataset_reference": "fct_kondisi_jalan"
+}
+
+
+causes of downtime:
+{
+  "downtime_summary": {
+    "total_downtime_hours": 14.3,
+    "lost_output_ton": 830,
+    "top_cause": "Maintenance",
+    "top_cause_pct": 42
+  },
+
+  "cause_details": [
+    { "cause": "Maintenance", "hours": 6, "breakdown": ["Hydraulic leak", "Engine overheat"] },
+    { "cause": "Weather", "hours": 3.5, "breakdown": ["Heavy rain", "Low visibility"] },
+    { "cause": "Road Issues", "hours": 2.8, "breakdown": ["Friction low", "Flooded path"] },
+    { "cause": "Fuel Delay", "hours": 2, "breakdown": ["Refill queue", "Pump malfunction"] }
+  ],
+
+  "pie_chart": [
+    { "cause": "Maintenance", "value": 42 },
+    { "cause": "Weather", "value": 24 },
+    { "cause": "Road Issues", "value": 20 },
+    { "cause": "Fuel Delay", "value": 14 }
+  ],
+
+  "dataset_reference": [
+    "fct_operasional_alat_rel",
+    "dim_cuaca_harian_rel",
+    "fct_kondisi_jalan"
+  ]
+}
+
+
+decision impact analysis:
+{
+  "correlation": {
+    "production_vs_rainfall": -0.64,
+    "statement": "Production decreases significantly during rainfall spikes."
+  },
+
+  "impact_chart_data": [
+    { "day": "Mon", "production": 620, "rain_mm": 6 },
+    { "day": "Tue", "production": 610, "rain_mm": 4 },
+    { "day": "Wed", "production": 580, "rain_mm": 12 },
+    { "day": "Thu", "production": 540, "rain_mm": 18 },
+    { "day": "Fri", "production": 500, "rain_mm": 22 }
+  ],
+
+  "dataset_reference": ["plan_produksi_harian", "dim_cuaca_harian_rel"]
+}
+
+
+ai summary:
+{
+  "ai_summary_points": [
+    "Production decreased by 14% due to rainfall and road restrictions.",
+    "Equipment efficiency improved by 3.1% after cycle time optimization.",
+    "High-risk haul route detected at Road B (friction 0.33).",
+    "Two vessels are predicted to experience loading delays due to wind surge."
+  ],
+
+  "dataset_reference": [
+    "plan_produksi_harian",
+    "dim_cuaca_harian_rel",
+    "fct_operasional_alat_rel",
+    "fct_kondisi_jalan",
+    "fct_pemuatan_kapal"
+  ]
+}

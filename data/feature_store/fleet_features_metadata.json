@@ -1,0 +1,22 @@
+{
+  "created_at": "2025-12-05T21:11:16.332711",
+  "total_records": 6985,
+  "total_features": 59,
+  "date_range": {
+    "start": "2025-07-01T00:00:00",
+    "end": "2025-10-31T00:00:00"
+  },
+  "equipment_count": 96,
+  "equipment_types": {
+    "Dump Truck": 1950,
+    "Excavator": 1848,
+    "Grader": 1451,
+    "Bulldozer": 958,
+    "Wheel Loader": 778
+  },
+  "health_distribution": {
+    "Good": 3707,
+    "Warning": 3274,
+    "Critical": 4
+  }
+}

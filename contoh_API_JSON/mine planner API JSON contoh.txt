@@ -1,0 +1,198 @@
+mine planner API JSON contoh:
+
+environment conditions:
+{
+  "location": "Pit A",
+  "rainfall_mm": 12.4,
+  "temperature_c": 28,
+  "humidity_pct": 78,
+  "wind_speed_kmh": 14,
+  "pressure_hpa": 1007,
+  "visibility_km": 3.2,
+  "lightning_risk": "Low",
+
+  "weather_risk_score": {
+    "score": 79,
+    "label": "High Risk",
+    "reason": "Heavy rainfall and reduced visibility could delay hauling operations."
+  },
+
+  "ai_explanation": {
+    "risk_level": "High",
+    "impact_factors": [
+      "Rainfall above 10mm",
+      "Visibility below 5km",
+      "Wind speed moderate"
+    ],
+    "recommended_actions": [
+      "Reduce haul speed by 20%",
+      "Increase safety inspections",
+      "Delay loading operations if rainfall exceeds 20mm"
+    ]
+  },
+
+  "last_updated": "2025-11-29 14:32"
+}
+
+
+mine road segment table:
+{
+  "selected_location": "Road B",
+
+  "segments": [
+    {
+      "segment": "Road A",
+      "condition_tag": "Normal",
+      "travel_time_min": 14,
+      "friction_index": 0.45,
+      "water_depth_cm": 0,
+      "speed_limit_kmh": 40,
+      "actual_speed_kmh": 33
+    },
+    {
+      "segment": "Road B",
+      "condition_tag": "Alert",
+      "travel_time_min": 19,
+      "friction_index": 0.32,
+      "water_depth_cm": 5,
+      "speed_limit_kmh": 40,
+      "actual_speed_kmh": 25
+    },
+    {
+      "segment": "Road C",
+      "condition_tag": "Restricted",
+      "travel_time_min": 25,
+      "friction_index": 0.28,
+      "water_depth_cm": 8,
+      "speed_limit_kmh": 30,
+      "actual_speed_kmh": 18
+    }
+  ],
+
+  "selected_segment_detail": {
+    "segment": "Road B",
+    "condition": "Alert",
+    "travel_time_min": 19,
+    "friction_index": 0.32,
+    "water_depth_cm": 5,
+    "speed_limit_kmh": 40,
+    "actual_speed_kmh": 25
+  },
+
+  "ai_analysis": {
+    "risk_score": 82,
+    "risk_label": "High Risk",
+    "explanation": "Friction index fell below 0.35 and water depth increased to 5cm.",
+    "critical_factors": [
+      "Friction index 0.32 (danger zone < 0.35)",
+      "Water accumulation in Road B",
+      "Vehicle slowdown 25 km/h"
+    ],
+    "ai_flag": "Road B may need temporary closure",
+    "ai_recommendation": [
+      "Increase road maintenance frequency today",
+      "Deploy water pump units",
+      "Redirect trucks to Road A for 30 minutes"
+    ]
+  }
+}
+
+
+equipment status table:
+{
+  "health_filters": ["Excellent", "Good", "Maintenance Required", "Slightly Damaged", "Severely Damaged"],
+
+  "equipment_table": [
+    {
+      "equipment_id": "EXC_01",
+      "type": "Excavator",
+      "model": "Hitachi ZX200",
+      "condition": "Good",
+      "operating_hours": 124,
+      "maintenance_hours": 2
+    },
+    {
+      "equipment_id": "DT_12",
+      "type": "Dump Truck",
+      "model": "CAT 773",
+      "condition": "Maintenance Required",
+      "operating_hours": 208,
+      "maintenance_hours": 6
+    },
+    {
+      "equipment_id": "EXC_05",
+      "type": "Excavator",
+      "model": "Komatsu PC300",
+      "condition": "Slightly Damaged",
+      "operating_hours": 98,
+      "maintenance_hours": 4
+    }
+  ],
+
+  "fleet_overview": [
+    {
+      "equipment_type": "Excavator",
+      "active": 9,
+      "maintenance": 2,
+      "idle": 3
+    },
+    {
+      "equipment_type": "Dump Truck",
+      "active": 15,
+      "maintenance": 3,
+      "idle": 5
+    },
+    {
+      "equipment_type": "Dozer",
+      "active": 5,
+      "maintenance": 1,
+      "idle": 1
+    }
+  ]
+}
+
+
+ai recommendation card:
+{
+  "ai_summary": "Conditions indicate operational instability mainly on Road B and reduced productivity in Pit C caused by low equipment availability.",
+
+  "key_alerts": [
+    "Road B friction index dropped to 0.32",
+    "Pit C experiencing 18% reduced cycle efficiency",
+    "Rainfall expected to increase by 20% in next 3 hours",
+    "2 Dump Trucks showing abnormal fuel consumption"
+  ],
+
+  "recommendations": [
+    {
+      "category": "Road Optimization",
+      "recommendation": "Redirect hauling routes to Road A for 30 minutes due to high-risk condition on Road B.",
+      "impact": "Reduces potential downtime by 14%"
+    },
+    {
+      "category": "Fleet Allocation",
+      "recommendation": "Reassign 2 trucks from Pit B to Pit C to stabilize production.",
+      "impact": "Improves production balance across pits"
+    },
+    {
+      "category": "Weather Mitigation",
+      "recommendation": "Prepare to reduce hauling speed by 20% if rainfall exceeds 15mm.",
+      "impact": "Ensures safety compliance"
+    },
+    {
+      "category": "Equipment Health",
+      "recommendation": "Schedule maintenance for DT_12 and DT_14 due to increasing fuel burn rate.",
+      "impact": "Prevents unexpected breakdowns"
+    }
+  ],
+
+  "ai_context_used": [
+    "dim_cuaca_harian",
+    "fct_kondisi_jalan",
+    "fct_operasional_alat",
+    "dim_alat_berat",
+    "plan_produksi_harian",
+    "fct_pemuatan_kapal"
+  ]
+}
+
