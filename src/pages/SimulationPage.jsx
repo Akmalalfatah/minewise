@@ -20,7 +20,7 @@ function SimulationPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         {/* TITLE */}
         <header>
@@ -35,7 +35,10 @@ function SimulationPage() {
         </header>
 
         {/* AI SCENARIO CONTROL PANEL */}
-        <section className="bg-white rounded-3xl p-6 flex flex-col gap-6 shadow-sm">
+        <section
+          aria-label="AI simulation scenario controls"
+          className="bg-white rounded-3xl p-6 flex flex-col gap-6 shadow-sm"
+        >
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg">
               🤖
@@ -108,7 +111,10 @@ function SimulationPage() {
         </section>
 
         {/* SCENARIO RESULT CARDS */}
-        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <section
+          aria-label="Scenario comparison cards"
+          className="grid grid-cols-1 md:grid-cols-3 gap-4"
+        >
           <ScenarioResultCard
             title="Baseline Scenario"
             isActive={activeScenario === "baseline"}
@@ -138,7 +144,10 @@ function SimulationPage() {
         </section>
 
         {/* AI RECOMMENDATIONS */}
-        <section className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white">
+        <section
+          aria-label="AI optimization recommendations"
+          className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white"
+        >
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
               💡
@@ -181,7 +190,7 @@ function SimulationPage() {
           </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }
 
@@ -192,7 +201,7 @@ function ScenarioControlCard({
   min,
   max,
   value,
-  onChange
+  onChange,
 }) {
   return (
     <div className="bg-[#f7f7f8] rounded-3xl p-4 flex flex-col gap-3">
@@ -219,7 +228,7 @@ function ScenarioResultCard({
   onSelect,
   productionOutput,
   costEfficiency,
-  riskLevel
+  riskLevel,
 }) {
   return (
     <div className="rounded-3xl px-5 py-4 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4">
