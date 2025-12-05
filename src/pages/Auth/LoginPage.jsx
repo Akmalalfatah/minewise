@@ -20,8 +20,8 @@ function LoginPage() {
   }, [isAuthenticated, navigate]);
 
   const [email, setEmail] = useState("");
-  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
   const [error, setError] = useState("");
 
   async function handleLogin(e) {
@@ -40,22 +40,17 @@ function LoginPage() {
     }
 
     try {
-      const res = await authService.login(email, password);
-      // Kalau nanti backend sudah menerima role, bisa diubah jadi:
-      // const res = await authService.login({ email, password, role });
+      const res = await authService.login(email, password, role);
 
       if (!res) {
-        setError("Login gagal, periksa kembali email dan password");
+        setError("Login gagal, periksa kembali email, password, dan role");
         return;
       }
-
       if (res.accessToken) {
         setToken(res.accessToken, res.refreshToken);
       }
-
       if (res.user) {
-        // simpan juga role yang dipilih, supaya bisa dipakai routing / guard
-        setUser({ ...res.user, selectedRole: role });
+        setUser(res.user);
       }
 
       navigate("/dashboard");
@@ -70,7 +65,7 @@ function LoginPage() {
       data-layer="LoginPage"
       className="Loginpage w-[1440px] h-[1024px] relative bg-[#0048ff] overflow-hidden"
     >
-      {/* Background is decorative, so aria-hidden and empty alt */}
+      {/* Background dekoratif */}
       <img
         data-layer="background_auth"
         className="BackgroundAuth w-[1440px] h-[1024px] left-0 top-0 absolute"
@@ -138,12 +133,13 @@ function LoginPage() {
                 >
                   Role
                 </label>
-                <div className="RoleSelectWrapper self-stretch h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
+                <div className="RoleSelectWrapper self-stretch h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
                   <select
                     id="role"
                     value={role}
                     onChange={(e) => setRole(e.target.value)}
                     className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
+                    required
                   >
                     <option value="" disabled>
                       Select your role
@@ -202,9 +198,9 @@ function LoginPage() {
                 </span>
               </button>
 
-              <p className="SignUpText self-stretch text-center text-xs text-[#595959]">
-                Akun MineWise dikelola secara internal. Hubungi admin jika
-                mengalami kendala login.
+              <p className="self-stretch text-center text-xs text-[#595959]">
+                MineWise login is for internal use only. Please contact the
+                system administrator if you need an account or role update.
               </p>
             </div>
           </div>
