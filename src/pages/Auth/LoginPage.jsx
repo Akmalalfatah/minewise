@@ -3,6 +3,11 @@ import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 
+const ROLE_OPTIONS = [
+  { value: "mine_planner", label: "Mine Planner" },
+  { value: "shipping_planner", label: "Shipping Planner" },
+];
+
 function LoginPage() {
   const navigate = useNavigate();
   const isAuthenticated = userStore((state) => state.isAuthenticated);
@@ -15,6 +20,7 @@ function LoginPage() {
   }, [isAuthenticated, navigate]);
 
   const [email, setEmail] = useState("");
+  const [role, setRole] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
@@ -23,10 +29,11 @@ function LoginPage() {
 
     setError("");
 
-    if (!email || !password) {
-      setError("Email dan password wajib diisi");
+    if (!email || !password || !role) {
+      setError("Email, password, dan role wajib diisi");
       return;
     }
+
     if (!/\S+@\S+\.\S+/.test(email)) {
       setError("Format email tidak valid");
       return;
@@ -34,6 +41,8 @@ function LoginPage() {
 
     try {
       const res = await authService.login(email, password);
+      // Kalau nanti backend sudah menerima role, bisa diubah jadi:
+      // const res = await authService.login({ email, password, role });
 
       if (!res) {
         setError("Login gagal, periksa kembali email dan password");
@@ -43,8 +52,10 @@ function LoginPage() {
       if (res.accessToken) {
         setToken(res.accessToken, res.refreshToken);
       }
+
       if (res.user) {
-        setUser(res.user);
+        // simpan juga role yang dipilih, supaya bisa dipakai routing / guard
+        setUser({ ...res.user, selectedRole: role });
       }
 
       navigate("/dashboard");
@@ -119,6 +130,33 @@ function LoginPage() {
                 </div>
               </div>
 
+              {/* Role */}
+              <div className="RoleForm self-stretch flex flex-col justify-start items-start gap-1.5">
+                <label
+                  htmlFor="role"
+                  className="RoleLabel self-stretch text-[#181818] text-base font-semibold"
+                >
+                  Role
+                </label>
+                <div className="RoleSelectWrapper self-stretch h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
+                  <select
+                    id="role"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
+                  >
+                    <option value="" disabled>
+                      Select your role
+                    </option>
+                    {ROLE_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
               {/* Password */}
               <div className="PasswordForm self-stretch flex flex-col justify-start items-start gap-[9px]">
                 <label
@@ -164,17 +202,9 @@ function LoginPage() {
                 </span>
               </button>
 
-              <p className="SignUpText self-stretch text-center text-xs">
-                <span className="text-[#595959]">
-                  Don’t have an account?
-                </span>
-                <button
-                  type="button"
-                  className="text-[#ea454c] cursor-pointer ml-1"
-                  onClick={() => navigate("/register")}
-                >
-                  Sign up for free!
-                </button>
+              <p className="SignUpText self-stretch text-center text-xs text-[#595959]">
+                Akun MineWise dikelola secara internal. Hubungi admin jika
+                mengalami kendala login.
               </p>
             </div>
           </div>
