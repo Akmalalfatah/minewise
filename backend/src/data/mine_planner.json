@@ -1,0 +1,78 @@
+{
+    "environment_conditions": {
+        "location": "PIT A",
+        "rainfall_mm": 32,
+        "temperature_c": 28,
+        "humidity_pct": 82,
+        "wind_kmh": 18,
+        "pressure_hpa": 1008,
+        "visibility_km": 1.2,
+        "lightning": true,
+        "updated": "2025-02-16 14:20",
+        "weather_risk_score": 79,
+        "risk_reasoning": "Heavy rainfall and poor visibility detected."
+    },
+    "ai_recommendation": {
+        "scenario_1": {
+            "title": "Adjust Route Allocation",
+            "description": "Reduce hauling through Road B due to low friction."
+        },
+        "scenario_2": {
+            "title": "Increase Standby Excavators",
+            "description": "High rainfall will slow down digging rate."
+        },
+        "scenario_3": {
+            "title": "Optimize Fleet Fueling Window",
+            "description": "Shift fueling to low-traffic window."
+        },
+        "analysis_sources": "cuaca, alat, jalan, produksi"
+    },
+    "road_conditions": {
+        "road_segments": [
+            {
+                "segment": "Road A",
+                "status": "Normal",
+                "friction": 0.45,
+                "water_cm": 0
+            },
+            {
+                "segment": "Road B",
+                "status": "High Risk",
+                "friction": 0.32,
+                "water_cm": 5
+            }
+        ],
+        "speed_limit_kmh": 40,
+        "actual_speed_kmh": 25,
+        "ai_flag": "Segmen Road B perlu ditunda karena friksi rendah."
+    },
+    "equipment_status": {
+        "fleet_overview": {
+            "excavator": {
+                "active": 9,
+                "maintenance": 2,
+                "idle": 3
+            },
+            "dozer": {
+                "active": 5,
+                "maintenance": 1,
+                "idle": 1
+            },
+            "truck": {
+                "active": 18,
+                "maintenance": 3,
+                "idle": 2
+            }
+        },
+        "equipment_list": [
+            {
+                "equipment_id": "ALAT_01",
+                "type": "Excavator",
+                "model": "Hitachi ZX200",
+                "condition": "Good",
+                "operating_hours": 2,
+                "maintenance_hours": 0
+            }
+        ]
+    }
+}

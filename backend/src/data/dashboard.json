@@ -1,0 +1,95 @@
+{
+    "total_production": {
+        "produce_ton": 12850,
+        "target_ton": 15000,
+        "avg_production_per_day": 1850,
+        "deviation_pct": -14.3,
+        "source_location": "PIT A"
+    },
+    "weather_condition": {
+        "rain_probability_pct": 62,
+        "wind_speed_kmh": 24,
+        "visibility_km": 1.2,
+        "extreme_weather_flag": true
+    },
+    "production_efficiency": {
+        "effective_hours": 17.2,
+        "maintenance_hours": 2.8,
+        "efficiency_rate": 86.0
+    },
+    "equipment_status": {
+        "active": 12,
+        "standby": 5,
+        "under_repair": 3,
+        "maintenance": 2
+    },
+    "vessel_status": {
+        "loading": 2,
+        "waiting": 1,
+        "non_delay_risk": true
+    },
+    "production_weather_overview": {
+        "production": [
+            1240,
+            1300,
+            1400,
+            1150
+        ],
+        "target": [
+            1500,
+            1500,
+            1500,
+            1500
+        ],
+        "rain_intensity": [
+            2,
+            4,
+            8,
+            6
+        ]
+    },
+    "road_condition_overview": {
+        "segments": [
+            {
+                "road": "Road A",
+                "status": "Normal",
+                "speed": 22,
+                "friction": 0.45,
+                "water": 0
+            },
+            {
+                "road": "Road B",
+                "status": "Waspada",
+                "speed": 12,
+                "friction": 0.35,
+                "water": 5
+            }
+        ],
+        "route_efficiency_score": 62,
+        "ai_flag": "Friction rendah pada Road B."
+    },
+    "causes_of_downtime": {
+        "total_downtime_hours": 6.4,
+        "lost_output_ton": 820,
+        "top_causes": {
+            "maintenance": 42,
+            "weather": 33,
+            "road_conditions": 25
+        },
+        "ai_breakdown": "Maintenance spike detected due to component failures."
+    },
+    "decision_impact": {
+        "correlation": {
+            "rain_vs_production": -0.72,
+            "visibility_vs_loading": -0.35
+        }
+    },
+    "ai_summary": {
+        "summary_points": [
+            "Produksi menurun 14.3% dari target.",
+            "Cuaca ekstrem berpotensi menghambat hauling.",
+            "Road B menyebabkan bottleneck pada haul fleet.",
+            "AI menyarankan maintenance shift penyesuaian."
+        ]
+    }
+}

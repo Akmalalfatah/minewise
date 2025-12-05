@@ -3,6 +3,13 @@ import React from "react";
 function ReportGeneratorForm({
   reportTypeValue,
   timePeriodValue,
+  reportTypes = [],
+  timePeriods = [],
+  sectionsList = [],
+  selectedSections = [],
+  onChangeReportType,
+  onChangeTimePeriod,
+  onToggleSection,
   onGenerateReport,
   onDownloadReport,
 }) {
@@ -41,39 +48,75 @@ function ReportGeneratorForm({
 
           {/* Top filters: Report Type & Time Period */}
           <section className="w-[1317px] h-16 left-0 top-[49px] absolute">
+            {/* Report Type */}
             <div className="w-[593px] left-[20px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
-              <p className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+              <label className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
                 Report Type
-              </p>
+              </label>
               <div className="self-stretch h-9 px-1.5 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
-                <span className="text-black text-sm font-normal font-['Inter']">
-                  {reportTypeValue || "Select report type"}
-                </span>
-                <div className="w-6 h-6 flex items-center justify-center">
+                <select
+                  value={reportTypeValue || ""}
+                  onChange={(e) => {
+                    const selected = e.target.value;
+                    if (onChangeReportType) {
+                      onChangeReportType(selected);
+                    }
+                  }}
+                  className="bg-transparent outline-none w-full text-black text-sm font-normal font-['Inter']"
+                  aria-label="Select report type"
+                >
+                  <option value="">
+                    {reportTypeValue || "Select report type"}
+                  </option>
+                  {reportTypes.map((rt) => (
+                    <option key={rt.id} value={rt.id}>
+                      {rt.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="w-6 h-6 flex items-center justify-center pointer-events-none">
                   <img
                     data-layer="icon_dropdown_report_type"
                     className="w-6 h-6"
                     src="/icons/icon_dropdown.png"
-                    alt="Open report type options"
+                    alt=""
                   />
                 </div>
               </div>
             </div>
 
+            {/* Time Period */}
             <div className="w-[593px] left-[705px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
-              <p className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+              <label className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
                 Time Period
-              </p>
+              </label>
               <div className="w-[593px] h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
-                <span className="text-black text-sm font-normal font-['Inter']">
-                  {timePeriodValue || "Select time period"}
-                </span>
-                <div className="w-6 h-6 flex items-center justify-center">
+                <select
+                  value={timePeriodValue || ""}
+                  onChange={(e) => {
+                    const selected = e.target.value;
+                    if (onChangeTimePeriod) {
+                      onChangeTimePeriod(selected);
+                    }
+                  }}
+                  className="bg-transparent outline-none w-full text-black text-sm font-normal font-['Inter']"
+                  aria-label="Select time period"
+                >
+                  <option value="">
+                    {timePeriodValue || "Select time period"}
+                  </option>
+                  {timePeriods.map((tp) => (
+                    <option key={tp.id} value={tp.id}>
+                      {tp.label}
+                    </option>
+                  ))}
+                </select>
+                <div className="w-6 h-6 flex items-center justify-center pointer-events-none">
                   <img
                     data-layer="icon_dropdown_time_period"
                     className="w-6 h-6"
                     src="/icons/icon_dropdown.png"
-                    alt="Open time period options"
+                    alt=""
                   />
                 </div>
               </div>
@@ -92,125 +135,50 @@ function ReportGeneratorForm({
             </div>
 
             <div className="self-stretch flex flex-col justify-start items-start gap-6">
-              {/* Executive Summary */}
-              <article className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-52 inline-flex flex-col justify-start items-start gap-px">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Executive Summary
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      High-level overview and key insights
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Operational Overview */}
-              <article className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-44 inline-flex flex-col justify-start items-start gap-0.5">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Operational Overview
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Current status of all operations
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Weather Analysis */}
-              <article className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-48 inline-flex flex-col justify-start items-start gap-0.5">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Weather Analysis
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Forecast and impact assessment
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Equipment Status */}
-              <article className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-48 inline-flex flex-col justify-start items-start gap-0.5">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Equipment Status
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Forecast and impact assessment
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Road Conditions */}
-              <article className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-48 inline-flex flex-col justify-start items-start gap-0.5">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Road Conditions
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Fleet availability and maintenance
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* AI Recommendations */}
-              <article className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-56 inline-flex flex-col justify-start items-start gap-px">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      AI Recommendations
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Haul road status and recommendations
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Scenario Analysis */}
-              <article className="self-stretch h-14 px-4 py-2.5 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-52 inline-flex flex-col justify-start items-start gap-0.5">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Scenario Analysis
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Simulation results and comparisons
-                    </p>
-                  </div>
-                </div>
-              </article>
-
-              {/* Risk Assessment */}
-              <article className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5">
-                <div className="inline-flex justify-start items-center gap-3">
-                  <div className="w-5 h-4 bg-zinc-100 rounded-[3px] border border-zinc-300" />
-                  <div className="w-52 inline-flex flex-col justify-start items-start gap-px">
-                    <h3 className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
-                      Risk Assessment
-                    </h3>
-                    <p className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
-                      Risk factors and mitigation strategies
-                    </p>
-                  </div>
-                </div>
-              </article>
+              {sectionsList.map((section) => {
+                const checked = selectedSections.includes(section);
+                return (
+                  <article
+                    key={section}
+                    className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5"
+                  >
+                    <label className="inline-flex justify-start items-center gap-3 w-full cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={checked}
+                        onChange={() =>
+                          onToggleSection && onToggleSection(section)
+                        }
+                        className="w-4 h-4"
+                        aria-label={section}
+                      />
+                      <div className="inline-flex flex-col justify-start items-start gap-px">
+                        <span className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+                          {section}
+                        </span>
+                        <span className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
+                          {section === "Executive Summary" &&
+                            "High-level overview and key insights"}
+                          {section === "Operational Overview" &&
+                            "Current status of all operations"}
+                          {section === "Weather Analysis" &&
+                            "Forecast and impact assessment"}
+                          {section === "Equipment Status" &&
+                            "Forecast and impact assessment"}
+                          {section === "Road Conditions" &&
+                            "Fleet availability and maintenance"}
+                          {section === "AI Recommendations" &&
+                            "Haul road status and recommendations"}
+                          {section === "Scenario Analysis" &&
+                            "Simulation results and comparisons"}
+                          {section === "Risk Assessment" &&
+                            "Risk factors and mitigation strategies"}
+                        </span>
+                      </div>
+                    </label>
+                  </article>
+                );
+              })}
             </div>
           </section>
 
