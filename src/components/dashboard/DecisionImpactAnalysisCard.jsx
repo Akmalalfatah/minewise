@@ -7,15 +7,26 @@ function DecisionImpactAnalysisCard() {
 
   useEffect(() => {
     async function load() {
-      const result = await getDecisionImpact();
-      setData(result);
+      try {
+        const result = await getDecisionImpact();
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load decision impact data:", error);
+      }
     }
+
     load();
   }, []);
 
   if (!data) return null;
 
-  const c = data.correlation_summary;
+  // Safely read correlation summary
+  const correlationSummary = data.correlation_summary || {};
+  const overallImpact =
+    correlationSummary.overall_impact !== undefined &&
+    correlationSummary.overall_impact !== null
+      ? correlationSummary.overall_impact
+      : "-";
 
   return (
     <section
@@ -88,7 +99,7 @@ function DecisionImpactAnalysisCard() {
                 data-layer="correlation_result_input"
                 className="CorrelationResultInput text-black text-4xl font-semibold"
               >
-                {c.overall_impact}
+                {overallImpact}
               </p>
             </article>
           </section>
