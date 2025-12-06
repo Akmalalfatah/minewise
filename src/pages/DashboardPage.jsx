@@ -3,7 +3,6 @@ import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
 import NotificationSection from "../components/layout/NotificationSection";
 import ProfileSection from "../components/layout/ProfileSection";
-
 import AISummaryInformationCard from "../components/dashboard/AISummaryInformationCard";
 import CausesOfDowntimeCard from "../components/dashboard/CausesOfDowntimeCard";
 import DecisionImpactAnalysisCard from "../components/dashboard/DecisionImpactAnalysisCard";
@@ -23,10 +22,11 @@ function DashboardPage() {
   }, [location, timePeriod, shift]);
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
+    <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
+      {/* Wrapper sesuai Figma width 1440px */}
+      <div className="w-full max-w-[1440px] px-10 py-8 flex flex-col gap-10">
 
-        {/* HEADER TOP BAR */}
+        {/* TOP BAR */}
         <header className="w-full flex justify-between items-center">
           <GlobalFilterBar />
 
@@ -36,19 +36,19 @@ function DashboardPage() {
           </div>
         </header>
 
-        {/* TITLE + DESCRIPTION */}
+        {/* DASHBOARD TITLE */}
         <section aria-label="Dashboard introduction">
-          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Ringkasan produksi, kondisi alat, cuaca, dan operasional tambang
-            berdasarkan lokasi, periode waktu, dan shift yang dipilih.
+          <h1 className="text-[28px] font-semibold text-[#1a1a1a]">Dashboard</h1>
+          <p className="text-sm text-gray-600 mt-1 max-w-[600px]">
+            Ringkasan produksi, kondisi alat, cuaca, dan operasional tambang berdasarkan lokasi,
+            periode waktu, dan shift yang dipilih.
           </p>
         </section>
 
-        {/* ROW 1 */}
+        {/* SUMMARY CARDS (ROW 1) */}
         <section
           aria-label="Summary cards"
-          className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4"
+          className="grid grid-cols-5 gap-5"
         >
           <TotalProductionCard />
           <WeatherConditionCard />
@@ -57,36 +57,39 @@ function DashboardPage() {
           <VesselStatusCard />
         </section>
 
-        {/* ROW 2 */}
+        {/* ROW 2: CHART + ROAD */}
         <section
           aria-label="Production and road condition overview"
-          className="grid grid-cols-1 xl:grid-cols-3 gap-4"
+          className="grid grid-cols-3 gap-5"
         >
-          <div className="xl:col-span-2">
+          <div className="col-span-2">
             <ProductionWeatherOverviewCard />
           </div>
-          <div className="xl:col-span-1">
+
+          <div className="col-span-1">
             <RoadConditionOverviewCard />
           </div>
         </section>
 
-        {/* ROW 3 */}
+        {/* ROW 3: DOWNTIME + DECISION */}
         <section
           aria-label="Downtime and decision analysis"
-          className="grid grid-cols-1 xl:grid-cols-3 gap-4"
+          className="grid grid-cols-3 gap-5"
         >
-          <div className="xl:col-span-2">
+          <div className="col-span-2">
             <CausesOfDowntimeCard />
           </div>
-          <div className="xl:col-span-1">
+
+          <div className="col-span-1">
             <DecisionImpactAnalysisCard />
           </div>
         </section>
 
-        {/* ROW 4 */}
-        <section aria-label="AI Summary Information">
+        {/* ROW 4: AI SUMMARY */}
+        <section aria-label="AI Summary Information" className="w-full">
           <AISummaryInformationCard />
         </section>
+
       </div>
     </main>
   );
