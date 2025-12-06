@@ -1,19 +1,51 @@
 import React, { useEffect, useState } from "react";
 import { getCausesOfDowntime } from "../../services/dashboardService";
 import { ChartPieInteractive } from "../ui/ChartPieInteractive";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function CausesOfDowntimeCard() {
   const [data, setData] = useState(null);
+  const filters = useFilterQuery();
 
   useEffect(() => {
+    let isMounted = true;
+
     async function load() {
-      const result = await getCausesOfDowntime();
-      setData(result);
+      try {
+        const result = await getCausesOfDowntime(filters);
+
+        const normalized = {
+          total_downtime_hours: result?.total_downtime_hours ?? 0,
+          lost_output_ton: result?.lost_output_ton ?? 0,
+          cause_details: Array.isArray(result?.cause_details)
+            ? result.cause_details
+            : [],
+        };
+
+        if (isMounted) {
+          setData(normalized);
+        }
+      } catch (err) {
+        console.error("Failed to load causes of downtime:", err);
+        if (isMounted) {
+          setData({
+            total_downtime_hours: 0,
+            lost_output_ton: 0,
+            cause_details: [],
+          });
+        }
+      }
     }
+
     load();
-  }, []);
+    return () => {
+      isMounted = false;
+    };
+  }, [filters.location, filters.time, filters.shift]);
 
   if (!data) return null;
+
+  const topCause = data.cause_details[0] || null;
 
   return (
     <section
@@ -125,7 +157,7 @@ function CausesOfDowntimeCard() {
                 data-layer="cause_detailed_input"
                 className="CauseDetailedInput text-black text-2xl font-normal"
               >
-                {data.cause_details[0]?.category}
+                {topCause?.category || "-"}
               </p>
 
               <div
@@ -136,7 +168,7 @@ function CausesOfDowntimeCard() {
                   data-layer="cause_detailed_group_1"
                   className="CauseDetailedGroup1 text-black/60 text-xs"
                 >
-                  {data.cause_details[0]?.ai_reason}
+                  {topCause?.ai_reason || "No AI analysis available."}
                 </p>
               </div>
             </section>
