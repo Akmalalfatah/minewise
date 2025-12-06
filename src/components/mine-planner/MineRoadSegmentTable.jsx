@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { getMineRoadConditions } from "../../services/minePlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function MineRoadSegmentTable() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getMineRoadConditions();
-      setData(result);
+      try {
+        const result = await getMineRoadConditions({
+          location,
+          timePeriod,
+          shift,
+        });
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load mine road conditions:", error);
+        setData(null);
+      }
     }
+
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   if (!data) return null;
 
-  const segmentName = data.segment_name;
-  const roadConditionLabel = data.road_condition_label;
-  const travelTime = data.travel_time;
-  const frictionIndex = data.friction_index;
-  const waterDepth = data.water_depth;
-  const speedLimit = data.speed_limit;
-  const actualSpeed = data.actual_speed;
-  const alertTitle = data.alert.title;
-  const alertDescription = data.alert.description;
+  const segmentName = data.segment_name ?? "Segment A";
+  const roadConditionLabel = data.road_condition_label ?? "Unknown";
+  const travelTime = data.travel_time ?? "-";
+  const frictionIndex = data.friction_index ?? "-";
+  const waterDepth = data.water_depth ?? "-";
+  const speedLimit = data.speed_limit ?? "-";
+  const actualSpeed = data.actual_speed ?? "-";
+
+  const alert = data.alert || {
+    title: "No active alert",
+    description: "There is no specific road condition alert for this segment.",
+  };
+
+  const alertTitle = alert.title;
+  const alertDescription = alert.description;
 
   return (
     <section
@@ -70,6 +88,7 @@ function MineRoadSegmentTable() {
             type="button"
             data-layer="header_action_button_filter"
             className="HeaderActionButtonFilter size-8 px-2 py-[7px] left-[391px] top-0 absolute bg-[#efefef] rounded-2xl flex flex-col justify-center items-center"
+            aria-label="Filter mine road conditions"
           >
             <div
               data-layer="icon_filter"
