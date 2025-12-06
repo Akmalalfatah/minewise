@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import ChatMessage from "../components/chatbox/ChatMessage";
 import ReasoningChainPanel from "../components/chatbox/ReasoningChainPanel";
-import NotificationSection from "../components/layout/NotificationSection";
-import ProfileSection from "../components/layout/ProfileSection";
 
 const INITIAL_MESSAGES = [
   {
@@ -71,32 +69,24 @@ function AIChatboxPage() {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-
-        {/* HEADER / TOP BAR */}
-        <header className="flex justify-between items-center">
-          <div>
-            <h1 className="text-2xl font-semibold text-gray-900">
-              AI Chatbox
-            </h1>
-            <p className="text-sm text-gray-600 mt-1">
-              Berinteraksi dengan AI untuk mendapatkan insight operasional,
-              rekomendasi optimasi, dan penjelasan reasoning chain.
-            </p>
-          </div>
-
-          <div className="flex items-center gap-4">
-            <NotificationSection />
-            <ProfileSection />
-          </div>
+        <header aria-label="AI Chatbox introduction">
+          <h1 className="text-2xl font-semibold text-gray-900">
+            AI Chatbox
+          </h1>
+          <p className="text-sm text-gray-600 mt-1">
+            Berinteraksi dengan AI untuk mendapatkan insight operasional,
+            rekomendasi optimasi, dan penjelasan reasoning chain.
+          </p>
         </header>
 
         {/* MAIN CONTENT AREA */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-
           {/* CHAT SECTION */}
-          <section aria-label="Chat area" className="xl:col-span-2 flex flex-col gap-4">
+          <section
+            aria-label="Chat area"
+            className="xl:col-span-2 flex flex-col gap-4"
+          >
             <div className="bg-white rounded-3xl shadow-sm flex flex-col h-[520px] overflow-hidden">
-
               {/* Chat header */}
               <header className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
                 <div
