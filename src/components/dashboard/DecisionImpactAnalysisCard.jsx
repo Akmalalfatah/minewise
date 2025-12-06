@@ -20,7 +20,6 @@ function DecisionImpactAnalysisCard() {
 
   if (!data) return null;
 
-  // Safely read correlation summary
   const correlationSummary = data.correlation_summary || {};
   const overallImpact =
     correlationSummary.overall_impact !== undefined &&
@@ -32,16 +31,16 @@ function DecisionImpactAnalysisCard() {
     <section
       data-layer="decision_impact_analysis_card"
       aria-label="Decision impact analysis"
-      className="DecisionImpactAnalysisCard w-[729px] h-[316px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="DecisionImpactAnalysisCard w-full h-full p-6 bg-white rounded-3xl flex flex-col gap-6"
     >
       <div
         data-layer="card_container"
-        className="CardContainer w-[681px] h-[260px] flex flex-col justify-start items-start gap-6"
+        className="CardContainer self-stretch flex flex-col gap-6"
       >
         {/* Header */}
         <header
           data-layer="header_left_group"
-          className="HeaderLeftGroup w-[214px] inline-flex justify-start items-center gap-3"
+          className="HeaderLeftGroup inline-flex items-center gap-3"
         >
           <div
             data-layer="icon_wrapper"
@@ -65,13 +64,13 @@ function DecisionImpactAnalysisCard() {
         {/* Content */}
         <div
           data-layer="content_container"
-          className="ContentContainer self-stretch inline-flex justify-start items-start gap-8"
+          className="ContentContainer self-stretch flex flex-col lg:flex-row gap-8 items-stretch"
         >
           {/* Analysis summary */}
           <section
             data-layer="analysis_section"
             aria-label="Rainfall versus production correlation"
-            className="AnalysisSection w-[220px] h-[114px] inline-flex flex-col justify-start items-start gap-3"
+            className="AnalysisSection w-full lg:w-1/3 flex flex-col gap-3"
           >
             <h3
               data-layer="analysis_title"
@@ -82,12 +81,12 @@ function DecisionImpactAnalysisCard() {
 
             <div
               data-layer="divider"
-              className="Divider self-stretch flex-1 outline outline-[0.50px] outline-black/25"
+              className="Divider self-stretch h-px bg-black/25"
             />
 
             <article
               data-layer="correlation_result_group"
-              className="CorrelationResultGroup w-[89px] h-[66px] flex flex-col justify-start items-start gap-2"
+              className="CorrelationResultGroup flex flex-col gap-2"
             >
               <span
                 data-layer="correlation_result_title"
@@ -108,9 +107,9 @@ function DecisionImpactAnalysisCard() {
           <section
             data-layer="chart_section"
             aria-label="Rainfall and production comparison chart"
-            className="ChartSection w-[429px] h-[225px] relative"
+            className="ChartSection flex-1 min-h-[220px] lg:min-h-[260px]"
           >
-            <div className="DecisionLineGraph w-[383px] h-[250px] left-[46px] top-[-54px] absolute">
+            <div className="w-full h-full">
               <ChartBarMultiple />
             </div>
           </section>

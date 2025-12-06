@@ -37,16 +37,16 @@ function AISummaryInformationCard() {
     <section
       data-layer="ai_summary_information_card"
       aria-label="AI summary information"
-      className="AiSummaryInformationCard w-[604px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="AiSummaryInformationCard w-full h-full p-6 bg-white rounded-3xl flex flex-col gap-6"
     >
       <div
         data-layer="card_container"
-        className="CardContainer self-stretch h-[268px] flex flex-col justify-start items-start gap-6"
+        className="CardContainer self-stretch flex flex-col gap-6"
       >
         {/* Header */}
         <header
           data-layer="header_left_group"
-          className="HeaderLeftGroup w-52 inline-flex justify-start items-center gap-3"
+          className="HeaderLeftGroup inline-flex items-center gap-3"
         >
           <div
             data-layer="icon_wrapper"
@@ -71,11 +71,11 @@ function AISummaryInformationCard() {
         {/* Summary Content */}
         <article
           data-layer="ai_summary_section"
-          className="AiSummarySection self-stretch h-[212px] px-[21px] py-7 bg-[#efefef] rounded-[10px] inline-flex justify-start items-start"
+          className="AiSummarySection self-stretch min-h-[180px] px-[21px] py-7 bg-[#efefef] rounded-[10px] inline-flex justify-start items-start"
         >
           <p
             data-layer="ai_summary_input"
-            className="AiSummaryInput w-[497px] text-black text-base font-normal whitespace-pre-wrap"
+            className="AiSummaryInput w-full text-black text-base font-normal whitespace-pre-wrap"
           >
             {aiSummaryInput}
           </p>

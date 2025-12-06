@@ -51,16 +51,16 @@ function CausesOfDowntimeCard() {
     <section
       data-layer="causes_of_downtime_card"
       aria-label="Causes of downtime"
-      className="CausesOfDowntimeCard w-[807px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-start gap-2.5"
+      className="CausesOfDowntimeCard w-full h-full p-6 bg-white rounded-3xl flex flex-col gap-6"
     >
       <div
         data-layer="card_container"
-        className="CardContainer self-stretch flex flex-col justify-center items-start gap-6"
+        className="CardContainer self-stretch flex flex-col gap-6"
       >
         {/* Header */}
         <header
           data-layer="header_left_group"
-          className="HeaderLeftGroup w-[270.41px] h-[32.09px] inline-flex justify-start items-center gap-3"
+          className="HeaderLeftGroup inline-flex items-center gap-3"
         >
           <div
             data-layer="icon_wrapper"
@@ -84,23 +84,23 @@ function CausesOfDowntimeCard() {
         {/* Content */}
         <div
           data-layer="content_container"
-          className="ContentContainer self-stretch h-[261px] relative"
+          className="ContentContainer self-stretch flex flex-col lg:flex-row gap-6 items-stretch"
         >
           {/* Stats & top cause section */}
           <section
             data-layer="stats_section"
             aria-label="Downtime statistics and top cause"
-            className="StatsSection w-[249px] absolute left-0 top-0 inline-flex flex-col justify-start items-start gap-3"
+            className="StatsSection w-full lg:w-1/3 flex flex-col gap-4"
           >
             {/* High-level stats */}
             <section
               data-layer="stats_group"
               aria-label="Total downtime and lost output"
-              className="StatsGroup w-[151px] flex flex-col justify-start items-start gap-[11px]"
+              className="StatsGroup flex flex-col gap-4"
             >
               <article
                 data-layer="total_downtime_week_row"
-                className="TotalDowntimeWeekRow self-stretch flex flex-col justify-start items-start gap-2"
+                className="TotalDowntimeWeekRow flex flex-col gap-2"
               >
                 <span
                   data-layer="total_downtime_week_title"
@@ -118,7 +118,7 @@ function CausesOfDowntimeCard() {
 
               <article
                 data-layer="lost_output_item_row"
-                className="LostOutputItemRow self-stretch flex flex-col justify-start items-start gap-2"
+                className="LostOutputItemRow flex flex-col gap-2"
               >
                 <span
                   data-layer="lost_output_item_title"
@@ -137,14 +137,14 @@ function CausesOfDowntimeCard() {
 
             <div
               data-layer="divider"
-              className="Divider self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
+              className="Divider self-stretch h-px bg-[#bdbdbd]"
             />
 
             {/* Top cause detailed */}
             <section
               data-layer="cause_detailed_row"
               aria-label="Top downtime cause details"
-              className="CauseDetailedRow w-[223px] flex flex-col justify-start items-start gap-[9px]"
+              className="CauseDetailedRow flex flex-col gap-[9px]"
             >
               <h3
                 data-layer="cause_detailed_title"
@@ -162,7 +162,7 @@ function CausesOfDowntimeCard() {
 
               <div
                 data-layer="cause_detailed_header"
-                className="CauseDetailedHeader flex flex-col justify-start items-start gap-2"
+                className="CauseDetailedHeader flex flex-col gap-2"
               >
                 <p
                   data-layer="cause_detailed_group_1"
@@ -174,16 +174,13 @@ function CausesOfDowntimeCard() {
             </section>
           </section>
 
-          {/* Vertical divider to chart */}
-          <div
-            data-layer="divider"
-            className="Divider w-[315px] h-0 left-[273px] top-[-54px] absolute origin-top-left rotate-90 outline outline-[0.50px] outline-[#bdbdbd]"
-          />
+          {/* Divider to chart (desktop only) */}
+          <div className="hidden lg:block w-px bg-[#bdbdbd]" />
 
           {/* Pie chart section */}
           <section
             aria-label="Downtime causes distribution"
-            className="PieChart w-[462px] h-[318px] absolute left-[330px] top-[-30px]"
+            className="PieChart flex-1 min-h-[220px] lg:min-h-[260px]"
           >
             <ChartPieInteractive />
           </section>

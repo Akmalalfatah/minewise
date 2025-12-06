@@ -29,7 +29,8 @@ function RoadConditionOverviewCard() {
   return (
     <section
       data-layer="road_condition_overview_card"
-      className="RoadConditionOverviewCard w-[536px] h-[248px] p-4 bg-white rounded-3xl flex flex-col gap-3"
+      aria-label="Road condition overview"
+      className="RoadConditionOverviewCard w-full h-full p-4 bg-white rounded-3xl flex flex-col gap-3"
     >
       {/* Header */}
       <header className="flex items-center gap-3">
