@@ -1,5 +1,7 @@
 import React from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import NotificationSection from "./NotificationSection";
+import ProfileSection from "./ProfileSection";
 
 function Navbar() {
   const location = useLocation();
@@ -7,57 +9,53 @@ function Navbar() {
 
   const menuItems = [
     { label: "Dashboard", path: "/dashboard" },
-    { label: "Mine Planner", path: "/mine-planner" },
-    { label: "Shipping Planner", path: "/shipping-planner" },
+    { label: "Simulation Analysis", path: "/simulation-analysis" },
     { label: "AI Chatbox", path: "/chat" },
+    { label: "Overview", path: "/overview" },
     { label: "Reports", path: "/report" },
-    { label: "Simulation Analysis", path: "/simulation-analysis" }
   ];
 
   const isActive = (path) =>
-    location.pathname === path || location.pathname.startsWith(path + "/");
+    location.pathname === path ||
+    location.pathname.startsWith(path + "/");
 
   return (
     <nav
-      data-layer="global_navbar"
       aria-label="Main navigation"
-      className="GloballNavbar w-[944px] px-8 py-6 bg-white rounded-[50px] inline-flex flex-col justify-center items-center gap-3"
+      className="w-full bg-white rounded-full py-4 px-8 shadow-sm flex items-center justify-between"
     >
-      <div
-        data-layer="navbar_container"
-        className="NavbarContainer self-stretch inline-flex justify-between items-center"
+      {/* Left: Logo */}
+      <button
+        type="button"
+        onClick={() => navigate("/dashboard")}
+        className="text-[#ff7b54] text-2xl font-semibold"
       >
-        {/* Logo */}
-        <button
-          type="button"
-          data-layer="navbar_logo"
-          onClick={() => navigate("/dashboard")}
-          className="NavbarLogo justify-start text-[#ff7b54] text-2xl font-semibold cursor-pointer"
-        >
-          MineWise
-        </button>
+        MineWise
+      </button>
 
-        {/* Menu List */}
-        <ul
-          data-layer="navbar_menu_list"
-          className="NavbarMenuList w-[683px] flex justify-center items-center gap-[58px]"
-        >
-          {menuItems.map((item) => (
-            <li key={item.path}>
-              <button
-                type="button"
-                onClick={() => navigate(item.path)}
-                className={`cursor-pointer text-base font-normal ${
-                  isActive(item.path)
-                    ? "text-black font-semibold"
-                    : "text-[#666666]"
-                }`}
-              >
-                {item.label}
-              </button>
-            </li>
-          ))}
-        </ul>
+      {/* Center: Menu */}
+      <ul className="flex items-center gap-10">
+        {menuItems.map((item) => (
+          <li key={item.path}>
+            <button
+              type="button"
+              onClick={() => navigate(item.path)}
+              className={`text-base transition ${
+                isActive(item.path)
+                  ? "text-black font-semibold"
+                  : "text-gray-500 hover:text-black"
+              }`}
+            >
+              {item.label}
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Right: Notification + Profile */}
+      <div className="flex items-center gap-4">
+        <NotificationSection />
+        <ProfileSection />
       </div>
     </nav>
   );
