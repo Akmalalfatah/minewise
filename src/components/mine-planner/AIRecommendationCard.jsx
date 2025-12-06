@@ -1,18 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { getAIMineRecommendation } from "../../services/minePlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function AIRecommendationCard() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getAIMineRecommendation();
-      setData(result);
+      try {
+        const result = await getAIMineRecommendation({
+          location,
+          timePeriod,
+          shift,
+        });
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load AI mine recommendation:", error);
+        setData(null);
+      }
     }
+
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   if (!data) return null;
+
+  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+
+  const defaultScenario = {
+    title: "Recommendation not available",
+    description:
+      "AI recommendation is not available for the current filter selection.",
+  };
+
+  const scenario1 = scenarios[0] || defaultScenario;
+  const scenario2 = scenarios[1] || defaultScenario;
+  const scenario3 = scenarios[2] || defaultScenario;
+
+  const analysisSources =
+    data.analysis_sources ||
+    "Weather, road conditions, equipment utilization, and production targets.";
 
   return (
     <section
@@ -77,13 +105,13 @@ function AIRecommendationCard() {
                   data-layer="scenario1_title"
                   className="Scenario1Title self-stretch text-black text-sm font-semibold"
                 >
-                  {data.scenarios[1].title}
+                  {scenario1.title}
                 </h3>
                 <p
                   data-layer="scenario1_description"
                   className="Scenario1Description self-stretch text-black text-sm font-normal"
                 >
-                  {data.scenarios[1].description}
+                  {scenario1.description}
                 </p>
               </div>
             </article>
@@ -98,10 +126,10 @@ function AIRecommendationCard() {
                 className="Scenario2Block w-[815px] flex flex-col justify-start items-start gap-1"
               >
                 <h3 className="Scenario2Title text-black text-sm font-semibold">
-                  {data.scenarios[2].title}
+                  {scenario2.title}
                 </h3>
                 <p className="Scenario2Description text-black text-sm font-normal">
-                  {data.scenarios[2].description}
+                  {scenario2.description}
                 </p>
               </div>
             </article>
@@ -113,10 +141,10 @@ function AIRecommendationCard() {
             >
               <div className="Scenario3Block w-[817px] flex flex-col gap-1">
                 <h3 className="Scenario3Title text-black text-sm font-semibold">
-                  {data.scenarios[3].title}
+                  {scenario3.title}
                 </h3>
                 <p className="Scenario3Description text-black text-sm">
-                  {data.scenarios[3].description}
+                  {scenario3.description}
                 </p>
               </div>
             </article>
@@ -138,7 +166,7 @@ function AIRecommendationCard() {
               data-layer="analysis_sources"
               className="AnalysisSources text-black text-base font-semibold"
             >
-              {data.analysis_sources}
+              {analysisSources}
             </p>
           </section>
         </section>
