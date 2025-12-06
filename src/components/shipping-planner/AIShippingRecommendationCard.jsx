@@ -1,18 +1,41 @@
 import React, { useEffect, useState } from "react";
 import { getAIShippingRecommendation } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function AIShippingRecommendationCard() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getAIShippingRecommendation();
-      setData(result);
+      try {
+        const filters = { location, timePeriod, shift };
+        const result = await getAIShippingRecommendation(filters);
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load AI shipping recommendation:", error);
+      }
     }
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   if (!data) return null;
+
+  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+
+  const makeSafeScenario = (index) => {
+    const item = scenarios[index];
+    return {
+      title: item?.title || "-",
+      description: item?.description || "-",
+    };
+  };
+
+  const scenario1 = makeSafeScenario(0);
+  const scenario2 = makeSafeScenario(1);
+  const scenario3 = makeSafeScenario(2);
+
+  const analysisSources = data.analysis_sources || "-";
 
   return (
     <section
@@ -79,13 +102,13 @@ function AIShippingRecommendationCard() {
                   data-layer="scenario1_title"
                   className="Scenario1Title self-stretch text-black text-sm font-semibold"
                 >
-                  {data.scenarios[0].title}
+                  {scenario1.title}
                 </h3>
                 <p
                   data-layer="scenario1_description"
                   className="Scenario1Description self-stretch text-black text-sm font-normal"
                 >
-                  {data.scenarios[0].description}
+                  {scenario1.description}
                 </p>
               </div>
             </article>
@@ -100,10 +123,10 @@ function AIShippingRecommendationCard() {
                 className="Scenario2Block w-[815px] flex flex-col justify-start items-start gap-1"
               >
                 <h3 className="Scenario2Title text-black text-sm font-semibold">
-                  {data.scenarios[1].title}
+                  {scenario2.title}
                 </h3>
                 <p className="Scenario2Description text-black text-sm font-normal">
-                  {data.scenarios[1].description}
+                  {scenario2.description}
                 </p>
               </div>
             </article>
@@ -115,10 +138,10 @@ function AIShippingRecommendationCard() {
             >
               <div className="Scenario3Block w-[817px] flex flex-col gap-1">
                 <h3 className="Scenario3Title text-black text-sm font-semibold">
-                  {data.scenarios[2].title}
+                  {scenario3.title}
                 </h3>
                 <p className="Scenario3Description text-black text-sm font-normal">
-                  {data.scenarios[2].description}
+                  {scenario3.description}
                 </p>
               </div>
             </article>
@@ -140,7 +163,7 @@ function AIShippingRecommendationCard() {
               data-layer="analysis_sources"
               className="AnalysisSources text-black text-base font-semibold"
             >
-              {data.analysis_sources}
+              {analysisSources}
             </p>
           </section>
         </section>
