@@ -2,17 +2,34 @@ import React, { useEffect, useState } from "react";
 import { getAISummary } from "../../services/dashboardService";
 
 function AISummaryInformationCard() {
-  const [summary, setSummary] = useState(null);
+  const [summary, setSummary] = useState([]);
 
   useEffect(() => {
     async function load() {
-      const result = await getAISummary();
-      setSummary(result);
+      try {
+        const result = await getAISummary();
+
+        let normalized = [];
+
+        if (Array.isArray(result)) {
+          normalized = result;
+        } else if (typeof result === "string") {
+          normalized = [result];
+        } else if (result && typeof result === "object") {
+          normalized = Object.values(result);
+        }
+
+        setSummary(normalized);
+      } catch (err) {
+        console.error("Failed to load AI summary:", err);
+        setSummary(["AI summary unavailable."]);
+      }
     }
+
     load();
   }, []);
 
-  if (!summary) return null;
+  if (!summary || summary.length === 0) return null;
 
   const aiSummaryInput = summary.join("\n");
 
