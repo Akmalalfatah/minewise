@@ -2,6 +2,7 @@ import apiClient from "./apiClient";
 
 export async function getPortWeatherConditions(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/port-weather", {
     params: {
       location,
@@ -9,11 +10,13 @@ export async function getPortWeatherConditions(filters = {}) {
       shift,
     },
   });
+
   return res.data.port_weather_conditions;
 }
 
 export async function getAIShippingRecommendation(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/ai-recommendation", {
     params: {
       location,
@@ -21,11 +24,13 @@ export async function getAIShippingRecommendation(filters = {}) {
       shift,
     },
   });
+
   return res.data.ai_shipping_recommendation;
 }
 
 export async function getVesselSchedule(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/vessel-schedules", {
     params: {
       location,
@@ -33,11 +38,13 @@ export async function getVesselSchedule(filters = {}) {
       shift,
     },
   });
+
   return res.data.vessel_schedule;
 }
 
 export async function getCoalVolumeReady(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/coal-volume", {
     params: {
       location,
@@ -45,11 +52,13 @@ export async function getCoalVolumeReady(filters = {}) {
       shift,
     },
   });
+
   return res.data.coal_volume_ready;
 }
 
 export async function getLoadingProgress(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/loading-progress", {
     params: {
       location,
@@ -57,11 +66,13 @@ export async function getLoadingProgress(filters = {}) {
       shift,
     },
   });
+
   return res.data.loading_progress;
 }
 
 export async function getPortCongestionStatus(filters = {}) {
   const { location, timePeriod, shift } = filters;
+
   const res = await apiClient.get("/shipping-planner/port-congestion", {
     params: {
       location,
@@ -69,5 +80,6 @@ export async function getPortCongestionStatus(filters = {}) {
       shift,
     },
   });
+
   return res.data.port_congestion;
 }
