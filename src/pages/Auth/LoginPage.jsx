@@ -46,6 +46,7 @@ function LoginPage() {
         setError("Login gagal, periksa kembali email, password, dan role");
         return;
       }
+
       if (res.accessToken) {
         setToken(res.accessToken, res.refreshToken);
       }
@@ -63,30 +64,31 @@ function LoginPage() {
   return (
     <main
       data-layer="LoginPage"
-      className="Loginpage w-[1440px] h-[1024px] relative bg-[#0048ff] overflow-hidden"
+      className="relative min-h-screen flex bg-[#0048ff] overflow-hidden"
     >
-      {/* Background dekoratif */}
+      {/* Background dekoratif full-viewport */}
       <img
         data-layer="background_auth"
-        className="BackgroundAuth w-[1440px] h-[1024px] left-0 top-0 absolute"
+        className="BackgroundAuth absolute inset-0 w-full h-full object-cover"
         src="/icons/background_auth.png"
         alt=""
         aria-hidden="true"
       />
 
+      {/* Konten utama: form login di kiri, ilustrasi di kanan (dari background) */}
       <section
         data-layer="auth_left"
-        className="AuthLeft w-[643px] h-[1024px] left-0 top-0 absolute"
+        className="relative z-10 flex flex-1 items-center justify-center"
         aria-label="Login section"
       >
         <form
           onSubmit={handleLogin}
-          className="AuthTextContent w-[442px] left-[100.50px] top-[220px] absolute inline-flex flex-col justify-start items-center gap-[63px]"
+          className="AuthTextContent w-full max-w-md px-6 py-10 bg-white/0 flex flex-col items-center gap-12"
           aria-describedby={error ? "login-error" : undefined}
         >
           {/* Header / Hero Text */}
-          <header className="Headline flex flex-col justify-start items-center gap-2.5">
-            <h1 className="HeadlineTitle text-center">
+          <header className="Headline flex flex-col items-center gap-2.5 text-center">
+            <h1 className="HeadlineTitle">
               <span className="text-[#030303] text-4xl font-semibold">
                 WELCOME BACK! TO{" "}
               </span>
@@ -95,23 +97,23 @@ function LoginPage() {
               </span>
             </h1>
 
-            <p className="HeadlineSubtitle text-center text-[#626263] text-lg font-normal">
+            <p className="HeadlineSubtitle text-[#626263] text-lg font-normal">
               Welcome back! Please enter your details.
             </p>
           </header>
 
           {/* Form Fields */}
-          <div className="FormContainer w-[315px] flex flex-col justify-start items-center gap-[21px]">
-            <div className="InputsFieldsContainer self-stretch flex flex-col justify-start items-start gap-[22px]">
+          <div className="FormContainer w-full flex flex-col items-center gap-5">
+            <div className="InputsFieldsContainer w-full flex flex-col gap-5">
               {/* Email */}
-              <div className="EmailForm self-stretch flex flex-col justify-start items-start gap-1.5">
+              <div className="EmailForm w-full flex flex-col gap-1.5">
                 <label
                   htmlFor="email"
-                  className="EmailLabel self-stretch text-[#181818] text-base font-semibold"
+                  className="EmailLabel text-[#181818] text-base font-semibold"
                 >
                   Email
                 </label>
-                <div className="EmailInputWrapper self-stretch h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
+                <div className="EmailInputWrapper h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
                   <input
                     id="email"
                     type="email"
@@ -126,14 +128,14 @@ function LoginPage() {
               </div>
 
               {/* Role */}
-              <div className="RoleForm self-stretch flex flex-col justify-start items-start gap-1.5">
+              <div className="RoleForm w-full flex flex-col gap-1.5">
                 <label
                   htmlFor="role"
-                  className="RoleLabel self-stretch text-[#181818] text-base font-semibold"
+                  className="RoleLabel text-[#181818] text-base font-semibold"
                 >
                   Role
                 </label>
-                <div className="RoleSelectWrapper self-stretch h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
+                <div className="RoleSelectWrapper h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
                   <select
                     id="role"
                     value={role}
@@ -154,14 +156,14 @@ function LoginPage() {
               </div>
 
               {/* Password */}
-              <div className="PasswordForm self-stretch flex flex-col justify-start items-start gap-[9px]">
+              <div className="PasswordForm w-full flex flex-col gap-[9px]">
                 <label
                   htmlFor="password"
-                  className="PasswordLabel self-stretch text-[#181818] text-base font-semibold"
+                  className="PasswordLabel text-[#181818] text-base font-semibold"
                 >
                   Password
                 </label>
-                <div className="PasswordInputWrapper self-stretch h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
+                <div className="PasswordInputWrapper h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
                   <input
                     id="password"
                     type="password"
@@ -180,7 +182,7 @@ function LoginPage() {
             {error && (
               <div
                 id="login-error"
-                className="text-red-500 text-xs self-start"
+                className="text-red-500 text-xs w-full"
                 role="alert"
               >
                 {error}
@@ -188,17 +190,17 @@ function LoginPage() {
             )}
 
             {/* Actions */}
-            <div className="SignInButtonWrapper self-stretch flex flex-col justify-start items-center gap-[18px]">
+            <div className="SignInButtonWrapper w-full flex flex-col items-center gap-4">
               <button
                 type="submit"
-                className="SignInButtonBox self-stretch h-[41.31px] px-[131px] py-2 bg-[#ff7b54] rounded-xl inline-flex justify-center items-center"
+                className="SignInButtonBox w-full h-[41.31px] bg-[#ff7b54] rounded-xl inline-flex justify-center items-center"
               >
                 <span className="text-white text-sm font-semibold">
                   Sign in
                 </span>
               </button>
 
-              <p className="self-stretch text-center text-xs text-[#595959]">
+              <p className="w-full text-center text-xs text-[#595959]">
                 MineWise login is for internal use only. Please contact the
                 system administrator if you need an account or role update.
               </p>
