@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getTotalProduction } from "../../services/dashboardService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function TotalProductionCard() {
   const [data, setData] = useState(null);
+  const filters = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getTotalProduction();
-      setData(result);
+      try {
+        const result = await getTotalProduction(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load total production:", err);
+      }
     }
     load();
-  }, []);
+  }, [filters.location, filters.timePeriod, filters.shift]);
 
   if (!data) return null;
 

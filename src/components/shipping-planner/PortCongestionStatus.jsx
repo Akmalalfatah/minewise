@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getPortCongestionStatus } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function PortCongestionStatus() {
   const [data, setData] = useState(null);
+  const filters = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getPortCongestionStatus();
-      setData(result);
+      try {
+        const result = await getPortCongestionStatus(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load port congestion status:", err);
+      }
     }
     load();
-  }, []);
+  }, [filters.location, filters.timePeriod, filters.shift]);
 
   const updatedText = data?.updatedText || "Updated...";
   const shipsLoading = data?.shipsLoading || [];
@@ -28,7 +34,6 @@ function PortCongestionStatus() {
         data-layer="card_container"
         className="CardContainer self-stretch h-[457px] flex flex-col justify-start items-start gap-6"
       >
-
         {/* Header */}
         <header
           data-layer="header_left_group"
@@ -71,7 +76,6 @@ function PortCongestionStatus() {
             data-layer="activity_card_container"
             className="ActivityCardContainer w-[743px] h-[321px] flex flex-col justify-start items-start gap-[17px]"
           >
-
             {/* Section Title */}
             <header
               data-layer="activity_header_container"
@@ -88,10 +92,8 @@ function PortCongestionStatus() {
               data-layer="activity_content_container"
               className="ActivityContentContainer self-stretch flex flex-col justify-start items-start gap-6"
             >
-
               {/* Ships Loading + Waiting */}
               <section className="ShipsLoadingWaitingGroup self-stretch flex justify-between items-start">
-                
                 {/* Ships Loading */}
                 <div className="ShipsLoadingGroup w-[233px] flex flex-col gap-1.5">
                   <h4 className="ShipsLoadingLabel text-black text-sm font-semibold">
@@ -160,11 +162,9 @@ function PortCongestionStatus() {
                   {operationalNote}
                 </dd>
               </section>
-
             </div>
           </div>
         </article>
-
       </div>
     </section>
   );
