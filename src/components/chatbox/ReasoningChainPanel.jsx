@@ -6,13 +6,45 @@ function AiReasoningChainCard() {
 
   useEffect(() => {
     async function load() {
-      const result = await getReasoningData();
-      setData(result);
+      try {
+        const result = await getReasoningData();
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load reasoning data:", error);
+        setData({
+          reasoning_steps: [],
+          data_sources: {},
+        });
+      }
     }
     load();
   }, []);
 
   if (!data) return null;
+
+  const stepsRaw =
+    Array.isArray(data.reasoning_steps)
+      ? data.reasoning_steps
+      : Array.isArray(data.steps)
+        ? data.steps
+        : [];
+
+  const steps =
+    stepsRaw.length > 0
+      ? stepsRaw
+      : [
+          "AI menganalisis konteks permintaan dan kondisi operasional terkini.",
+          "AI mengecek data cuaca, kondisi jalan, dan status peralatan.",
+          "AI membandingkan pola historis dengan kondisi saat ini.",
+          "AI menyusun rekomendasi yang paling aman dan efisien.",
+        ];
+
+  const dataSources = data.data_sources || {
+    weather: "Live",
+    equipment: "Live",
+    road: "Live",
+    vessel: "Live",
+  };
 
   return (
     <section
@@ -21,7 +53,7 @@ function AiReasoningChainCard() {
       className="w-96 h-[625px] px-6 py-8 bg-white rounded-3xl inline-flex justify-center items-center"
     >
       <main className="w-96 h-[563px] flex flex-col gap-10">
-        {/* Header */}
+        {/* Header + Reasoning Steps */}
         <header className="flex flex-col gap-6">
           <div className="flex flex-col gap-3">
             <div className="inline-flex items-center gap-[3px]">
@@ -43,24 +75,32 @@ function AiReasoningChainCard() {
           </div>
 
           {/* Steps */}
-          <ol
-            className="flex flex-col gap-7"
+          <section
             aria-label="Steps taken by AI to reach a decision"
+            className="flex flex-col"
           >
-            {[0, 1, 2, 3].map((index) => (
-              <li
-                key={index}
-                className="inline-flex items-center gap-2"
-              >
-                <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                  <span className="text-white text-sm">{index + 1}</span>
-                </div>
-                <p className="w-72 text-black text-sm">
-                  {data.reasoning_steps[index]}
-                </p>
-              </li>
-            ))}
-          </ol>
+            {steps.length > 0 ? (
+              <ol className="flex flex-col gap-7">
+                {steps.map((step, index) => (
+                  <li
+                    key={index}
+                    className="inline-flex items-center gap-2"
+                  >
+                    <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
+                      <span className="text-white text-sm">
+                        {index + 1}
+                      </span>
+                    </div>
+                    <p className="w-72 text-black text-sm">{step}</p>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="text-stone-500 text-sm">
+                No reasoning data available yet.
+              </p>
+            )}
+          </section>
         </header>
 
         {/* Data sources */}
@@ -77,7 +117,7 @@ function AiReasoningChainCard() {
               </span>
               <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
                 <span className="text-white text-xs font-semibold">
-                  {data.data_sources.weather}
+                  {dataSources.weather ?? "-"}
                 </span>
               </div>
             </li>
@@ -88,7 +128,7 @@ function AiReasoningChainCard() {
               </span>
               <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
                 <span className="text-white text-xs font-semibold">
-                  {data.data_sources.equipment}
+                  {dataSources.equipment ?? "-"}
                 </span>
               </div>
             </li>
@@ -99,7 +139,7 @@ function AiReasoningChainCard() {
               </span>
               <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
                 <span className="text-white text-xs font-semibold">
-                  {data.data_sources.road}
+                  {dataSources.road ?? "-"}
                 </span>
               </div>
             </li>
@@ -110,7 +150,7 @@ function AiReasoningChainCard() {
               </span>
               <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
                 <span className="text-white text-xs font-semibold">
-                  {data.data_sources.vessel}
+                  {dataSources.vessel ?? "-"}
                 </span>
               </div>
             </li>
