@@ -19,10 +19,6 @@ function NotificationSection({ hasUnread = true, onClick }) {
           src={iconSrc}
           alt="notification bell"
         />
-
-        {hasUnread && (
-          <span className="absolute -top-0.5 -right-0.5 w-2.5 h-2.5 bg-red-500 rounded-full border border-white" />
-        )}
       </div>
     </button>
   );
