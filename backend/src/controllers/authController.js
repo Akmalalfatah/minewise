@@ -61,3 +61,21 @@ export async function login(req, res) {
     return res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export async function getCurrentUser(req, res) {
+  try {
+    return res.json({
+      user: {
+        id: 1,
+        fullname: "MineWise Demo User",
+        email: "demo@minewise.com",
+        employee_id: "EMP-001",
+        role_id: 1,
+        role_name: "Mine Supervisor",
+      },
+    });
+  } catch (err) {
+    console.error("getCurrentUser error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+}
