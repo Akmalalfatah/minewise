@@ -1,18 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { getEnvironmentConditions } from "../../services/minePlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function EnvironmentConditionTable() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getEnvironmentConditions();
-      setData(result);
+      try {
+        const result = await getEnvironmentConditions({
+          location,
+          timePeriod,
+          shift,
+        });
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load environment conditions:", error);
+        setData(null);
+      }
     }
+
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   if (!data) return null;
+
+  const risk = data.risk || {
+    score: "-",
+    title: "No risk data available",
+    subtitle: "AI risk analysis is not available for the current filter.",
+  };
 
   return (
     <section
@@ -164,7 +182,7 @@ function EnvironmentConditionTable() {
             className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-[#ffd4c7]"
           >
             <p className="RiskScoreValue text-[#8f0b09] text-2xl font-semibold">
-              {data.risk.score}
+              {risk.score}
             </p>
           </div>
 
@@ -173,10 +191,10 @@ function EnvironmentConditionTable() {
             className="RiskDescriptionContainer flex-1 flex flex-col gap-0.5"
           >
             <p className="RiskDescriptionMain text-black text-xs font-semibold">
-              {data.risk.title}
+              {risk.title}
             </p>
             <p className="RiskDescriptionSub text-black/60 text-xs">
-              {data.risk.subtitle}
+              {risk.subtitle}
             </p>
           </div>
         </div>
