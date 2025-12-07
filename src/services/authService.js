@@ -25,7 +25,8 @@ const authService = {
       password,
       name,
     });
-    return res.data;
+
+    return res.data || {};
   },
 
   async getProfile() {
@@ -47,6 +48,7 @@ const authService = {
 
   async refreshToken() {
     const { refreshToken } = userStore.getState();
+
     if (!refreshToken) {
       throw new Error("No refresh token available");
     }
@@ -56,6 +58,7 @@ const authService = {
     });
 
     const data = res.data || {};
+
     if (data.access_token) {
       userStore.getState().setAccessToken(data.access_token);
     }
