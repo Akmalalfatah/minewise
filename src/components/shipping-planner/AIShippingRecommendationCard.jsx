@@ -41,7 +41,7 @@ function AIShippingRecommendationCard() {
     <section
       data-layer="ai_recommendation_card"
       aria-labelledby="shipping-ai-recommendation-title"
-      className="AiRecommendationCard w-[929px] h-[492px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="AiRecommendationCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
     >
       <div
         data-layer="ai_recommendation_container"
@@ -50,7 +50,7 @@ function AIShippingRecommendationCard() {
         {/* Header */}
         <header
           data-layer="header_left_group"
-          className="HeaderLeftGroup w-[181px] inline-flex justify-start items-center gap-3"
+          className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
         >
           <div
             data-layer="icon_wrapper"
@@ -92,11 +92,11 @@ function AIShippingRecommendationCard() {
             {/* Scenario 1 */}
             <article
               data-layer="scenario1_wrapper"
-              className="Scenario1Wrapper self-stretch h-[78px] px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-center items-start gap-2.5"
+              className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-center items-start gap-2.5"
             >
               <div
                 data-layer="scenario1_block"
-                className="Scenario1Block w-[815px] flex flex-col justify-start items-start gap-1"
+                className="Scenario1Block w-full flex flex-col justify-start items-start gap-1"
               >
                 <h3
                   data-layer="scenario1_title"
@@ -116,11 +116,11 @@ function AIShippingRecommendationCard() {
             {/* Scenario 2 */}
             <article
               data-layer="scenario2_wrapper"
-              className="Scenario2Wrapper self-stretch h-[78px] px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
+              className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
             >
               <div
                 data-layer="scenario2_block"
-                className="Scenario2Block w-[815px] flex flex-col justify-start items-start gap-1"
+                className="Scenario2Block w-full flex flex-col justify-start items-start gap-1"
               >
                 <h3 className="Scenario2Title text-black text-sm font-semibold">
                   {scenario2.title}
@@ -134,9 +134,9 @@ function AIShippingRecommendationCard() {
             {/* Scenario 3 */}
             <article
               data-layer="scenario3_wrapper"
-              className="Scenario3Wrapper self-stretch h-[78px] px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
+              className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
             >
-              <div className="Scenario3Block w-[817px] flex flex-col gap-1">
+              <div className="Scenario3Block w-full flex flex-col gap-1">
                 <h3 className="Scenario3Title text-black text-sm font-semibold">
                   {scenario3.title}
                 </h3>

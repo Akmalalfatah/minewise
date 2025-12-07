@@ -29,17 +29,16 @@ function PortWeatherConditions() {
   return (
     <section
       data-layer="port_weather_condition_card"
-      className="PortWeatherConditionCard h-[492px] p-6 bg-white rounded-3xl inline-flex justify-center items-center gap-2.5"
+      className="PortWeatherConditionCard w-full max-w-[360px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="port_weather_condition_container"
-        className="PortWeatherConditionContainer w-[360px] inline-flex flex-col justify-center items-center gap-[7px]"
+        className="PortWeatherConditionContainer w-full flex flex-col justify-center items-center gap-[7px]"
       >
         <div
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-3"
         >
-
           {/* Header */}
           <header
             data-layer="header_container"
@@ -66,7 +65,7 @@ function PortWeatherConditions() {
 
               <button
                 type="button"
-                className="HeaderActionButtonFilter size-8 px-2 py-[7px] left-[328px] top-0 absolute bg-[#efefef] rounded-2xl inline-flex flex-col justify-center items-center"
+                className="HeaderActionButtonFilter size-8 px-2 py-[7px] right-0 top-0 absolute bg-[#efefef] rounded-2xl inline-flex flex-col justify-center items-center"
               >
                 <div className="IconFilter size-[21px] relative" />
               </button>
@@ -85,41 +84,36 @@ function PortWeatherConditions() {
 
           <hr className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]" />
 
-          {/* Weather info as description list */}
-          <section className="WeatherInfoSection self-stretch h-64 inline-flex justify-between items-center">
+          {/* Weather info */}
+          <section className="WeatherInfoSection self-stretch inline-flex justify-between items-center">
             <dl className="w-full flex justify-between">
               {/* Labels */}
-              <div className="LabelColumnContainer w-[87px] h-64 inline-flex flex-col justify-center items-center gap-5">
-                <div className="LabelListContainer self-stretch h-[253px] flex flex-col justify-start items-start gap-3 text-black text-sm font-semibold">
-                  <dt>Location</dt>
-                  <dt>Rainfall</dt>
-                  <dt>Temperature</dt>
-                  <dt>Humidity</dt>
-                  <dt>Wind</dt>
-                  <dt>Pressure</dt>
-                  <dt>Visibility</dt>
-                  <dt>Lightning</dt>
-                  <dt>Updated</dt>
-                </div>
+              <div className="LabelColumnContainer inline-flex flex-col justify-center items-start gap-3 text-black text-sm font-semibold">
+                <dt>Location</dt>
+                <dt>Rainfall</dt>
+                <dt>Temperature</dt>
+                <dt>Humidity</dt>
+                <dt>Wind</dt>
+                <dt>Pressure</dt>
+                <dt>Visibility</dt>
+                <dt>Lightning</dt>
+                <dt>Updated</dt>
               </div>
 
               {/* Values */}
-              <div className="ValueColumnContainer w-[117px] h-64 inline-flex flex-col justify-start items-end gap-5">
-                <div className="ValueListContainer self-stretch flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold">
-                  <dd>{location}</dd>
-                  <dd>{rainfall}</dd>
-                  <dd>{temperature}</dd>
-                  <dd>{humidity}</dd>
-                  <dd>{wind}</dd>
-                  <dd>{pressure}</dd>
-                  <dd>{visibility}</dd>
-                  <dd>{lightning}</dd>
-                  <dd>{updated}</dd>
-                </div>
+              <div className="ValueColumnContainer inline-flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold">
+                <dd>{location}</dd>
+                <dd>{rainfall}</dd>
+                <dd>{temperature}</dd>
+                <dd>{humidity}</dd>
+                <dd>{wind}</dd>
+                <dd>{pressure}</dd>
+                <dd>{visibility}</dd>
+                <dd>{lightning}</dd>
+                <dd>{updated}</dd>
               </div>
             </dl>
           </section>
-
         </div>
 
         <hr className="DividerMiddle self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]" />
@@ -137,7 +131,7 @@ function PortWeatherConditions() {
               </p>
             </div>
 
-            <div className="RiskDescriptionContainer w-[228px] inline-flex flex-col justify-start items-start gap-0.5">
+            <div className="RiskDescriptionContainer flex-1 inline-flex flex-col justify-start items-start gap-0.5">
               <p className="RiskDescriptionTitle self-stretch text-black text-xs font-semibold">
                 {riskTitle}
               </p>
@@ -147,7 +141,6 @@ function PortWeatherConditions() {
             </div>
           </div>
         </section>
-
       </div>
     </section>
   );

@@ -18,13 +18,12 @@ function CoalVolumeCard({ onSeeMore }) {
     <section
       data-layer="coal_volume_card"
       aria-labelledby="coal-volume-title"
-      className="CoalVolumeCard w-[668px] h-[336px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="CoalVolumeCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
     >
       <div
         data-layer="coal_volume_container"
-        className="CoalVolumeContainer self-stretch h-[290px] flex flex-col justify-start items-start gap-6"
+        className="CoalVolumeContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-
         {/* Header */}
         <header
           data-layer="header_container"
@@ -72,7 +71,10 @@ function CoalVolumeCard({ onSeeMore }) {
             >
               See More
             </span>
-            <div data-layer="see_more_icon" className="SeeMoreIcon size-6 relative">
+            <div
+              data-layer="see_more_icon"
+              className="SeeMoreIcon size-6 relative"
+            >
               <div
                 data-layer="see_more_icon_vector"
                 className="SeeMoreIconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black"
@@ -84,7 +86,7 @@ function CoalVolumeCard({ onSeeMore }) {
         {/* Stockpile Cards */}
         <div
           data-layer="coal_cards_container"
-          className="CoalCardsContainer w-[620px] h-[234px] inline-flex justify-start items-center gap-3"
+          className="CoalCardsContainer w-full inline-flex justify-start items-center gap-3"
         >
           {(stockpiles.length > 0 ? stockpiles.slice(0, 2) : [1, 2]).map(
             (sp, idx) => (
@@ -92,13 +94,12 @@ function CoalVolumeCard({ onSeeMore }) {
                 key={sp?.id || idx}
                 aria-label={`Coal stockpile ${sp?.name || "Loading..."}`}
                 data-layer="coal_card_container"
-                className="CoalCardContainer w-[304px] h-[234px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
+                className="CoalCardContainer flex-1 min-w-[280px] h-[234px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
               >
                 <div
                   data-layer="coal_card_header_wrapper"
                   className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-3"
                 >
-
                   {/* Card Header */}
                   <header
                     data-layer="coal_card_header_container"
@@ -135,12 +136,13 @@ function CoalVolumeCard({ onSeeMore }) {
                     className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3"
                   >
                     <dl className="w-full space-y-3">
-
                       <div
                         data-layer="coal_card_volume_group"
                         className="CoalCardVolumeGroup self-stretch inline-flex justify-between items-center"
                       >
-                        <dt className="VolumeLabel text-black text-sm">Volume</dt>
+                        <dt className="VolumeLabel text-black text-sm">
+                          Volume
+                        </dt>
                         <dd className="VolumeValue text-black text-sm font-semibold">
                           {sp?.volume || "-"}
                         </dd>
@@ -160,7 +162,9 @@ function CoalVolumeCard({ onSeeMore }) {
                         data-layer="coal_card_moisture_group"
                         className="CoalCardMoistureGroup self-stretch inline-flex justify-between items-center"
                       >
-                        <dt className="MoistureLabel text-black text-sm">Moisture</dt>
+                        <dt className="MoistureLabel text-black text-sm">
+                          Moisture
+                        </dt>
                         <dd className="MoistureValue text-right text-black text-sm font-semibold">
                           {sp?.moisture || "-"}
                         </dd>
@@ -170,7 +174,9 @@ function CoalVolumeCard({ onSeeMore }) {
                         data-layer="coal_card_status_group"
                         className="CoalCardStatusGroup self-stretch h-[19px] py-[7px] inline-flex justify-between items-center"
                       >
-                        <dt className="StatusLabel text-black text-sm">Status</dt>
+                        <dt className="StatusLabel text-black text-sm">
+                          Status
+                        </dt>
                         <dd
                           data-layer="coal_card_status_value_wrapper"
                           className="CoalCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center"
@@ -192,7 +198,6 @@ function CoalVolumeCard({ onSeeMore }) {
                           ETD: {sp?.etd || "-"}
                         </dd>
                       </div>
-
                     </dl>
                   </section>
                 </div>

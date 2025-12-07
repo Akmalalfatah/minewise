@@ -17,21 +17,20 @@ function VesselScheduleOverview({ onSeeMore }) {
   return (
     <section
       data-layer="vessel_schedule_card"
-      className="VesselScheduleCard w-[668px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="VesselScheduleCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
     >
       <div
         data-layer="vessel_schedule_container"
         className="VesselScheduleContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-
         {/* Header */}
         <header
           data-layer="header_container"
-          className="HeaderContainer w-[620px] h-8 inline-flex justify-between items-center"
+          className="HeaderContainer w-full h-8 inline-flex justify-between items-center"
         >
           <div
             data-layer="header_left_group"
-            className="HeaderLeftGroup w-56 flex justify-start items-center gap-3"
+            className="HeaderLeftGroup flex justify-start items-center gap-3"
           >
             <figure
               data-layer="icon_wrapper"
@@ -65,18 +64,16 @@ function VesselScheduleOverview({ onSeeMore }) {
         {/* Vessel cards */}
         <section
           data-layer="vessel_cards_container"
-          className="VesselCardsContainer w-[620px] inline-flex justify-start items-center gap-3"
+          className="VesselCardsContainer w-full inline-flex justify-start items-center gap-3"
         >
           {(vessels.length > 0 ? vessels.slice(0, 2) : [1, 2]).map(
             (vessel, idx) => (
               <article
                 key={vessel?.id || idx}
-                className="VesselCardContainer w-[304px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
+                className="VesselCardContainer flex-1 min-w-[280px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
               >
                 <div className="VesselCardContent self-stretch flex flex-col justify-start items-start gap-3">
-
                   <div className="VesselCardHeaderGroup self-stretch flex flex-col justify-start items-start gap-4">
-
                     <header className="VesselCardIconWrapper self-stretch h-8 relative">
                       <h3 className="VesselCardName left-[44px] top-[7.50px] absolute text-black text-sm font-semibold">
                         {vessel?.name || "Loading..."}
@@ -92,7 +89,6 @@ function VesselScheduleOverview({ onSeeMore }) {
 
                     <div className="VesselCardInfoContainer self-stretch flex flex-col justify-start items-start gap-6">
                       <div className="VesselCardInfoGroup self-stretch flex flex-col justify-center items-start gap-4">
-
                         <div className="VesselCardDestinationGroup self-stretch inline-flex justify-start items-center gap-[54px]">
                           <span className="DestinationLabel text-black text-sm">
                             Destination
@@ -123,7 +119,6 @@ function VesselScheduleOverview({ onSeeMore }) {
                             </span>
                           </div>
                         </div>
-
                       </div>
 
                       <div className="VesselCardScheduleGroup self-stretch inline-flex justify-start items-center gap-[26px]">
@@ -134,9 +129,7 @@ function VesselScheduleOverview({ onSeeMore }) {
                           ETD: {vessel?.etd || "-"}
                         </span>
                       </div>
-
                     </div>
-
                   </div>
                 </div>
               </article>
