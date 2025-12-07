@@ -1,83 +1,60 @@
-import React from "react";
+import React, { useState } from "react";
 
-function NotificationCard({ notifications = [], checkLabel = "Check" }) {
+function NotificationCard({ notifications = [], onCheck }) {
+  const [openIndex, setOpenIndex] = useState(null);
+
+  const handleToggle = (index) => {
+    setOpenIndex((prev) => (prev === index ? null : index));
+  };
+
   return (
-    <section
-      data-layer="notification_card"
-      aria-label="Notification panel"
-      className="NotificationCard w-96 h-56 px-5 py-5 bg-white rounded-3xl shadow-[0px_0px_30px_0px_rgba(0,0,0,0.10)] inline-flex flex-col justify-between items-start"
-    >
-      {/* Header */}
-      <h2 className="text-black text-sm font-semibold font-['Inter']">
-        Notification
-      </h2>
+    <section className="w-96 px-5 py-5 bg-white rounded-3xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] flex flex-col gap-4">
+      <h2 className="text-black text-sm font-semibold">Notification</h2>
 
-      <hr className="w-80 h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-stone-300" />
+      <hr className="w-80 outline outline-[0.5px] outline-stone-300" />
 
-      {/* First Notification */}
-      <div className="w-80 flex flex-col justify-start items-start gap-2.5">
-        {notifications[0] && (
-          <article className="w-full flex flex-col gap-2">
-            <div className="self-stretch inline-flex justify-start items-center gap-5">
-              <div className="w-72 inline-flex flex-col justify-start items-start gap-2">
-                <p className="text-black text-sm font-normal font-['Inter']">
-                  <span className="font-semibold">
-                    {notifications[0].senderName}{" "}
-                  </span>
-                  {notifications[0].message}
-                </p>
-                <time
-                  className="text-stone-500 text-xs font-normal font-['Inter']"
-                >
-                  {notifications[0].timeAgo}
-                </time>
-              </div>
+      {notifications.length === 0 && (
+        <p className="text-gray-500 text-sm">No notifications yet.</p>
+      )}
 
-              <img
-                data-layer="icon_expand_down"
-                className="w-1.5 h-3 origin-top-left rotate-90"
-                src="/icons/icon_expand_down.png"
-                alt="Expand notification details"
-              />
-            </div>
+      {notifications.map((n, i) => (
+        <div key={i} className="flex flex-col gap-2 w-80">
+          <button
+            type="button"
+            onClick={() => handleToggle(i)}
+            className="flex justify-between items-start w-full"
+          >
+            <p className="text-black text-sm leading-[18px] text-left mr-3">
+              <span className="font-semibold">{n.senderName} </span>
+              {n.message}
+            </p>
 
+            <img
+              src="/icons/icon_expand_down.png"
+              alt=""
+              className={`w-2.5 h-2.5 flex-shrink-0 transition-transform ${
+                openIndex === i ? "rotate-180" : ""
+              }`}
+            />
+          </button>
+
+          <time className="text-stone-500 text-xs">{n.timeAgo}</time>
+
+          {openIndex === i && (
             <button
               type="button"
-              className="w-16 h-6 px-2 py-1 bg-zinc-100 rounded-[5px] inline-flex justify-center items-center"
+              onClick={() => onCheck && onCheck(n)}
+              className="mt-1 w-16 h-6 px-2 py-1 bg-zinc-100 rounded-md text-black text-sm"
             >
-              <span className="text-black text-sm font-normal font-['Inter']">
-                {checkLabel}
-              </span>
+              Check
             </button>
-          </article>
-        )}
-      </div>
+          )}
 
-      <hr className="w-80 h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-stone-300" />
-
-      {/* Second Notification */}
-      {notifications[1] && (
-        <article className="w-80 h-10 inline-flex justify-start items-center gap-5">
-          <div className="w-72 inline-flex flex-col justify-start items-start gap-2">
-            <p className="text-black text-sm font-normal font-['Inter']">
-              <span className="font-semibold">
-                {notifications[1].senderName}{" "}
-              </span>
-              {notifications[1].message}
-            </p>
-            <time className="text-stone-500 text-xs font-normal font-['Inter']">
-              {notifications[1].timeAgo}
-            </time>
-          </div>
-
-          <img
-            data-layer="icon_expand_down"
-            className="w-1.5 h-3 origin-top-left -rotate-90"
-            src="/icons/icon_expand_down.png"
-            alt="Expand notification details"
-          />
-        </article>
-      )}
+          {i !== notifications.length - 1 && (
+            <hr className="mt-2 w-80 outline outline-[0.5px] outline-stone-300" />
+          )}
+        </div>
+      ))}
     </section>
   );
 }
