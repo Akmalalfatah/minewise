@@ -57,10 +57,10 @@ function AIShippingRecommendationCard() {
             className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
           >
             <img
-              data-layer="icon_ai"
-              className="IconAi size-[18px]"
-              src="/icons/icon_ai.png"
-              alt="AI icon"
+              data-layer="icon_robot"
+              className="IconRobot size-[18px]"
+              src="/icons/icon_robot.png"
+              alt="Robot icon"
             />
           </div>
           <h2

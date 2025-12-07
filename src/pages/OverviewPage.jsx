@@ -33,17 +33,6 @@ function OverviewPage() {
     <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
       {/* wrapper lebar 1440px seperti Dashboard */}
       <div className="w-full max-w-[1440px] py-8 px-10 flex flex-col gap-6">
-        {/* PAGE TITLE */}
-        <header
-          aria-label="Overview introduction"
-          className="flex flex-col gap-1"
-        >
-          <h1 className="text-3xl font-semibold text-[#1a1a1a]">Overview</h1>
-          <p className="text-gray-600 mt-1 text-sm max-w-[640px]">
-            Ringkasan overview tambang atau pelabuhan berdasarkan filter
-            global.
-          </p>
-        </header>
 
         {/* GLOBAL FILTER + TOGGLE VIEW */}
         <section
@@ -90,27 +79,6 @@ function OverviewPage() {
             aria-label="Mine planner overview"
             className="flex flex-col gap-5"
           >
-            {/* SUB-HEADER */}
-            <header
-              aria-label="Mine planner description"
-              className="flex flex-col gap-1"
-            >
-              <h2 className="text-xl font-semibold text-gray-900">
-                Mine Planner View
-              </h2>
-              <p className="text-sm text-gray-600 max-w-[680px]">
-                Pantau kondisi lingkungan pit, rekomendasi AI, kondisi jalan,
-                dan status alat untuk mendukung keputusan perencanaan tambang.
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Current filter:&nbsp;
-                <span className="font-medium text-gray-700">{location}</span>
-                {" · "}
-                <span className="font-medium text-gray-700">{timePeriod}</span>
-                {" · "}
-                <span className="font-medium text-gray-700">{shift}</span>
-              </p>
-            </header>
 
             {/* ROW 1: Environment + AI Recommendation */}
             <section
@@ -140,13 +108,6 @@ function OverviewPage() {
               aria-label="Shipping planner description"
               className="flex flex-col gap-1"
             >
-              <h2 className="text-xl font-semibold text-gray-900">
-                Shipping Planner View
-              </h2>
-              <p className="text-sm text-gray-600 max-w-[720px]">
-                Monitor kondisi cuaca pelabuhan, jadwal kapal, volume batubara
-                siap dikirim, progres loading, serta tingkat kemacetan port.
-              </p>
               <p className="text-xs text-gray-500 mt-1">
                 Current filter:&nbsp;
                 <span className="font-medium text-gray-700">{location}</span>

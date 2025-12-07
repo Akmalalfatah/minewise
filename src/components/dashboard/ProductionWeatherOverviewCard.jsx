@@ -26,12 +26,12 @@ function ProductionWeatherOverviewCard({ data }) {
 
           <article className="flex flex-col gap-2">
             <span className="text-[#666] text-xs">Total Produksi</span>
-            <p className="text-black text-2xl font-semibold">{data.production?.reduce((a, b) => a + b, 0)}</p>
+            <p className="text-black text-2xl font-semibold">{data.production?.reduce((a, b) => a + b, 0)}<span className="text-black text-2xl font-semibold"> ton</span></p>
           </article>
 
           <article className="flex flex-col gap-2">
             <span className="text-[#666] text-xs">Target</span>
-            <p className="text-black text-2xl font-semibold">{data.target?.[0]}</p>
+            <p className="text-black text-2xl font-semibold">{data.target?.[0]}<span className="text-black text-2xl font-semibold"> ton</span></p>
           </article>
 
           <section className="flex flex-col gap-3">

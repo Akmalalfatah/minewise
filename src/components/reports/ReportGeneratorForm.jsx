@@ -166,7 +166,7 @@ function ReportGeneratorForm({
             <button
               type="button"
               onClick={onGenerateReport}
-              className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
+              className="w-40 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Generate Report
@@ -176,7 +176,7 @@ function ReportGeneratorForm({
             <button
               type="button"
               onClick={onDownloadReport}
-              className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
+              className="w-30 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Download

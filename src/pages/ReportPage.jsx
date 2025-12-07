@@ -90,7 +90,7 @@ function ReportPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#eff1f6] px-[40px] py-10">
+    <main className="min-h-screen bg-[#f5f5f7] px-[40px] py-10">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
         {/* REPORT GENERATOR FORM */}
         <section aria-label="Report generator form">

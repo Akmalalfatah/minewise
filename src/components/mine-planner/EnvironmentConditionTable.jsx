@@ -74,17 +74,6 @@ function EnvironmentConditionTable() {
                 </h2>
               </div>
 
-              <button
-                type="button"
-                aria-label="Filter environment conditions"
-                data-layer="header_action_button_filter"
-                className="HeaderActionButtonFilter size-8 px-2 py-[7px] bg-[#efefef] rounded-2xl flex justify-center items-center"
-              >
-                <div
-                  data-layer="icon_filter"
-                  className="IconFilter size-[21px]"
-                />
-              </button>
             </div>
           </header>
 

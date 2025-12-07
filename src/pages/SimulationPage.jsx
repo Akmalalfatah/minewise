@@ -22,18 +22,6 @@ function SimulationPage() {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TITLE */}
-        <header>
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Simulation Analysis
-          </h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Jalankan skenario simulasi untuk melihat dampak perubahan cuaca,
-            kesehatan alat, dan keterlambatan kapal terhadap produksi serta
-            risiko operasi.
-          </p>
-        </header>
-
         {/* AI SCENARIO CONTROL PANEL */}
         <section
           aria-label="AI simulation scenario controls"

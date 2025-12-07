@@ -15,20 +15,19 @@ export function getAIShippingRecommendation(filters = {}) {
   };
 }
 
-export function getVesselSchedule(filters = {}) {
+export function getVesselSchedules() {
   const json = loadJSON("shipping_planner.json");
-
-  return json.vessel_schedule_overview || [];
+  return json.vessel_schedules || [];
 }
 
-export function getCoalVolumeReady(filters = {}) {
+export function getCoalVolumeReady() {
   const json = loadJSON("shipping_planner.json");
   return json.coal_volume_ready || [];
 }
 
-export function getLoadingProgress(filters = {}) {
+export function getLoadingProgress() {
   const json = loadJSON("shipping_planner.json");
-  return json.loading_progress || null;
+  return json.loading_progress || [];
 }
 
 export function getPortCongestionStatus(filters = {}) {

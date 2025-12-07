@@ -52,8 +52,6 @@ function CausesOfDowntimeCard({ data }) {
             </section>
           </section>
 
-          <div className="hidden lg:block w-px bg-[#bdbdbd]" />
-
           <section className="PieChart flex-1">
             <ChartPieInteractive />
           </section>
