@@ -1,30 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { getRoadConditionOverview } from "../../services/dashboardService";
-import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
-function RoadConditionOverviewCard() {
-  const [data, setData] = useState(null);
-  const filters = useFilterQuery();
-
-  useEffect(() => {
-    async function load() {
-      try {
-        const result = await getRoadConditionOverview(filters);
-        setData(result);
-      } catch (err) {
-        console.error("Failed to load road condition overview:", err);
-      }
-    }
-
-    load();
-  }, [filters.location, filters.timePeriod, filters.shift]);
-
+function RoadConditionOverviewCard({ data }) {
   const segments = data?.segments || data?.items || data || [];
   const safeSegments = Array.isArray(segments) ? segments : [];
 
-  if (!data) {
-    return null;
-  }
+  if (!data) return null; 
 
   return (
     <section

@@ -11,8 +11,14 @@ import {
     getDecisionImpact,
     getAISummary
 } from "../controllers/dashboardController.js";
+import { loadJSON } from "../utils/jsonLoader.js";
 
 const router = express.Router();
+
+router.get("/", (req, res) => {
+    const json = loadJSON("dashboard.json");
+    res.json(json);
+});
 
 router.get("/total-production", getTotalProduction);
 router.get("/weather-condition", getWeatherCondition);
