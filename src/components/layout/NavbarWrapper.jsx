@@ -3,16 +3,16 @@ import { userStore } from "../../store/userStore";
 import Navbar from "./Navbar";
 
 function NavbarWrapper() {
-  const location = useLocation();
-  const isAuthenticated = userStore((state) => state.isAuthenticated);
+    const location = useLocation();
+    const isAuthenticated = userStore((state) => state.isAuthenticated);
 
-  const hiddenRoutes = ["/login", "/register"];
+    const hiddenRoutes = ["/login", "/register"];
 
-  if (!isAuthenticated || hiddenRoutes.includes(location.pathname)) {
-    return null;
-  }
+    if (!isAuthenticated || hiddenRoutes.includes(location.pathname)) {
+        return null;
+    }
 
-  return <Navbar />;
+    return <Navbar />;
 }
 
 export default NavbarWrapper;

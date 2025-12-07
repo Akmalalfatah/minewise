@@ -8,7 +8,6 @@ import DashboardPage from "./pages/DashboardPage";
 import MinePlannerPage from "./pages/MinePlannerPage";
 import ShippingPlannerPage from "./pages/ShippingPlannerPage";
 import AIChatboxPage from "./pages/AIChatboxPage";
-import OverviewPage from "./pages/OverviewPage";
 import ReportPage from "./pages/ReportPage";
 import SimulationPage from "./pages/SimulationPage";
 import ProtectedRoute from "./components/layout/ProtectedRoute";
@@ -73,15 +72,6 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ShippingPlannerPage />
-                  </ProtectedRoute>
-                }
-              />
-
-              <Route
-                path="/overview"
-                element={
-                  <ProtectedRoute>
-                    <OverviewPage />
                   </ProtectedRoute>
                 }
               />
