@@ -42,7 +42,7 @@ function EquipmentStatusTable() {
     <section
       data-layer="equipment_status_card"
       aria-label="Equipment status and fleet overview"
-      className="EquipmentStatusCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="EquipmentStatusCard w-full min-h-[553px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="equipment_status_container"

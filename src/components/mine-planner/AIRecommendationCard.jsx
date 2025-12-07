@@ -46,7 +46,7 @@ function AIRecommendationCard() {
     <section
       data-layer="ai_recommendation_card"
       aria-label="AI mining recommendation"
-      className="AiRecommendationCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="AiRecommendationCard w-full min-h-[492px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="ai_recommendation_container"

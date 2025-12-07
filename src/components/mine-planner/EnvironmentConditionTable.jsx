@@ -36,7 +36,7 @@ function EnvironmentConditionTable() {
     <section
       data-layer="environment_condition_card"
       aria-label="Environment conditions and weather-based risk"
-      className="EnvironmentConditionCard w-full max-w-[360px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="EnvironmentConditionCard w-full max-w-[360px] min-h-[492px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="environment_condition_container"

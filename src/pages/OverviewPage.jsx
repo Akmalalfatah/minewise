@@ -115,7 +115,7 @@ function OverviewPage() {
             {/* ROW 1: Environment + AI Recommendation */}
             <section
               aria-label="Environment conditions and AI recommendations"
-              className="flex flex-col lg:flex-row gap-6 items-start"
+              className="flex flex-col lg:flex-row gap-6 items-stretch"
             >
               <EnvironmentConditionTable />
               <AIRecommendationCard />
@@ -124,7 +124,7 @@ function OverviewPage() {
             {/* ROW 2: Mine Road & Site Conditions + Equipment Status */}
             <section
               aria-label="Mine road conditions and equipment status"
-              className="flex flex-col lg:flex-row gap-6 items-start"
+              className="flex flex-col lg:flex-row gap-6 items-stretch"
             >
               <MineRoadSegmentTable />
               <EquipmentStatusTable />

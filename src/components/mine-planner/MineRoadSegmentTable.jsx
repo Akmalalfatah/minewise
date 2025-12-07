@@ -46,7 +46,7 @@ function MineRoadSegmentTable() {
     <section
       data-layer="road_condition_card"
       aria-label="Mine road and site conditions"
-      className="RoadConditionCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="RoadConditionCard w-full min-h-[553px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="road_condition_container"
