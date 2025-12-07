@@ -31,15 +31,20 @@ function OverviewPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
-      <div className="w-full max-w-[1440px] py-10 px-10 flex flex-col gap-8">
+      {/* wrapper lebar 1440px seperti Dashboard */}
+      <div className="w-full max-w-[1440px] py-8 px-10 flex flex-col gap-6">
         {/* PAGE TITLE */}
-        <header aria-label="Overview introduction" className="flex flex-col gap-1">
+        <header
+          aria-label="Overview introduction"
+          className="flex flex-col gap-1"
+        >
           <h1 className="text-3xl font-semibold text-[#1a1a1a]">Overview</h1>
           <p className="text-gray-600 mt-1 text-sm max-w-[640px]">
             Ringkasan overview tambang atau pelabuhan berdasarkan filter global.
           </p>
         </header>
 
+        {/* GLOBAL FILTER + TOGGLE VIEW (posisi sejajar seperti di Figma) */}
         <section
           aria-label="Global filters and overview view switcher"
           className="flex justify-between items-center gap-4"
@@ -82,8 +87,9 @@ function OverviewPage() {
         {activeView === "mine" ? (
           <section
             aria-label="Mine planner overview"
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
+            {/* SUB-HEADER */}
             <header
               aria-label="Mine planner description"
               className="flex flex-col gap-1"
@@ -92,8 +98,8 @@ function OverviewPage() {
                 Mine Planner View
               </h2>
               <p className="text-sm text-gray-600 max-w-[680px]">
-                Pantau kondisi lingkungan pit, rekomendasi AI, kondisi jalan, dan
-                status alat untuk mendukung keputusan perencanaan tambang.
+                Pantau kondisi lingkungan pit, rekomendasi AI, kondisi jalan,
+                dan status alat untuk mendukung keputusan perencanaan tambang.
               </p>
               <p className="text-xs text-gray-500 mt-1">
                 Current filter:&nbsp;
@@ -105,38 +111,40 @@ function OverviewPage() {
               </p>
             </header>
 
-            {/* ROW 1: Environment Conditions + AI Recommendation */}
+            {/* MAIN GRID: kiri (Env + Road), kanan (AI + Equipment) */}
             <section
-              aria-label="Environment conditions and AI recommendations"
-              className="grid grid-cols-1 lg:grid-cols-3 gap-5"
+              aria-label="Mine planner content"
+              className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-start"
             >
-              <section className="lg:col-span-1">
-                <EnvironmentConditionTable />
-              </section>
-              <section className="lg:col-span-2">
-                <AIRecommendationCard />
-              </section>
-            </section>
+              {/* Kolom kiri: Environment + Mine Road */}
+              <div className="flex flex-col gap-4 lg:gap-6">
+                <section aria-label="Environment conditions">
+                  <EnvironmentConditionTable />
+                </section>
 
-            {/* ROW 2: Mine Road & Site Conditions + Equipment Status */}
-            <section
-              aria-label="Mine road conditions and equipment status"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-5"
-            >
-              <section>
-                <MineRoadSegmentTable />
-              </section>
-              <section>
-                <EquipmentStatusTable />
-              </section>
+                <section aria-label="Mine road and site conditions">
+                  <MineRoadSegmentTable />
+                </section>
+              </div>
+
+              {/* Kolom kanan (span 2): AI Recommendation + Equipment */}
+              <div className="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
+                <section aria-label="AI recommendations">
+                  <AIRecommendationCard />
+                </section>
+
+                <section aria-label="Equipment status">
+                  <EquipmentStatusTable />
+                </section>
+              </div>
             </section>
           </section>
         ) : (
           <section
             aria-label="Shipping planner overview"
-            className="flex flex-col gap-6"
+            className="flex flex-col gap-5"
           >
-            {/* Sub-header: judul + current filter */}
+            {/* SUB-HEADER */}
             <header
               aria-label="Shipping planner description"
               className="flex flex-col gap-1"
@@ -161,7 +169,7 @@ function OverviewPage() {
             {/* ROW 1: Port Weather + AI Recommendation */}
             <section
               aria-label="Port weather conditions and AI shipping recommendations"
-              className="grid grid-cols-1 lg:grid-cols-3 gap-5"
+              className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"
             >
               <section className="lg:col-span-1">
                 <PortWeatherConditions />
@@ -174,7 +182,7 @@ function OverviewPage() {
             {/* ROW 2: Vessel Schedule + Coal Volume */}
             <section
               aria-label="Vessel schedule and coal volume"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"
             >
               <section>
                 <VesselScheduleOverview />
@@ -187,7 +195,7 @@ function OverviewPage() {
             {/* ROW 3: Loading Progress + Port Congestion Status */}
             <section
               aria-label="Loading progress and port congestion status"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"
             >
               <section>
                 <LoadingProgressMonitoring />
