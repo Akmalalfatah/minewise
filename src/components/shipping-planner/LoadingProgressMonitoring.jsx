@@ -15,7 +15,7 @@ function LoadingProgressMonitoring({ onSeeMore }) {
   const shipments = data?.shipments || [];
 
   return (
-    <div
+    <section
       data-layer="loading_progress_card"
       className="LoadingProgressCard w-[505px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-6"
     >
@@ -23,8 +23,8 @@ function LoadingProgressMonitoring({ onSeeMore }) {
         data-layer="loading_progress_container"
         className="LoadingProgressContainer w-[463px] flex flex-col justify-start items-start gap-6"
       >
-
-        <div
+        {/* Header */}
+        <header
           data-layer="header_container"
           className="HeaderContainer self-stretch inline-flex justify-between items-center"
         >
@@ -32,21 +32,20 @@ function LoadingProgressMonitoring({ onSeeMore }) {
             data-layer="header_left_group"
             className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
           >
-            <div
+            <figure
               data-layer="icon_wrapper"
               className="IconWrapper size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center"
             >
-              <div className="IconProgress size-[18px] relative overflow-hidden">
-                <img
-                  className="IconVector w-[18px] h-[9px] left-0 top-[4.50px] absolute"
-                  src="/icons/icon_progress.png"
-                  alt="Progress icon"
-                />
-              </div>
-            </div>
-            <div className="HeaderTitle text-black text-sm font-semibold">
+              <img
+                className="IconVector w-[18px] h-[9px]"
+                src="/icons/icon_progress.png"
+                alt="Progress icon"
+              />
+            </figure>
+
+            <h2 className="HeaderTitle text-black text-sm font-semibold">
               Loading Progress Monitoring
-            </div>
+            </h2>
           </div>
 
           <button
@@ -54,79 +53,84 @@ function LoadingProgressMonitoring({ onSeeMore }) {
             onClick={onSeeMore}
             className="SeeMoreContainer inline-flex justify-start items-center gap-1"
           >
-            <div className="SeeMoreLabel text-black text-xs font-semibold">
+            <span className="SeeMoreLabel text-black text-xs font-semibold">
               See More
-            </div>
-            <div className="SeeMoreIcon size-6 relative">
-              <div className="SeeMoreIconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black" />
-            </div>
+            </span>
+            <span className="SeeMoreIcon size-6 relative inline-block">
+              <span className="SeeMoreIconVector w-1.5 h-3 absolute rotate-180 border-2 border-black left-[15px] top-[18px]" />
+            </span>
           </button>
-        </div>
+        </header>
 
-        <div
+        {/* Progress List */}
+        <ul
           data-layer="loading_progress_cards_container"
           className="LoadingProgressCardsContainer self-stretch flex flex-col gap-2.5"
         >
           {(shipments.length > 0 ? shipments : [1, 2]).map((ship, idx) => (
-            <div
+            <li
               key={ship?.id || idx}
               className="ProgressCardContainer px-3.5 py-[19px] bg-[#efefef] rounded-[20px] flex flex-col justify-start items-start gap-3"
             >
-              <div className="ProgressCardHeaderContainer inline-flex justify-start items-center gap-3">
-                <div className="ProgressCardIconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
+              {/* Card Header */}
+              <header className="ProgressCardHeaderContainer inline-flex justify-start items-center gap-3">
+                <figure className="ProgressCardIconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
                   <img
                     className="IconCargoShip size-[18px]"
                     src="/icons/icon_cargo_ship.png"
                     alt="Vessel icon"
                   />
-                </div>
-                <div className="ProgressCardTitle text-black text-sm font-semibold">
+                </figure>
+
+                <h3 className="ProgressCardTitle text-black text-sm font-semibold">
                   {ship?.name || "Loading..."}
-                </div>
-              </div>
+                </h3>
+              </header>
 
-              <div className="ProgressCardContentContainer self-stretch flex flex-col justify-start items-start gap-3">
-                <div className="ProgressCardProgressGroup self-stretch inline-flex justify-between items-center">
-                  <div className="ProgressLabel text-black text-sm">Progress</div>
-                  <div className="ProgressValue text-black text-sm font-semibold">
-                    {ship?.progress || "-"}
+              {/* Card Content */}
+              <article className="ProgressCardContentContainer self-stretch flex flex-col justify-start items-start gap-3">
+
+                <dl className="w-full flex flex-col gap-3">
+                  {/* Progress */}
+                  <div className="flex justify-between items-center">
+                    <dt className="text-black text-sm">Progress</dt>
+                    <dd className="text-black text-sm font-semibold">{ship?.progress || "-"}</dd>
                   </div>
-                </div>
 
-                <div className="ProgressCardLoadedGroup self-stretch inline-flex justify-between items-center">
-                  <div className="LoadedLabel text-black text-sm">Loaded</div>
-                  <div className="LoadedValue text-right text-black text-sm font-semibold">
-                    {ship?.loaded || "-"}
+                  {/* Loaded */}
+                  <div className="flex justify-between items-center">
+                    <dt className="text-black text-sm">Loaded</dt>
+                    <dd className="text-black text-sm font-semibold">{ship?.loaded || "-"}</dd>
                   </div>
-                </div>
 
-                <div className="ProgressCardStatusGroup self-stretch inline-flex justify-between items-start">
-                  <div className="StatusLabel text-black text-sm">Status:</div>
-                  <div className="ProgressCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
-                    <div className="StatusValue text-white text-xs font-semibold">
-                      {ship?.status || "-"}
-                    </div>
+                  {/* Status */}
+                  <div className="flex justify-between items-start">
+                    <dt className="text-black text-sm">Status:</dt>
+                    <dd className="ProgressCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
+                      <span className="StatusValue text-white text-xs font-semibold">
+                        {ship?.status || "-"}
+                      </span>
+                    </dd>
                   </div>
-                </div>
 
-                <div className="ProgressCardScheduleGroup self-stretch flex flex-col justify-start items-start gap-[13px]">
-                  <div className="ProgressCardScheduleDetailWrapper self-stretch inline-flex justify-between items-center">
-                    <div className="EtaValue text-black text-sm">
-                      ETA: {ship?.eta || "-"}
-                    </div>
-                    <div className="EtdValue text-black text-sm">
-                      ETD: {ship?.etd || "-"}
-                    </div>
+                  {/* ETA + ETD */}
+                  <div className="flex justify-between items-center">
+                    <dt className="text-black text-sm">ETA</dt>
+                    <dd className="text-black text-sm">{ship?.eta || "-"}</dd>
                   </div>
-                </div>
 
-              </div>
-            </div>
+                  <div className="flex justify-between items-center">
+                    <dt className="text-black text-sm">ETD</dt>
+                    <dd className="text-black text-sm">{ship?.etd || "-"}</dd>
+                  </div>
+                </dl>
+
+              </article>
+            </li>
           ))}
-        </div>
-
+        </ul>
       </div>
-    </div>
+    </section>
   );
 }
 

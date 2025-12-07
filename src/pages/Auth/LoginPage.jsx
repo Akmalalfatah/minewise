@@ -3,129 +3,216 @@ import authService from "../../services/authService";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../../store/userStore";
 
+const ROLE_OPTIONS = [
+  { value: "mine_planner", label: "Mine Planner" },
+  { value: "shipping_planner", label: "Shipping Planner" },
+];
+
 function LoginPage() {
-    const navigate = useNavigate();
-    const isAuthenticated = userStore((state) => state.isAuthenticated);
+  const navigate = useNavigate();
+  const isAuthenticated = userStore((state) => state.isAuthenticated);
 
-    const setToken = userStore((state) => state.setToken);
-    const setUser = userStore((state) => state.setUser);
+  const setToken = userStore((state) => state.setToken);
+  const setUser = userStore((state) => state.setUser);
 
-    useEffect(() => {
-        if (isAuthenticated) navigate("/dashboard");
-    }, [isAuthenticated, navigate]);
+  useEffect(() => {
+    if (isAuthenticated) navigate("/dashboard");
+  }, [isAuthenticated, navigate]);
 
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [role, setRole] = useState("");
+  const [error, setError] = useState("");
 
-    async function handleLogin(e) {
-        e.preventDefault();
+  async function handleLogin(e) {
+    e.preventDefault();
 
-        setError("");
+    setError("");
 
-        if (!email || !password) {
-            setError("Email dan password wajib diisi");
-            return;
-        }
-        if (!/\S+@\S+\.\S+/.test(email)) {
-            setError("Format email tidak valid");
-            return;
-        }
-
-        try {
-            const res = await authService.login(email, password);
-
-            if (!res) {
-                setError("Login gagal, periksa kembali email dan password");
-                return;
-            }
-
-            if (res.accessToken) {
-                setToken(res.accessToken, res.refreshToken);
-            }
-            if (res.user) {
-                setUser(res.user);
-            }
-
-            navigate("/dashboard");
-        } catch (err) {
-            console.error(err);
-            setError("Terjadi kesalahan saat login. Coba lagi nanti.");
-        }
+    if (!email || !password || !role) {
+      setError("Email, password, dan role wajib diisi");
+      return;
     }
 
-    return (
-        <div data-layer="LoginPage" className="Loginpage w-[1440px] h-[1024px] relative bg-[#0048ff] overflow-hidden">
-            <img data-layer="background_auth" className="BackgroundAuth w-[1440px] h-[1024px] left-0 top-0 absolute" src="/icons/background_auth.png" />
-            <div data-layer="auth_left" className="AuthLeft w-[643px] h-[1024px] left-0 top-0 absolute">
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      setError("Format email tidak valid");
+      return;
+    }
 
-                <form onSubmit={handleLogin} className="AuthTextContent w-[442px] left-[100.50px] top-[220px] absolute inline-flex flex-col justify-start items-center gap-[63px]">
+    try {
+      const res = await authService.login(email, password, role);
 
-                    <div className="Headline size- flex flex-col justify-start items-center gap-2.5">
-                        <div className="HeadlineTitle text-center justify-start">
-                            <span className="text-[#030303] text-4xl font-semibold">WELCOME BACK! TO </span>
-                            <span className="text-[#ff7b54] text-4xl font-semibold">MINEWISE</span>
-                        </div>
-                        <div className="HeadlineSubtitle text-center justify-start text-[#626263] text-lg font-normal">Welcome back! Please enter your details.</div>
-                    </div>
+      if (!res) {
+        setError("Login gagal, periksa kembali email, password, dan role");
+        return;
+      }
 
-                    <div className="FormContainer w-[315px] flex flex-col justify-start items-center gap-[21px]">
+      if (res.accessToken) {
+        setToken(res.accessToken, res.refreshToken);
+      }
+      if (res.user) {
+        setUser(res.user);
+      }
 
-                        <div className="InputsFieldsContainer self-stretch flex flex-col justify-start items-start gap-[22px]">
+      navigate("/dashboard");
+    } catch (err) {
+      console.error(err);
+      setError("Terjadi kesalahan saat login. Coba lagi nanti.");
+    }
+  }
 
-                            <div className="EmailForm self-stretch flex flex-col justify-start items-start gap-1.5">
-                                <div className="EmailLabel self-stretch text-[#181818] text-base font-semibold">Email</div>
-                                <div className="EmailInputWrapper self-stretch h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
-                                    <input
-                                        type="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter your email"
-                                        className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
-                                    />
-                                </div>
-                            </div>
+  return (
+    <main
+      data-layer="LoginPage"
+      className="relative min-h-screen w-full overflow-hidden bg-white"
+    >
+      {/* Background full screen */}
+      <img
+        data-layer="background_auth"
+        className="BackgroundAuth absolute inset-0 w-full h-full object-cover"
+        src="/icons/background_auth.png"
+        alt=""
+        aria-hidden="true"
+      />
 
-                            <div className="PasswordForm self-stretch flex flex-col justify-start items-start gap-[9px]">
-                                <div className="PasswordLabel self-stretch text-[#181818] text-base font-semibold">Password</div>
-                                <div className="PasswordInputWrapper self-stretch h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center">
-                                    <input
-                                        type="password"
-                                        value={password}
-                                        onChange={(e) => setPassword(e.target.value)}
-                                        placeholder="Enter your password"
-                                        className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
-                                    />
-                                </div>
-                            </div>
+      {/* Area kiri untuk form */}
+      <section
+        data-layer="auth_left"
+        className="absolute inset-y-0 left-0 flex items-center"
+        aria-label="Login section"
+      >
+        {/* padding kiri kira-kira mengikuti desain Figma */}
+        <div className="pl-[120px]">
+          <form
+            onSubmit={handleLogin}
+            className="AuthTextContent w-[360px] flex flex-col gap-10"
+            aria-describedby={error ? "login-error" : undefined}
+          >
+            {/* Header / Hero Text */}
+            <header className="Headline flex flex-col items-start gap-2.5 text-left">
+              <h1 className="HeadlineTitle">
+                <span className="text-[#030303] text-4xl font-semibold">
+                  WELCOME BACK! TO{" "}
+                </span>
+                <span className="text-[#ff7b54] text-4xl font-semibold">
+                  MINEWISE
+                </span>
+              </h1>
 
-                        </div>
+              <p className="HeadlineSubtitle text-[#626263] text-base font-normal">
+                Welcome back! Please enter your details.
+              </p>
+            </header>
 
-                        {error && <div className="text-red-500 text-xs self-start">{error}</div>}
+            {/* Form Fields */}
+            <div className="FormContainer w-full flex flex-col gap-5">
+              <div className="InputsFieldsContainer w-full flex flex-col gap-5">
+                {/* Email */}
+                <div className="EmailForm w-full flex flex-col gap-1.5">
+                  <label
+                    htmlFor="email"
+                    className="EmailLabel text-[#181818] text-sm font-semibold"
+                  >
+                    Email
+                  </label>
+                  <div className="EmailInputWrapper h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
+                    <input
+                      id="email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
+                      autoComplete="email"
+                      required
+                    />
+                  </div>
+                </div>
 
-                        <div className="SignInButtonWrapper self-stretch flex flex-col justify-start items-center gap-[18px]">
-                            <button type="submit" className="SignInButtonBox self-stretch h-[41.31px] px-[131px] py-2 bg-[#ff7b54] rounded-xl inline-flex justify-center items-center">
-                                <div className="text-white text-sm font-semibold">Sign in</div>
-                            </button>
+                {/* Role */}
+                <div className="RoleForm w-full flex flex-col gap-1.5">
+                  <label
+                    htmlFor="role"
+                    className="RoleLabel text-[#181818] text-sm font-semibold"
+                  >
+                    Role
+                  </label>
+                  <div className="RoleSelectWrapper h-[41.31px] px-[21px] py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
+                    <select
+                      id="role"
+                      value={role}
+                      onChange={(e) => setRole(e.target.value)}
+                      className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
+                      required
+                    >
+                      <option value="" disabled>
+                        Select your role
+                      </option>
+                      {ROLE_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>
+                          {opt.label}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
 
-                            <div className="SignUpText self-stretch text-center">
-                                <span className="text-[#595959] text-xs">Don’t have an account?</span>
-                                <span
-                                    className="text-[#ea454c] text-xs cursor-pointer"
-                                    onClick={() => navigate("/register")}
-                                >
-                                    {" "}Sign up for free!
-                                </span>
-                            </div>
+                {/* Password */}
+                <div className="PasswordForm w-full flex flex-col gap-1.5">
+                  <label
+                    htmlFor="password"
+                    className="PasswordLabel text-[#181818] text-sm font-semibold"
+                  >
+                    Password
+                  </label>
+                  <div className="PasswordInputWrapper h-[41.31px] px-4 py-[11px] rounded-xl outline outline-1 outline-[#bdbdbd] inline-flex items-center bg-white">
+                    <input
+                      id="password"
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Enter your password"
+                      className="w-full text-[#626263] text-sm font-normal outline-none bg-transparent"
+                      autoComplete="current-password"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
 
-                        </div>
+              {/* Error message */}
+              {error && (
+                <div
+                  id="login-error"
+                  className="text-red-500 text-xs"
+                  role="alert"
+                >
+                  {error}
+                </div>
+              )}
 
-                    </div>
+              {/* Actions */}
+              <div className="SignInButtonWrapper w-full flex flex-col gap-3">
+                <button
+                  type="submit"
+                  className="SignInButtonBox w-full h-[41.31px] bg-[#ff7b54] rounded-xl inline-flex justify-center items-center"
+                >
+                  <span className="text-white text-sm font-semibold">
+                    Sign in
+                  </span>
+                </button>
 
-                </form>
+                <p className="w-full text-xs text-[#595959]">
+                  MineWise login is for internal use only. Please contact the
+                  system administrator if you need an account or role update.
+                </p>
+              </div>
             </div>
+          </form>
         </div>
-    );
+      </section>
+    </main>
+  );
 }
 
 export default LoginPage;

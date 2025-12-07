@@ -6,11 +6,13 @@ import minePlannerRoutes from "./routes/minePlannerRoutes.js";
 import shippingPlannerRoutes from "./routes/shippingPlannerRoutes.js";
 import reportsRoutes from "./routes/reportsRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use("/api/auth", authRoutes);
 
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mine-planner", minePlannerRoutes);

@@ -15,8 +15,9 @@ function CoalVolumeCard({ onSeeMore }) {
   const stockpiles = data?.stockpiles || [];
 
   return (
-    <div
+    <section
       data-layer="coal_volume_card"
+      aria-labelledby="coal-volume-title"
       className="CoalVolumeCard w-[668px] h-[336px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
     >
       <div
@@ -24,7 +25,8 @@ function CoalVolumeCard({ onSeeMore }) {
         className="CoalVolumeContainer self-stretch h-[290px] flex flex-col justify-start items-start gap-6"
       >
 
-        <div
+        {/* Header */}
+        <header
           data-layer="header_container"
           className="HeaderContainer self-stretch inline-flex justify-between items-center"
         >
@@ -48,12 +50,14 @@ function CoalVolumeCard({ onSeeMore }) {
                 />
               </div>
             </div>
-            <div
+
+            <h2
+              id="coal-volume-title"
               data-layer="header_title"
               className="HeaderTitle text-black text-base font-semibold"
             >
               Coal Volume Ready to Ship
-            </div>
+            </h2>
           </div>
 
           <button
@@ -62,32 +66,31 @@ function CoalVolumeCard({ onSeeMore }) {
             data-layer="see_more_container"
             className="SeeMoreContainer inline-flex justify-start items-center gap-1"
           >
-            <div
+            <span
               data-layer="see_more_label"
               className="SeeMoreLabel text-black text-xs font-semibold"
             >
               See More
-            </div>
-            <div
-              data-layer="see_more_icon"
-              className="SeeMoreIcon size-6 relative"
-            >
+            </span>
+            <div data-layer="see_more_icon" className="SeeMoreIcon size-6 relative">
               <div
                 data-layer="see_more_icon_vector"
                 className="SeeMoreIconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black"
               />
             </div>
           </button>
-        </div>
+        </header>
 
+        {/* Stockpile Cards */}
         <div
           data-layer="coal_cards_container"
           className="CoalCardsContainer w-[620px] h-[234px] inline-flex justify-start items-center gap-3"
         >
           {(stockpiles.length > 0 ? stockpiles.slice(0, 2) : [1, 2]).map(
             (sp, idx) => (
-              <div
+              <article
                 key={sp?.id || idx}
+                aria-label={`Coal stockpile ${sp?.name || "Loading..."}`}
                 data-layer="coal_card_container"
                 className="CoalCardContainer w-[304px] h-[234px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
               >
@@ -96,7 +99,8 @@ function CoalVolumeCard({ onSeeMore }) {
                   className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-3"
                 >
 
-                  <div
+                  {/* Card Header */}
+                  <header
                     data-layer="coal_card_header_container"
                     className="CoalCardHeaderContainer self-stretch inline-flex justify-start items-center gap-3"
                   >
@@ -117,89 +121,87 @@ function CoalVolumeCard({ onSeeMore }) {
                       </div>
                     </div>
 
-                    <div
+                    <h3
                       data-layer="coal_card_title"
                       className="CoalCardTitle text-black text-sm font-semibold"
                     >
                       {sp?.name || "Loading..."}
-                    </div>
-                  </div>
+                    </h3>
+                  </header>
 
-                  <div
+                  {/* Data Section */}
+                  <section
                     data-layer="coal_card_content_container"
                     className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3"
                   >
-                    <div
-                      data-layer="coal_card_volume_group"
-                      className="CoalCardVolumeGroup self-stretch inline-flex justify-between items-center"
-                    >
-                      <div className="VolumeLabel text-black text-sm">
-                        Volume
-                      </div>
-                      <div className="VolumeValue text-black text-sm font-semibold">
-                        {sp?.volume || "-"}
-                      </div>
-                    </div>
+                    <dl className="w-full space-y-3">
 
-                    <div
-                      data-layer="coal_card_cv_group"
-                      className="CoalCardCvGroup self-stretch inline-flex justify-between items-center"
-                    >
-                      <div className="CvLabel text-black text-sm">CV</div>
-                      <div className="CvValue text-right text-black text-sm font-semibold">
-                        {sp?.cv || "-"}
-                      </div>
-                    </div>
-
-                    <div
-                      data-layer="coal_card_moisture_group"
-                      className="CoalCardMoistureGroup self-stretch inline-flex justify-between items-center"
-                    >
-                      <div className="MoistureLabel text-black text-sm">
-                        Moisture
-                      </div>
-                      <div className="MoistureValue text-right text-black text-sm font-semibold">
-                        {sp?.moisture || "-"}
-                      </div>
-                    </div>
-
-                    <div
-                      data-layer="coal_card_status_group"
-                      className="CoalCardStatusGroup self-stretch h-[19px] py-[7px] inline-flex justify-between items-center"
-                    >
-                      <div className="StatusLabel text-black text-sm">
-                        Status
-                      </div>
                       <div
-                        data-layer="coal_card_status_value_wrapper"
-                        className="CoalCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center"
+                        data-layer="coal_card_volume_group"
+                        className="CoalCardVolumeGroup self-stretch inline-flex justify-between items-center"
                       >
-                        <div className="StatusValue text-white text-xs font-semibold">
-                          {sp?.status || "-"}
-                        </div>
+                        <dt className="VolumeLabel text-black text-sm">Volume</dt>
+                        <dd className="VolumeValue text-black text-sm font-semibold">
+                          {sp?.volume || "-"}
+                        </dd>
                       </div>
-                    </div>
 
-                    <div
-                      data-layer="coal_card_schedule_group"
-                      className="CoalCardScheduleGroup self-stretch inline-flex justify-start items-center gap-[26px]"
-                    >
-                      <div className="EtaValue text-black text-sm">
-                        ETA: {sp?.eta || "-"}
+                      <div
+                        data-layer="coal_card_cv_group"
+                        className="CoalCardCvGroup self-stretch inline-flex justify-between items-center"
+                      >
+                        <dt className="CvLabel text-black text-sm">CV</dt>
+                        <dd className="CvValue text-right text-black text-sm font-semibold">
+                          {sp?.cv || "-"}
+                        </dd>
                       </div>
-                      <div className="EtdValue text-black text-sm">
-                        ETD: {sp?.etd || "-"}
+
+                      <div
+                        data-layer="coal_card_moisture_group"
+                        className="CoalCardMoistureGroup self-stretch inline-flex justify-between items-center"
+                      >
+                        <dt className="MoistureLabel text-black text-sm">Moisture</dt>
+                        <dd className="MoistureValue text-right text-black text-sm font-semibold">
+                          {sp?.moisture || "-"}
+                        </dd>
                       </div>
-                    </div>
-                  </div>
+
+                      <div
+                        data-layer="coal_card_status_group"
+                        className="CoalCardStatusGroup self-stretch h-[19px] py-[7px] inline-flex justify-between items-center"
+                      >
+                        <dt className="StatusLabel text-black text-sm">Status</dt>
+                        <dd
+                          data-layer="coal_card_status_value_wrapper"
+                          className="CoalCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center"
+                        >
+                          <span className="StatusValue text-white text-xs font-semibold">
+                            {sp?.status || "-"}
+                          </span>
+                        </dd>
+                      </div>
+
+                      <div
+                        data-layer="coal_card_schedule_group"
+                        className="CoalCardScheduleGroup self-stretch inline-flex justify-start items-center gap-[26px]"
+                      >
+                        <dt className="EtaValue text-black text-sm">
+                          ETA: {sp?.eta || "-"}
+                        </dt>
+                        <dd className="EtdValue text-black text-sm">
+                          ETD: {sp?.etd || "-"}
+                        </dd>
+                      </div>
+
+                    </dl>
+                  </section>
                 </div>
-              </div>
+              </article>
             )
           )}
         </div>
-
       </div>
-    </div>
+    </section>
   );
 }
 

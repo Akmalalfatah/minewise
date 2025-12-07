@@ -1,31 +1,59 @@
 import React, { useEffect, useState } from "react";
 import { getAIMineRecommendation } from "../../services/minePlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function AIRecommendationCard() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getAIMineRecommendation();
-      setData(result);
+      try {
+        const result = await getAIMineRecommendation({
+          location,
+          timePeriod,
+          shift,
+        });
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load AI mine recommendation:", error);
+        setData(null);
+      }
     }
+
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   if (!data) return null;
 
+  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+
+  const defaultScenario = {
+    title: "Recommendation not available",
+    description:
+      "AI recommendation is not available for the current filter selection.",
+  };
+
+  const scenario1 = scenarios[0] || defaultScenario;
+  const scenario2 = scenarios[1] || defaultScenario;
+  const scenario3 = scenarios[2] || defaultScenario;
+
+  const analysisSources =
+    data.analysis_sources ||
+    "Weather, road conditions, equipment utilization, and production targets.";
+
   return (
-    <div
+    <section
       data-layer="ai_recommendation_card"
+      aria-label="AI mining recommendation"
       className="AiRecommendationCard w-[929px] h-[492px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="ai_recommendation_container"
         className="AiRecommendationContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-
         {/* Header */}
-        <div
+        <header
           data-layer="header_left_group"
           className="HeaderLeftGroup w-[181px] inline-flex justify-start items-center gap-3"
         >
@@ -40,32 +68,32 @@ function AIRecommendationCard() {
               alt="AI icon"
             />
           </div>
-          <div
+          <h2
             data-layer="ai_recommendation_title"
             className="AiRecommendationTitle text-black text-sm font-semibold"
           >
             AI Recommendation
-          </div>
-        </div>
+          </h2>
+        </header>
 
-        <div
+        <hr
           data-layer="divider_top"
           className="DividerTop self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-[#bdbdbd]"
         />
 
         {/* Content */}
-        <div
+        <section
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-6"
         >
-
           {/* Scenario list */}
-          <div
+          <section
             data-layer="scenario_list_container"
+            aria-label="Recommended scenarios"
             className="ScenarioListContainer self-stretch flex flex-col justify-start items-start gap-[22px]"
           >
             {/* Scenario 1 */}
-            <div
+            <article
               data-layer="scenario1_wrapper"
               className="Scenario1Wrapper self-stretch h-[78px] px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-center items-start gap-2.5"
             >
@@ -73,23 +101,23 @@ function AIRecommendationCard() {
                 data-layer="scenario1_block"
                 className="Scenario1Block w-[815px] flex flex-col justify-start items-start gap-1"
               >
-                <div
+                <h3
                   data-layer="scenario1_title"
                   className="Scenario1Title self-stretch text-black text-sm font-semibold"
                 >
-                  {data.scenarios[1].title}
-                </div>
-                <div
+                  {scenario1.title}
+                </h3>
+                <p
                   data-layer="scenario1_description"
                   className="Scenario1Description self-stretch text-black text-sm font-normal"
                 >
-                  {data.scenarios[1].description}
-                </div>
+                  {scenario1.description}
+                </p>
               </div>
-            </div>
+            </article>
 
             {/* Scenario 2 */}
-            <div
+            <article
               data-layer="scenario2_wrapper"
               className="Scenario2Wrapper self-stretch h-[78px] px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
             >
@@ -97,53 +125,53 @@ function AIRecommendationCard() {
                 data-layer="scenario2_block"
                 className="Scenario2Block w-[815px] flex flex-col justify-start items-start gap-1"
               >
-                <div className="Scenario2Title text-black text-sm font-semibold">
-                  {data.scenarios[2].title}
-                </div>
-                <div className="Scenario2Description text-black text-sm font-normal">
-                  {data.scenarios[2].description}
-                </div>
+                <h3 className="Scenario2Title text-black text-sm font-semibold">
+                  {scenario2.title}
+                </h3>
+                <p className="Scenario2Description text-black text-sm font-normal">
+                  {scenario2.description}
+                </p>
               </div>
-            </div>
+            </article>
 
             {/* Scenario 3 */}
-            <div
+            <article
               data-layer="scenario3_wrapper"
               className="Scenario3Wrapper self-stretch h-[78px] px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
             >
               <div className="Scenario3Block w-[817px] flex flex-col gap-1">
-                <div className="Scenario3Title text-black text-sm font-semibold">
-                  {data.scenarios[3].title}
-                </div>
-                <div className="Scenario3Description text-black text-sm">
-                  {data.scenarios[3].description}
-                </div>
+                <h3 className="Scenario3Title text-black text-sm font-semibold">
+                  {scenario3.title}
+                </h3>
+                <p className="Scenario3Description text-black text-sm">
+                  {scenario3.description}
+                </p>
               </div>
-            </div>
-          </div>
+            </article>
+          </section>
 
           {/* Analysis section */}
-          <div
+          <section
             data-layer="analysis_section_container"
+            aria-label="Analysis basis"
             className="AnalysisSectionContainer self-stretch flex flex-col justify-start items-start gap-3"
           >
-            <div
+            <p
               data-layer="analysis_title"
               className="AnalysisTitle text-black/60 text-sm font-normal"
             >
               Analysis Based On
-            </div>
-            <div
+            </p>
+            <p
               data-layer="analysis_sources"
               className="AnalysisSources text-black text-base font-semibold"
             >
-              {data.analysis_sources}
-            </div>
-          </div>
-
-        </div>
+              {analysisSources}
+            </p>
+          </section>
+        </section>
       </div>
-    </div>
+    </section>
   );
 }
 

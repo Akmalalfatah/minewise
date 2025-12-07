@@ -1,16 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { getPortCongestionStatus } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function PortCongestionStatus() {
   const [data, setData] = useState(null);
+  const filters = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getPortCongestionStatus();
-      setData(result);
+      try {
+        const result = await getPortCongestionStatus(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load port congestion status:", err);
+      }
     }
     load();
-  }, []);
+  }, [filters.location, filters.timePeriod, filters.shift]);
 
   const updatedText = data?.updatedText || "Updated...";
   const shipsLoading = data?.shipsLoading || [];
@@ -20,7 +26,7 @@ function PortCongestionStatus() {
   const operationalNote = data?.operationalNote || "-";
 
   return (
-    <div
+    <section
       data-layer="port_congestion_status_card"
       className="PortCongestionStatusCard w-[827px] h-[506px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
     >
@@ -28,44 +34,41 @@ function PortCongestionStatus() {
         data-layer="card_container"
         className="CardContainer self-stretch h-[457px] flex flex-col justify-start items-start gap-6"
       >
-
-        <div
+        {/* Header */}
+        <header
           data-layer="header_left_group"
           className="HeaderLeftGroup flex flex-col justify-start items-start gap-2.5"
         >
-          <div
-            data-layer="icon_wrapper"
-            className="IconWrapper inline-flex justify-start items-center gap-3"
-          >
-            <div
+          <div className="IconWrapper inline-flex justify-start items-center gap-3">
+            <figure
               data-layer="icon_background_container"
               className="IconBackgroundContainer size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center"
             >
-              <div className="IconActivityGroup size-8 flex justify-center items-center overflow-hidden">
-                <img
-                  className="IconActivity size-[22px]"
-                  src="/icons/icon_activity.png"
-                  alt="Activity icon"
-                />
-              </div>
-            </div>
-            <div
+              <img
+                className="IconActivity size-[22px]"
+                src="/icons/icon_activity.png"
+                alt="Activity icon"
+              />
+            </figure>
+
+            <h2
               data-layer="port_congestion_title"
               className="PortCongestionTitle text-black text-sm font-semibold"
             >
               Port Congestion Status
-            </div>
+            </h2>
           </div>
-        </div>
+        </header>
 
-        <div
+        <p
           data-layer="updated_timestamp_text"
           className="UpdatedTimestampText self-stretch text-[#666666] text-sm"
         >
           {updatedText}
-        </div>
+        </p>
 
-        <div
+        {/* Main Content */}
+        <article
           data-layer="content_container"
           className="ContentContainer self-stretch h-[360px] px-[19px] py-2.5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
         >
@@ -73,90 +76,97 @@ function PortCongestionStatus() {
             data-layer="activity_card_container"
             className="ActivityCardContainer w-[743px] h-[321px] flex flex-col justify-start items-start gap-[17px]"
           >
-
-            <div
+            {/* Section Title */}
+            <header
               data-layer="activity_header_container"
               className="ActivityHeaderContainer self-stretch flex flex-col justify-start items-start gap-3"
             >
-              <div className="ActivityHeaderTitle self-stretch text-black text-xs font-semibold">
+              <h3 className="ActivityHeaderTitle text-black text-xs font-semibold">
                 Current Activity
-              </div>
-              <div className="ActivityHeaderDivider self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-black/25" />
-            </div>
+              </h3>
+              <hr className="ActivityHeaderDivider self-stretch h-0 outline outline-[0.50px] outline-black/25" />
+            </header>
 
+            {/* Activity Content */}
             <div
               data-layer="activity_content_container"
               className="ActivityContentContainer self-stretch flex flex-col justify-start items-start gap-6"
             >
-
-              <div className="ShipsLoadingWaitingGroup self-stretch inline-flex justify-between items-start">
-
-                <div className="ShipsLoadingGroup w-[233px] inline-flex flex-col justify-start items-start gap-1.5">
-                  <div className="ShipsLoadingLabel text-black text-sm font-semibold">
+              {/* Ships Loading + Waiting */}
+              <section className="ShipsLoadingWaitingGroup self-stretch flex justify-between items-start">
+                {/* Ships Loading */}
+                <div className="ShipsLoadingGroup w-[233px] flex flex-col gap-1.5">
+                  <h4 className="ShipsLoadingLabel text-black text-sm font-semibold">
                     Ships Loading:
-                  </div>
-                  <div className="ShipsLoadingValue self-stretch text-black text-sm">
-                    {shipsLoading.length > 0
-                      ? shipsLoading.map((ship, index) => (
-                        <div key={ship.id || index}>{ship.name || "-"}</div>
+                  </h4>
+
+                  <ul className="ShipsLoadingValue text-black text-sm">
+                    {shipsLoading.length > 0 ? (
+                      shipsLoading.map((ship, index) => (
+                        <li key={ship.id || index}>{ship.name || "-"}</li>
                       ))
-                      : "(No active loading)"}
-                  </div>
+                    ) : (
+                      <li>(No active loading)</li>
+                    )}
+                  </ul>
                 </div>
 
-                <div className="ShipsWaitingGroup w-[234px] inline-flex flex-col justify-start items-start gap-1.5">
-                  <div className="ShipsWaitingLabel text-black text-sm font-semibold">
+                {/* Ships Waiting */}
+                <div className="ShipsWaitingGroup w-[234px] flex flex-col gap-1.5">
+                  <h4 className="ShipsWaitingLabel text-black text-sm font-semibold">
                     Ships Waiting:
-                  </div>
-                  <div className="ShipsWaitingValue self-stretch text-black text-sm">
-                    {shipsWaiting.length > 0
-                      ? shipsWaiting.map((ship, index) => (
-                        <div key={ship.id || index}>
+                  </h4>
+
+                  <ul className="ShipsWaitingValue text-black text-sm">
+                    {shipsWaiting.length > 0 ? (
+                      shipsWaiting.map((ship, index) => (
+                        <li key={ship.id || index}>
                           {ship.name || "-"} — ETA: {ship.eta || "-"}
-                        </div>
+                        </li>
                       ))
-                      : "(No ships waiting)"}
-                  </div>
+                    ) : (
+                      <li>(No ships waiting)</li>
+                    )}
+                  </ul>
                 </div>
-              </div>
+              </section>
 
-              <div className="ShipsCompletedGroup w-[152px] flex flex-col justify-start items-start gap-1.5">
-                <div className="ShipsCompletedInnerGroup inline-flex justify-start items-center gap-[5px]">
-                  <div className="ShipsCompletedLabel text-black text-sm font-semibold">
+              {/* Ships Completed */}
+              <section className="ShipsCompletedGroup flex flex-col gap-1.5">
+                <dl className="flex gap-2 items-center">
+                  <dt className="ShipsCompletedLabel text-black text-sm font-semibold">
                     Ships Completed:
-                  </div>
-                  <div className="ShipsCompletedValue w-[152px] text-black text-sm">
+                  </dt>
+                  <dd className="ShipsCompletedValue text-black text-sm">
                     {shipsCompletedText}
-                  </div>
-                </div>
-              </div>
+                  </dd>
+                </dl>
+              </section>
 
-              <div className="CongestionLevelGroup inline-flex justify-start items-center gap-[3px]">
-                <div className="CongestionLevelLabel text-black text-sm font-semibold">
+              {/* Congestion Level */}
+              <section className="CongestionLevelGroup flex gap-2">
+                <dt className="CongestionLevelLabel text-black text-sm font-semibold">
                   Congestion Level:
-                </div>
-                <div className="CongestionLevelValue">
-                  <span className="text-[#c30012] text-sm font-semibold">
-                    {congestionLevel}
-                  </span>
-                </div>
-              </div>
+                </dt>
+                <dd className="CongestionLevelValue text-[#c30012] text-sm font-semibold">
+                  {congestionLevel}
+                </dd>
+              </section>
 
-              <div className="OperationalNoteGroup self-stretch inline-flex justify-start items-start gap-[5px]">
-                <div className="OperationalNoteLabel text-black text-sm font-semibold">
+              {/* Operational Note */}
+              <section className="OperationalNoteGroup flex flex-col gap-1">
+                <dt className="OperationalNoteLabel text-black text-sm font-semibold">
                   Operational Note:
-                </div>
-                <div className="OperationalNoteText w-[513px] text-black text-sm">
+                </dt>
+                <dd className="OperationalNoteText text-black text-sm w-[513px]">
                   {operationalNote}
-                </div>
-              </div>
-
+                </dd>
+              </section>
             </div>
           </div>
-        </div>
-
+        </article>
       </div>
-    </div>
+    </section>
   );
 }
 

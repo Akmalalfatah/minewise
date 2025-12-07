@@ -1,8 +1,6 @@
 import React, { useEffect } from "react";
 import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
-import NotificationSection from "../components/layout/NotificationSection";
-import ProfileSection from "../components/layout/ProfileSection";
 import AISummaryInformationCard from "../components/dashboard/AISummaryInformationCard";
 import CausesOfDowntimeCard from "../components/dashboard/CausesOfDowntimeCard";
 import DecisionImpactAnalysisCard from "../components/dashboard/DecisionImpactAnalysisCard";
@@ -22,29 +20,31 @@ function DashboardPage() {
   }, [location, timePeriod, shift]);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TOP BAR: Filter + Notification + Profile */}
-        <div className="w-full flex justify-between items-center">
+    <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
+      <div className="w-full max-w-[1440px] px-10 py-8 flex flex-col gap-10">
+        <header
+          aria-label="Global filters"
+          className="w-full flex justify-start"
+        >
           <GlobalFilterBar />
+        </header>
 
-          <div className="flex items-center gap-4">
-            <NotificationSection />
-            <ProfileSection />
-          </div>
-        </div>
-
-        {/* TITLE + DESCRIPTION */}
-        <header>
-          <h1 className="text-2xl font-semibold text-gray-900">Dashboard</h1>
-          <p className="text-sm text-gray-600 mt-1">
+        {/* DASHBOARD TITLE */}
+        <section aria-label="Dashboard introduction">
+          <h1 className="text-[28px] font-semibold text-[#1a1a1a]">
+            Dashboard
+          </h1>
+          <p className="text-sm text-gray-600 mt-1 max-w-[600px]">
             Ringkasan produksi, kondisi alat, cuaca, dan operasional tambang
             berdasarkan lokasi, periode waktu, dan shift yang dipilih.
           </p>
-        </header>
+        </section>
 
-        {/* ROW 1 — 5 summary cards (Total, Cuaca, Efisiensi, Status Alat, Kapal) */}
-        <section className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-4">
+        {/* ROW 1 – SUMMARY CARDS */}
+        <section
+          aria-label="Summary cards"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5"
+        >
           <TotalProductionCard />
           <WeatherConditionCard />
           <EfficiencyProductionCard />
@@ -52,32 +52,50 @@ function DashboardPage() {
           <VesselStatusCard />
         </section>
 
-        {/* ROW 2 — Production & Weather Overview (besar kiri) + Road Condition Overview (kanan) */}
-        <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-          <div className="xl:col-span-2">
+        {/* ROW 2 – PRODUCTION & ROAD OVERVIEW */}
+        <section
+          aria-label="Production and road condition overview"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-5"
+        >
+          <div className="lg:col-span-8">
             <ProductionWeatherOverviewCard />
           </div>
-          <div className="xl:col-span-1">
+
+          <div className="lg:col-span-4">
             <RoadConditionOverviewCard />
           </div>
         </section>
 
-        {/* ROW 3 — Causes of Downtime (besar kiri) + Decision Impact Analysis (kanan) */}
-        <section className="grid grid-cols-1 xl:grid-cols-3 gap-4">
-          <div className="xl:col-span-2">
+        {/* ROW 3 – CAUSES OF DOWNTIME (2/3 WIDTH) */}
+        <section
+          aria-label="Causes of downtime"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-5"
+        >
+          <div className="lg:col-span-8">
             <CausesOfDowntimeCard />
           </div>
-          <div className="xl:col-span-1">
-            <DecisionImpactAnalysisCard />
-          </div>
+
+          <div
+            className="hidden lg:block lg:col-span-4"
+            aria-hidden="true"
+          />
         </section>
 
-        {/* ROW 4 — AI Summary Information full width di bawah */}
-        <section>
-          <AISummaryInformationCard />
+        {/* ROW 4 – DECISION IMPACT + AI SUMMARY (2:1) */}
+        <section
+          aria-label="Decision impact and AI summary"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-5"
+        >
+          <div className="lg:col-span-8">
+            <DecisionImpactAnalysisCard />
+          </div>
+
+          <div className="lg:col-span-4">
+            <AISummaryInformationCard />
+          </div>
         </section>
       </div>
-    </div>
+    </main>
   );
 }
 

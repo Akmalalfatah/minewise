@@ -1,8 +1,6 @@
 import React from "react";
 import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
-import NotificationSection from "../components/layout/NotificationSection";
-import ProfileSection from "../components/layout/ProfileSection";
 import EnvironmentConditionTable from "../components/mine-planner/EnvironmentConditionTable";
 import AIRecommendationCard from "../components/mine-planner/AIRecommendationCard";
 import MineRoadSegmentTable from "../components/mine-planner/MineRoadSegmentTable";
@@ -12,10 +10,12 @@ function MinePlannerPage() {
   const { location, timePeriod, shift } = useGlobalFilter();
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TOP BAR */}
-        <div className="flex justify-between items-start gap-4">
+        <header
+          aria-label="Mine planner introduction and current filters"
+          className="flex justify-between items-start gap-4"
+        >
           <div className="flex flex-col gap-1">
             <h1 className="text-2xl font-semibold text-gray-900">
               Mine Planner View
@@ -40,22 +40,23 @@ function MinePlannerPage() {
               </span>
             </p>
           </div>
+        </header>
 
-          <div className="flex items-center gap-4">
-            <NotificationSection />
-            <ProfileSection />
-          </div>
-        </div>
-
-        {/* GLOBAL FILTER BAR */}
-        <div className="flex justify-between items-center gap-4">
+        {/* GLOBAL FILTER BAR + TOGGLE VIEW */}
+        <section
+          aria-label="Mine and shipping view filters"
+          className="flex justify-between items-center gap-4"
+        >
           <GlobalFilterBar />
 
-          {/* Toggle view (Mine / Shipping) – hanya UI, logika routing bisa ditambah nanti */}
-          <div className="inline-flex bg-white rounded-full p-1 shadow-sm">
+          <nav
+            aria-label="Planner view switcher"
+            className="inline-flex bg-white rounded-full p-1 shadow-sm"
+          >
             <button
               type="button"
               className="px-4 py-2 rounded-full text-xs font-semibold bg-[#1c2534] text-white"
+              aria-current="page"
             >
               Mine Planner View
             </button>
@@ -65,11 +66,14 @@ function MinePlannerPage() {
             >
               Shipping Planner View
             </button>
-          </div>
-        </div>
+          </nav>
+        </section>
 
-        {/* MAIN GRID */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
+        {/* MAIN GRID: Environment + AI Recommendation */}
+        <section
+          aria-label="Environment conditions and AI recommendation"
+          className="grid grid-cols-1 lg:grid-cols-3 gap-5"
+        >
           {/* Environment Conditions */}
           <section className="lg:col-span-1">
             <EnvironmentConditionTable />
@@ -79,9 +83,13 @@ function MinePlannerPage() {
           <section className="lg:col-span-2">
             <AIRecommendationCard />
           </section>
-        </div>
+        </section>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        {/* SECOND GRID: Road & Equipment */}
+        <section
+          aria-label="Mine road conditions and equipment status"
+          className="grid grid-cols-1 lg:grid-cols-2 gap-5"
+        >
           {/* Mine Road & Site Conditions */}
           <section>
             <MineRoadSegmentTable />
@@ -91,9 +99,9 @@ function MinePlannerPage() {
           <section>
             <EquipmentStatusTable />
           </section>
-        </div>
+        </section>
       </div>
-    </div>
+    </main>
   );
 }
 
