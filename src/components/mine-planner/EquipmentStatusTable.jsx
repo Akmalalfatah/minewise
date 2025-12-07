@@ -42,18 +42,17 @@ function EquipmentStatusTable() {
     <section
       data-layer="equipment_status_card"
       aria-label="Equipment status and fleet overview"
-      className="EquipmentStatusCard w-[851px] h-[553px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="EquipmentStatusCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="equipment_status_container"
-        className="EquipmentStatusContainer w-[803.01px] flex flex-col justify-start items-start gap-[18px]"
+        className="EquipmentStatusContainer w-full flex flex-col justify-start items-start gap-[18px]"
       >
-        {/* HEADER */}
         <header
           data-layer="header_container"
-          className="HeaderContainer w-[787px] h-8 inline-flex justify-between items-center"
+          className="HeaderContainer w-full inline-flex justify-between items-center"
         >
-          <div className="HeaderLeftGroup w-[165px] flex items-center gap-3">
+          <div className="HeaderLeftGroup flex items-center gap-3">
             <div className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
               <img
                 src="/icons/icon_equipment.png"
@@ -69,13 +68,11 @@ function EquipmentStatusTable() {
 
         <hr className="DividerTop self-stretch h-0 outline outline-1 outline-[#d9d9d9]" />
 
-        {/* SUMMARY SECTION */}
         <section
           aria-label="Equipment condition summary"
           className="StatusSummarySection self-stretch flex flex-col gap-3"
         >
-          <div className="StatusSummaryContainer self-stretch inline-flex gap-[18px]">
-            {/* Excellent */}
+          <div className="StatusSummaryContainer self-stretch inline-flex gap-[18px] flex-wrap">
             <article
               aria-label="Excellent condition count"
               className="ExcellentStatusCardContainer w-[110px] h-14 px-[13px] py-1.5 bg-[#4caf50] rounded-[10px] flex flex-col items-center"
@@ -86,7 +83,6 @@ function EquipmentStatusTable() {
               </p>
             </article>
 
-            {/* Good */}
             <article
               aria-label="Good condition count"
               className="GoodStatusCardContainer w-[115px] h-14 px-[22px] py-1.5 bg-[#8fa90e] rounded-[10px] flex flex-col items-center"
@@ -97,7 +93,6 @@ function EquipmentStatusTable() {
               </p>
             </article>
 
-            {/* Maintenance Required */}
             <article
               aria-label="Maintenance required count"
               className="MaintenanceStatusCardContainer w-48 h-14 bg-[#e6bb30] rounded-[10px] flex flex-col items-center justify-center"
@@ -110,7 +105,6 @@ function EquipmentStatusTable() {
               </p>
             </article>
 
-            {/* Slightly Damaged */}
             <article
               aria-label="Slightly damaged count"
               className="SlightlyDamagedStatusCardContainer w-[153px] h-14 bg-[#ff7b54] rounded-[10px] flex flex-col items-center justify-center"
@@ -123,7 +117,6 @@ function EquipmentStatusTable() {
               </p>
             </article>
 
-            {/* Severely Damaged */}
             <article
               aria-label="Severely damaged count"
               className="SeverelyDamagedStatusCardContainer w-[161px] h-14 bg-[#c30012] rounded-[10px] flex flex-col items-center justify-center"
@@ -138,13 +131,11 @@ function EquipmentStatusTable() {
           </div>
         </section>
 
-        {/* TABLE */}
         <section
           aria-label="Equipment details table"
           className="EquipmentTableSection flex flex-col gap-2.5"
         >
-          <div className="EquipmentTableContainer w-[796px] flex gap-[15px]">
-            {/* Equipment ID */}
+          <div className="EquipmentTableContainer w-full flex gap-[15px] overflow-x-auto">
             <div className="EquipmentIdColumn w-[92px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">Equipment_ID</div>
               {equipments.map((eq, index) => (
@@ -157,7 +148,6 @@ function EquipmentStatusTable() {
               ))}
             </div>
 
-            {/* Type */}
             <div className="EquipmentTypeColumn w-[116px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">Equipment_Type</div>
               {equipments.map((eq, index) => (
@@ -170,7 +160,6 @@ function EquipmentStatusTable() {
               ))}
             </div>
 
-            {/* Model */}
             <div className="EquipmentModelColumn w-[124px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">Equipment_Model</div>
               {equipments.map((eq, index) => (
@@ -183,7 +172,6 @@ function EquipmentStatusTable() {
               ))}
             </div>
 
-            {/* Condition */}
             <div className="ConditionColumn w-[126px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">Conditions</div>
               {equipments.map((eq, index) => (
@@ -191,12 +179,12 @@ function EquipmentStatusTable() {
                   key={`condition-${eq.id ?? index}`}
                   className="text-black text-sm font-semibold"
                 >
-                  {eq.condition ?? "-"}
+                  {eq.condition ?? "-"
+                  }
                 </div>
               ))}
             </div>
 
-            {/* Operating Hours */}
             <div className="OperationHoursColumn w-[125px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">
                 Operating Hours (hrs)
@@ -211,7 +199,6 @@ function EquipmentStatusTable() {
               ))}
             </div>
 
-            {/* Maintenance Hours */}
             <div className="MaintenanceHoursColumn w-[138px] flex flex-col gap-[17px]">
               <div className="text-[#666666] text-sm">Maintenance (hrs)</div>
               {equipments.map((eq, index) => (
@@ -226,9 +213,8 @@ function EquipmentStatusTable() {
           </div>
         </section>
 
-        <hr className="DividerBottom w-[787px] h-0 outline outline-1 outline-[#d9d9d9]" />
+        <hr className="DividerBottom self-stretch h-0 outline outline-1 outline-[#d9d9d9]" />
 
-        {/* FLEET OVERVIEW */}
         <section
           aria-label="Fleet overview summary"
           className="FleetOverviewSection self-stretch flex flex-col gap-3"
@@ -237,7 +223,7 @@ function EquipmentStatusTable() {
             Fleet Overview
           </h3>
 
-          <div className="FleetCardList flex gap-[17px]">
+          <div className="FleetCardList flex gap-[17px] flex-wrap">
             {fleetOverview.map((fleet, index) => (
               <article
                 key={fleet.id ?? index}

@@ -36,7 +36,7 @@ function EnvironmentConditionTable() {
     <section
       data-layer="environment_condition_card"
       aria-label="Environment conditions and weather-based risk"
-      className="EnvironmentConditionCard w-[360px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="EnvironmentConditionCard w-full max-w-[360px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="environment_condition_container"
@@ -46,7 +46,6 @@ function EnvironmentConditionTable() {
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-3"
         >
-          {/* Header */}
           <header
             data-layer="header_container"
             className="HeaderContainer self-stretch flex flex-col justify-start items-start gap-2.5"
@@ -89,7 +88,6 @@ function EnvironmentConditionTable() {
             </div>
           </header>
 
-          {/* Area */}
           <section
             data-layer="area_row_container"
             aria-label="Environment area"
@@ -114,13 +112,11 @@ function EnvironmentConditionTable() {
             className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
           />
 
-          {/* Info rows */}
           <section
             data-layer="info_rows_container"
             aria-label="Environment condition details"
             className="InfoRowsContainer self-stretch inline-flex justify-between items-start gap-6"
           >
-            {/* Labels */}
             <div
               data-layer="label_column"
               className="LabelColumn inline-flex flex-col justify-start items-start gap-3 text-black text-sm font-semibold"
@@ -136,7 +132,6 @@ function EnvironmentConditionTable() {
               <span>Updated</span>
             </div>
 
-            {/* Values */}
             <div
               data-layer="value_column"
               className="ValueColumn inline-flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold"
@@ -160,7 +155,6 @@ function EnvironmentConditionTable() {
         className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
       />
 
-      {/* Risk section */}
       <section
         data-layer="risk_section_container"
         aria-label="Weather-based risk"

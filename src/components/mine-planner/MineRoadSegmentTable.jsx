@@ -46,19 +46,19 @@ function MineRoadSegmentTable() {
     <section
       data-layer="road_condition_card"
       aria-label="Mine road and site conditions"
-      className="RoadConditionCard w-[485px] h-[553px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="RoadConditionCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="road_condition_container"
-        className="RoadConditionContainer size- flex flex-col justify-start items-start gap-3"
+        className="RoadConditionContainer w-full flex flex-col justify-start items-start gap-3"
       >
         <header
           data-layer="header_container"
-          className="HeaderContainer w-[442px] relative flex flex-col justify-center items-start gap-3"
+          className="HeaderContainer w-full relative flex flex-col justify-center items-start gap-3"
         >
           <div
             data-layer="header_left_group"
-            className="HeaderLeftGroup w-[235px] inline-flex justify-start items-center gap-3"
+            className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
           >
             <div
               data-layer="icon_wrapper"
@@ -87,7 +87,7 @@ function MineRoadSegmentTable() {
           <button
             type="button"
             data-layer="header_action_button_filter"
-            className="HeaderActionButtonFilter size-8 px-2 py-[7px] left-[391px] top-0 absolute bg-[#efefef] rounded-2xl flex flex-col justify-center items-center"
+            className="HeaderActionButtonFilter size-8 px-2 py-[7px] right-0 top-0 absolute bg-[#efefef] rounded-2xl flex flex-col justify-center items-center"
             aria-label="Filter mine road conditions"
           >
             <div
@@ -100,11 +100,11 @@ function MineRoadSegmentTable() {
         <section
           data-layer="segment_section_container"
           aria-label="Segment condition metrics"
-          className="SegmentSectionContainer w-[440px] h-[206px] relative overflow-hidden"
+          className="SegmentSectionContainer w-full relative overflow-hidden"
         >
           <div
             data-layer="segment_info_container"
-            className="SegmentInfoContainer w-[438px] left-0 top-[10px] absolute inline-flex flex-col justify-start items-start gap-[19px]"
+            className="SegmentInfoContainer w-full left-0 top-[10px] absolute inline-flex flex-col justify-start items-start gap-[19px]"
           >
             <h3
               data-layer="segment_name"
@@ -115,7 +115,7 @@ function MineRoadSegmentTable() {
 
             <div
               data-layer="road_condition_badge_container"
-              className="RoadConditionBadgeContainer w-[190px] h-7 px-[7px] py-[5px] bg-[#ffedb2] rounded-[7px] inline-flex justify-center items-center"
+              className="RoadConditionBadgeContainer px-[7px] py-[5px] bg-[#ffedb2] rounded-[7px] inline-flex justify-center items-center"
             >
               <span
                 data-layer="road_condition_badge_label"
@@ -206,13 +206,13 @@ function MineRoadSegmentTable() {
 
         <hr
           data-layer="divider_middle"
-          className="DividerMiddle w-[442px] h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
+          className="DividerMiddle w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
         />
 
         <section
           data-layer="speed_section_container"
           aria-label="Speed information"
-          className="SpeedSectionContainer w-[440px] flex flex-col justify-start items-start gap-4"
+          className="SpeedSectionContainer w-full flex flex-col justify-start items-start gap-4"
         >
           <h3
             data-layer="speed_section_title"
@@ -231,7 +231,7 @@ function MineRoadSegmentTable() {
             >
               <div
                 data-layer="speed_limit_block"
-                className="SpeedLimitBlock w-[97px] inline-flex flex-col justify-start items-start gap-[11px]"
+                className="SpeedLimitBlock inline-flex flex-col justify-start items-start gap-[11px]"
               >
                 <div
                   data-layer="speed_limit_label"
@@ -249,7 +249,7 @@ function MineRoadSegmentTable() {
 
               <div
                 data-layer="actual_speed_block"
-                className="ActualSpeedBlock w-24 inline-flex flex-col justify-start items-end gap-[11px]"
+                className="ActualSpeedBlock inline-flex flex-col justify-start items-end gap-[11px]"
               >
                 <div
                   data-layer="actual_speed_label"
@@ -288,7 +288,7 @@ function MineRoadSegmentTable() {
 
                 <div
                   data-layer="alert_text_container"
-                  className="AlertTextContainer w-[277px] inline-flex flex-col justify-start items-start gap-1"
+                  className="AlertTextContainer inline-flex flex-col justify-start items-start gap-1"
                 >
                   <div
                     data-layer="alert_title"
