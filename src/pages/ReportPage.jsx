@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import ReportGeneratorForm from "../components/reports/ReportGeneratorForm";
 import { generateReport, downloadReport } from "../services/reportService";
+import { userStore } from "../store/userStore";
+import { notificationStore } from "../store/notificationStore";
 
 function ReportPage() {
   const reportTypes = [
@@ -30,6 +32,9 @@ function ReportPage() {
   const [timePeriod, setTimePeriod] = useState("");
   const [selectedSections, setSelectedSections] = useState([]);
 
+  const addNotification = notificationStore((state) => state.addNotification);
+  const user = userStore((state) => state.user);
+
   const handleChangeReportType = (id) => {
     setReportType(id);
   };
@@ -42,36 +47,41 @@ function ReportPage() {
     setSelectedSections((prev) =>
       prev.includes(section)
         ? prev.filter((s) => s !== section)
-        : [...prev, section],
+        : [...prev, section]
     );
   };
 
+  const buildPayload = () => ({
+    report_type: reportType || null,
+    time_period: timePeriod || null,
+    sections: selectedSections,
+  });
+
   const handleGenerateReport = async () => {
-    const payload = {
-      report_type: reportType || null,
-      time_period: timePeriod || null,
-      sections: selectedSections,
-    };
+    const payload = buildPayload();
 
     try {
       const res = await generateReport(payload);
+
+      addNotification({
+        senderName: user?.fullname || "User",
+        message: "has made a new report! Check it out.",
+        timeAgo: "Just now",
+        payload,
+      });
+
       if (res && res.status === "ok") {
         alert("Report generation started");
       } else {
         alert("Report generation request sent");
       }
     } catch (err) {
-      console.error(err);
       alert("Failed to generate report");
     }
   };
 
   const handleDownloadReport = async () => {
-    const payload = {
-      report_type: reportType || null,
-      time_period: timePeriod || null,
-      sections: selectedSections,
-    };
+    const payload = buildPayload();
 
     try {
       const { blob, filename } = await downloadReport(payload);
@@ -84,7 +94,6 @@ function ReportPage() {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error(err);
       alert("Failed to download report");
     }
   };
@@ -92,7 +101,6 @@ function ReportPage() {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* HEADER */}
         <header aria-label="Reports introduction">
           <h1 className="text-2xl font-semibold text-gray-900">Reports</h1>
           <p className="text-sm text-gray-600">
@@ -101,7 +109,6 @@ function ReportPage() {
           </p>
         </header>
 
-        {/* REPORT GENERATOR FORM */}
         <section aria-label="Report generator form" className="mt-2">
           <ReportGeneratorForm
             reportTypeValue={
