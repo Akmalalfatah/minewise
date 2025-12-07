@@ -40,11 +40,12 @@ function OverviewPage() {
         >
           <h1 className="text-3xl font-semibold text-[#1a1a1a]">Overview</h1>
           <p className="text-gray-600 mt-1 text-sm max-w-[640px]">
-            Ringkasan overview tambang atau pelabuhan berdasarkan filter global.
+            Ringkasan overview tambang atau pelabuhan berdasarkan filter
+            global.
           </p>
         </header>
 
-        {/* GLOBAL FILTER + TOGGLE VIEW (posisi sejajar seperti di Figma) */}
+        {/* GLOBAL FILTER + TOGGLE VIEW */}
         <section
           aria-label="Global filters and overview view switcher"
           className="flex justify-between items-center gap-4"
@@ -111,32 +112,22 @@ function OverviewPage() {
               </p>
             </header>
 
-            {/* MAIN GRID: kiri (Env + Road), kanan (AI + Equipment) */}
+            {/* ROW 1: Environment + AI Recommendation */}
             <section
-              aria-label="Mine planner content"
-              className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6 items-start"
+              aria-label="Environment conditions and AI recommendations"
+              className="flex flex-col lg:flex-row gap-6 items-start"
             >
-              {/* Kolom kiri: Environment + Mine Road */}
-              <div className="flex flex-col gap-4 lg:gap-6">
-                <section aria-label="Environment conditions">
-                  <EnvironmentConditionTable />
-                </section>
+              <EnvironmentConditionTable />
+              <AIRecommendationCard />
+            </section>
 
-                <section aria-label="Mine road and site conditions">
-                  <MineRoadSegmentTable />
-                </section>
-              </div>
-
-              {/* Kolom kanan (span 2): AI Recommendation + Equipment */}
-              <div className="lg:col-span-2 flex flex-col gap-4 lg:gap-6">
-                <section aria-label="AI recommendations">
-                  <AIRecommendationCard />
-                </section>
-
-                <section aria-label="Equipment status">
-                  <EquipmentStatusTable />
-                </section>
-              </div>
+            {/* ROW 2: Mine Road & Site Conditions + Equipment Status */}
+            <section
+              aria-label="Mine road conditions and equipment status"
+              className="flex flex-col lg:flex-row gap-6 items-start"
+            >
+              <MineRoadSegmentTable />
+              <EquipmentStatusTable />
             </section>
           </section>
         ) : (
