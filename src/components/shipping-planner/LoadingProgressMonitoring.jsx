@@ -17,11 +17,11 @@ function LoadingProgressMonitoring({ onSeeMore }) {
   return (
     <section
       data-layer="loading_progress_card"
-      className="LoadingProgressCard w-[505px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-6"
+      className="LoadingProgressCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-6 h-full"
     >
       <div
         data-layer="loading_progress_container"
-        className="LoadingProgressContainer w-[463px] flex flex-col justify-start items-start gap-6"
+        className="LoadingProgressContainer w-full flex flex-col justify-start items-start gap-6"
       >
         {/* Header */}
         <header
@@ -89,18 +89,21 @@ function LoadingProgressMonitoring({ onSeeMore }) {
 
               {/* Card Content */}
               <article className="ProgressCardContentContainer self-stretch flex flex-col justify-start items-start gap-3">
-
                 <dl className="w-full flex flex-col gap-3">
                   {/* Progress */}
                   <div className="flex justify-between items-center">
                     <dt className="text-black text-sm">Progress</dt>
-                    <dd className="text-black text-sm font-semibold">{ship?.progress || "-"}</dd>
+                    <dd className="text-black text-sm font-semibold">
+                      {ship?.progress || "-"}
+                    </dd>
                   </div>
 
                   {/* Loaded */}
                   <div className="flex justify-between items-center">
                     <dt className="text-black text-sm">Loaded</dt>
-                    <dd className="text-black text-sm font-semibold">{ship?.loaded || "-"}</dd>
+                    <dd className="text-black text-sm font-semibold">
+                      {ship?.loaded || "-"}
+                    </dd>
                   </div>
 
                   {/* Status */}
@@ -124,7 +127,6 @@ function LoadingProgressMonitoring({ onSeeMore }) {
                     <dd className="text-black text-sm">{ship?.etd || "-"}</dd>
                   </div>
                 </dl>
-
               </article>
             </li>
           ))}

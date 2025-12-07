@@ -28,11 +28,11 @@ function PortCongestionStatus() {
   return (
     <section
       data-layer="port_congestion_status_card"
-      className="PortCongestionStatusCard w-[827px] h-[506px] p-6 bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
+      className="PortCongestionStatusCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
     >
       <div
         data-layer="card_container"
-        className="CardContainer self-stretch h-[457px] flex flex-col justify-start items-start gap-6"
+        className="CardContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
         {/* Header */}
         <header
@@ -70,11 +70,11 @@ function PortCongestionStatus() {
         {/* Main Content */}
         <article
           data-layer="content_container"
-          className="ContentContainer self-stretch h-[360px] px-[19px] py-2.5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
+          className="ContentContainer self-stretch px-[19px] py-2.5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
         >
           <div
             data-layer="activity_card_container"
-            className="ActivityCardContainer w-[743px] h-[321px] flex flex-col justify-start items-start gap-[17px]"
+            className="ActivityCardContainer w-full flex flex-col justify-start items-start gap-[17px]"
           >
             {/* Section Title */}
             <header
@@ -158,7 +158,7 @@ function PortCongestionStatus() {
                 <dt className="OperationalNoteLabel text-black text-sm font-semibold">
                   Operational Note:
                 </dt>
-                <dd className="OperationalNoteText text-black text-sm w-[513px]">
+                <dd className="OperationalNoteText text-black text-sm w-full md:w-[513px]">
                   {operationalNote}
                 </dd>
               </section>

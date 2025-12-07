@@ -160,12 +160,12 @@ function OverviewPage() {
             {/* ROW 1: Port Weather + AI Recommendation */}
             <section
               aria-label="Port weather conditions and AI shipping recommendations"
-              className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6"
+              className="flex flex-col lg:flex-row gap-6 items-stretch"
             >
-              <section className="lg:col-span-1">
+              <section className="lg:w-[360px] flex-shrink-0">
                 <PortWeatherConditions />
               </section>
-              <section className="lg:col-span-2">
+              <section className="flex-1">
                 <AIShippingRecommendationCard />
               </section>
             </section>
@@ -173,12 +173,12 @@ function OverviewPage() {
             {/* ROW 2: Vessel Schedule + Coal Volume */}
             <section
               aria-label="Vessel schedule and coal volume"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
             >
-              <section>
+              <section className="flex flex-col h-full">
                 <VesselScheduleOverview />
               </section>
-              <section>
+              <section className="flex flex-col h-full">
                 <CoalVolumeCard />
               </section>
             </section>
@@ -186,12 +186,12 @@ function OverviewPage() {
             {/* ROW 3: Loading Progress + Port Congestion Status */}
             <section
               aria-label="Loading progress and port congestion status"
-              className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6"
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
             >
-              <section>
+              <section className="flex flex-col h-full">
                 <LoadingProgressMonitoring />
               </section>
-              <section>
+              <section className="flex flex-col h-full">
                 <PortCongestionStatus />
               </section>
             </section>
