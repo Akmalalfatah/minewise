@@ -76,6 +76,7 @@ function ReportPage() {
         alert("Report generation request sent");
       }
     } catch (err) {
+      console.error(err);
       alert("Failed to generate report");
     }
   };
@@ -94,6 +95,7 @@ function ReportPage() {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
+      console.error(err);
       alert("Failed to download report");
     }
   };

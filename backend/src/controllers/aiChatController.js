@@ -1,18 +1,21 @@
-import * as service from "../services/aiChatService.js";
-import { parseFilters } from "../utils/filterUtil.js";
+import {
+  getInitialChat,
+  getReasoning,
+  processUserMessage
+} from "../services/aiChatService.js";
 
-export async function getChatMessage(req, res) {
-    const payload = await service.getChatMessage(parseFilters(req.query));
-    return res.json(payload);
+export async function getChat(req, res) {
+  const result = await getInitialChat();
+  return res.json(result);
 }
 
 export async function getReasoningData(req, res) {
-    const payload = await service.getReasoningData(parseFilters(req.query));
-    return res.json(payload);
+  const result = await getReasoning();
+  return res.json(result);
 }
 
-export async function postUserMessage(req, res) {
-    const { human_message } = req.body || {};
-    const payload = await service.postUserMessage(human_message, parseFilters(req.query));
-    return res.json(payload);
+export async function postChat(req, res) {
+  const { human_message } = req.body || {};
+  const result = await processUserMessage(human_message);
+  return res.json(result);
 }

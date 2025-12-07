@@ -1,23 +1,9 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ChatMessage from "../components/chatbox/ChatMessage";
 import ReasoningChainPanel from "../components/chatbox/ReasoningChainPanel";
+import { getChatMessage, postUserMessage } from "../services/aiChatService";
 
-const INITIAL_MESSAGES = [
-  {
-    id: 1,
-    role: "assistant",
-    text: "Hello! I’m your AI Assistant for mining operations. I can help you with real-time operational insights, optimization recommendations, and scenario analysis. What would you like to know?",
-    time: "10.24 AM"
-  },
-  {
-    id: 2,
-    role: "user",
-    text: "What’s the current weather impact on operations?",
-    time: "12.11 AM"
-  }
-];
-
-const SUGGESTIONS = [
+const DEFAULT_SUGGESTIONS = [
   "What’s the current weather impact on operations?",
   "Should we adjust production targets today?",
   "What’s the optimal truck allocation?",
@@ -25,77 +11,152 @@ const SUGGESTIONS = [
 ];
 
 function AIChatboxPage() {
-  const [messages, setMessages] = useState(INITIAL_MESSAGES);
+  const [messages, setMessages] = useState([
+    {
+      id: "ai-initial",
+      role: "assistant",
+      message:
+        "Hello, I am MineWise AI Assistant. Ask me about production, road risk, weather impact, or vessel loading schedules.",
+      time: new Date().toLocaleTimeString([], {
+        hour: "2-digit",
+        minute: "2-digit"
+      })
+    }
+  ]);
+  const [suggestions, setSuggestions] = useState(DEFAULT_SUGGESTIONS);
   const [input, setInput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleSend = (valueFromSuggestion) => {
-    const content = (valueFromSuggestion ?? input).trim();
-    if (!content) return;
+  useEffect(() => {
+    async function loadInitial() {
+      const data = await getChatMessage();
+      if (!data) return;
 
-    const newMessage = {
+      const time =
+        data.ai_time &&
+        new Date(data.ai_time).toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit"
+        });
+
+      const firstMessage = {
+        id: "ai-initial-from-api",
+        role: "assistant",
+        message:
+          data.ai_answer ||
+          "Hello, I am MineWise AI Assistant. Ask me about production, road risk, weather impact, or vessel loading schedules.",
+        time: time || messages[0].time
+      };
+
+      setMessages([firstMessage]);
+      if (Array.isArray(data.quick_questions) && data.quick_questions.length) {
+        setSuggestions(data.quick_questions);
+      }
+    }
+
+    loadInitial();
+  }, []);
+
+  const handleSendCore = async (content) => {
+    const trimmed = content.trim();
+    if (!trimmed || isLoading) return;
+
+    const now = new Date();
+    const userTime = now.toLocaleTimeString([], {
+      hour: "2-digit",
+      minute: "2-digit"
+    });
+
+    const userMessage = {
       id: Date.now(),
       role: "user",
-      text: content,
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      })
+      message: trimmed,
+      time: userTime
     };
 
-    const aiReply = {
-      id: Date.now() + 1,
-      role: "assistant",
-      text:
-        "This is a placeholder AI response. Integrasi dengan aiChatService bisa ditambahkan di tahap berikutnya untuk menjawab pertanyaan secara dinamis.",
-      time: new Date().toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit"
-      })
-    };
-
-    setMessages((prev) => [...prev, newMessage, aiReply]);
+    setMessages((prev) => [...prev, userMessage]);
     setInput("");
+    setIsLoading(true);
+
+    try {
+      const result = await postUserMessage(trimmed);
+
+      if (result && result.ai_answer) {
+        const aiTime =
+          result.ai_time &&
+          new Date(result.ai_time).toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          });
+
+        const aiMessage = {
+          id: Date.now() + 1,
+          role: "assistant",
+          message: result.ai_answer,
+          time: aiTime
+        };
+
+        setMessages((prev) => [...prev, aiMessage]);
+
+        if (
+          Array.isArray(result.quick_questions) &&
+          result.quick_questions.length
+        ) {
+          setSuggestions(result.quick_questions);
+        }
+      } else {
+        const fallbackMessage = {
+          id: Date.now() + 1,
+          role: "assistant",
+          message:
+            "I could not reach the AI engine right now, but generally rain can reduce hauling efficiency, increase road slipperiness, and delay production.",
+          time: new Date().toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit"
+          })
+        };
+
+        setMessages((prev) => [...prev, fallbackMessage]);
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSend();
+    handleSendCore(input);
   };
 
-  const handleSuggestionClick = (suggestion) => {
-    handleSend(suggestion);
+  const handleSuggestionClick = (text) => {
+    handleSendCore(text);
   };
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <header aria-label="AI Chatbox introduction">
-          <h1 className="text-2xl font-semibold text-gray-900">
-            AI Chatbox
-          </h1>
+          <h1 className="text-2xl font-semibold text-gray-900">AI Chatbox</h1>
           <p className="text-sm text-gray-600 mt-1">
             Berinteraksi dengan AI untuk mendapatkan insight operasional,
             rekomendasi optimasi, dan penjelasan reasoning chain.
           </p>
         </header>
 
-        {/* MAIN CONTENT AREA */}
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-          {/* CHAT SECTION */}
           <section
             aria-label="Chat area"
             className="xl:col-span-2 flex flex-col gap-4"
           >
             <div className="bg-white rounded-3xl shadow-sm flex flex-col h-[520px] overflow-hidden">
-              {/* Chat header */}
               <header className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-                <div
-                  className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-xs"
-                  aria-hidden="true"
-                >
-                  MW
+                <div className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center overflow-hidden">
+                  <img
+                    src="/icons/icon_robot.png"
+                    alt="MineWise AI"
+                    className="w-6 h-6"
+                  />
                 </div>
-
                 <div>
                   <p className="text-sm font-semibold text-gray-900">
                     MineWise AI Assistant
@@ -106,22 +167,21 @@ function AIChatboxPage() {
                 </div>
               </header>
 
-              {/* Chat messages */}
-              <div
-                className="flex-1 overflow-y-auto px-6 py-4 space-y-4 bg-[#fafafa]"
-                aria-live="polite"
-              >
+              <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#fafafa] space-y-4">
                 {messages.map((msg) => (
                   <ChatMessage
                     key={msg.id}
                     role={msg.role}
-                    message={msg.text}
+                    message={msg.message}
                     time={msg.time}
                   />
                 ))}
+
+                {isLoading && (
+                  <ChatMessage role="assistant" isTyping={true} />
+                )}
               </div>
 
-              {/* Chat input */}
               <form
                 onSubmit={handleSubmit}
                 className="border-t border-gray-100 px-6 py-4 bg-white flex items-center gap-3"
@@ -138,7 +198,8 @@ function AIChatboxPage() {
 
                 <button
                   type="submit"
-                  className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg hover:bg-black transition-colors"
+                  disabled={isLoading}
+                  className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg hover:bg-black transition-colors disabled:opacity-60"
                   aria-label="Send message"
                 >
                   ↑
@@ -146,10 +207,9 @@ function AIChatboxPage() {
               </form>
             </div>
 
-            {/* Suggested prompts */}
             <nav aria-label="Suggested prompts">
               <div className="flex flex-wrap gap-3">
-                {SUGGESTIONS.map((s) => (
+                {suggestions.map((s) => (
                   <button
                     key={s}
                     type="button"
@@ -163,7 +223,6 @@ function AIChatboxPage() {
             </nav>
           </section>
 
-          {/* REASONING PANEL */}
           <section aria-label="Reasoning chain panel" className="xl:col-span-1">
             <ReasoningChainPanel />
           </section>
