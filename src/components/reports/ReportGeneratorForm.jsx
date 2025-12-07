@@ -38,6 +38,7 @@ function ReportGeneratorForm({
           </h1>
         </header>
 
+        {/* Body */}
         <section
           aria-label="Report configuration"
           className="self-stretch h-[987px] relative"
