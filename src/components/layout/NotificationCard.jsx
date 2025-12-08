@@ -1,6 +1,21 @@
 import React, { useState } from "react";
 
-function NotificationCard({ notifications = [], onCheck }) {
+function formatTimeAgo(createdAt) {
+  if (!createdAt) return "";
+  const diffMs = Date.now() - createdAt;
+  const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+  if (diffMinutes < 1) return "Just now";
+  if (diffMinutes < 60) return `${diffMinutes} minutes ago`;
+
+  const diffHours = Math.floor(diffMinutes / 60);
+  if (diffHours < 24) return `${diffHours} hours ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  return `${diffDays} days ago`;
+}
+
+function NotificationCard({ notifications = [], onCheck, onClearAll }) {
   const [openIndex, setOpenIndex] = useState(null);
 
   const handleToggle = (index) => {
@@ -9,7 +24,18 @@ function NotificationCard({ notifications = [], onCheck }) {
 
   return (
     <section className="w-96 px-5 py-5 bg-white rounded-3xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] flex flex-col gap-4">
-      <h2 className="text-black text-sm font-semibold">Notification</h2>
+      <div className="flex items-center justify-between w-80">
+        <h2 className="text-black text-sm font-semibold">Notification</h2>
+        {notifications.length > 0 && (
+          <button
+            type="button"
+            className="text-xs text-red-500 font-medium"
+            onClick={onClearAll}
+          >
+            Clear All
+          </button>
+        )}
+      </div>
 
       <hr className="w-80 outline outline-[0.5px] outline-stone-300" />
 
@@ -18,7 +44,7 @@ function NotificationCard({ notifications = [], onCheck }) {
       )}
 
       {notifications.map((n, i) => (
-        <div key={i} className="flex flex-col gap-2 w-80">
+        <div key={n.id ?? i} className="flex flex-col gap-2 w-80">
           <button
             type="button"
             onClick={() => handleToggle(i)}
@@ -38,7 +64,9 @@ function NotificationCard({ notifications = [], onCheck }) {
             />
           </button>
 
-          <time className="text-stone-500 text-xs">{n.timeAgo}</time>
+          <time className="text-stone-500 text-xs">
+            {n.timeAgo || formatTimeAgo(n.createdAt)}
+          </time>
 
           {openIndex === i && (
             <button

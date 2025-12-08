@@ -10,10 +10,16 @@ import authRoutes from "./routes/authRoutes.js";
 
 const app = express();
 
-app.use(cors());
-app.use(express.json());
-app.use("/api/auth", authRoutes);
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL || "http://localhost:5173",
+    credentials: true,
+  })
+);
 
+app.use(express.json());
+
+app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mine-planner", minePlannerRoutes);
 app.use("/api/shipping-planner", shippingPlannerRoutes);

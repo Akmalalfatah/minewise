@@ -4,6 +4,7 @@ import NotificationSection from "./NotificationSection";
 import NotificationCard from "./NotificationCard";
 import ProfileSection from "./ProfileSection";
 import { notificationStore } from "../../store/notificationStore";
+import { downloadReport } from "../../services/reportService";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -11,6 +12,12 @@ function Navbar() {
 
   const notifications = notificationStore((state) => state.notifications);
   const markAllRead = notificationStore((state) => state.markAllRead);
+  const clearNotifications = notificationStore(
+    (state) => state.clearNotifications
+  );
+  const removeNotification = notificationStore(
+    (state) => state.removeNotification
+  );
 
   const [openNotif, setOpenNotif] = useState(false);
 
@@ -25,9 +32,30 @@ function Navbar() {
     }
   };
 
-  const handleCheckNotif = () => {
-    navigate("/report");
-    setOpenNotif(false);
+  const handleCheckNotif = async (notif) => {
+    try {
+      if (notif?.payload) {
+        const { blob } = await downloadReport(notif.payload);
+        const pdfBlob = new Blob([blob], { type: "application/pdf" });
+        const url = window.URL.createObjectURL(pdfBlob);
+        window.open(url, "_blank", "noopener,noreferrer");
+      } else {
+        navigate("/report");
+      }
+
+      if (notif?.id) {
+        removeNotification(notif.id);
+      }
+    } catch (err) {
+      console.error(err);
+      navigate("/report");
+    } finally {
+      setOpenNotif(false);
+    }
+  };
+
+  const handleClearAll = () => {
+    clearNotifications();
   };
 
   return (
@@ -72,6 +100,7 @@ function Navbar() {
               <NotificationCard
                 notifications={notifications}
                 onCheck={handleCheckNotif}
+                onClearAll={handleClearAll}
               />
             </div>
           )}
