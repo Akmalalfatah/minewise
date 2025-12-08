@@ -1,3 +1,6 @@
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:4000/api";
+
 function buildQuery(filters = {}) {
   const params = new URLSearchParams();
 
@@ -13,12 +16,29 @@ function buildQuery(filters = {}) {
 
 async function fetchMinePlanner(path, filters = {}) {
   const query = buildQuery(filters);
-  const res = await fetch(`/api/mine-planner/${path}${query}`, {
+
+  const res = await fetch(`${API_BASE_URL}/mine-planner/${path}${query}`, {
     credentials: "include",
   });
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
+    const text = await res.text().catch(() => "");
+    throw new Error(
+      `Failed to fetch ${path}: ${res.status} ${res.statusText} – ${text.slice(
+        0,
+        120
+      )}`
+    );
+  }
+
+  const contentType = res.headers.get("content-type") || "";
+  if (!contentType.includes("application/json")) {
+    const text = await res.text().catch(() => "");
+    throw new Error(
+      `Expected JSON from ${path}, but got content-type="${contentType}" and body="${text
+        .slice(0, 120)
+        .replace(/\s+/g, " ")}"`
+    );
   }
 
   const payload = await res.json();
