@@ -6,27 +6,26 @@ function ChatMessage({ role = "assistant", message, time, isTyping = false }) {
 
   return (
     <div
-      className={`w-full flex items-start gap-3 ${
-        isAssistant ? "justify-start" : "justify-end"
-      }`}
+      className={`w-full flex items-start gap-3 ${isAssistant ? "justify-start" : "justify-end"
+        }`}
     >
       {isAssistant && (
-        <div className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center shrink-0">
-          <img src="/icons/icon_robot.png" alt="MW" className="w-6 h-6" />
+        <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center shrink-0">
+          <div className="bg-[#1c2534] flex items-center justify-center text-lg">
+            🤖
+          </div>
         </div>
       )}
 
       <div
-        className={`max-w-[70%] flex flex-col gap-1 ${
-          isAssistant ? "items-start" : "items-end"
-        }`}
+        className={`max-w-[70%] flex flex-col gap-1 ${isAssistant ? "items-start" : "items-end"
+          }`}
       >
         <div
-          className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${
-            isAssistant
+          className={`px-4 py-3 rounded-2xl text-sm leading-relaxed ${isAssistant
               ? "bg-white border border-gray-200 text-gray-900"
               : "bg-[#1c2534] text-white"
-          }`}
+            }`}
         >
           {isTyping ? (
             <div className="flex items-center gap-1">

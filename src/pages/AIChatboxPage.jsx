@@ -133,41 +133,28 @@ function AIChatboxPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        <header aria-label="AI Chatbox introduction">
-          <h1 className="text-2xl font-semibold text-gray-900">AI Chatbox</h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Berinteraksi dengan AI untuk mendapatkan insight operasional,
-            rekomendasi optimasi, dan penjelasan reasoning chain.
-          </p>
-        </header>
-
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <section
             aria-label="Chat area"
             className="xl:col-span-2 flex flex-col gap-4"
           >
-            <div className="bg-white rounded-3xl shadow-sm flex flex-col h-[520px] overflow-hidden">
+            <div className="bg-white rounded-3xl flex flex-col h-[520px] overflow-hidden">
               <header className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
-                <div className="w-9 h-9 rounded-full bg-[#1c2534] flex items-center justify-center overflow-hidden">
-                  <img
-                    src="/icons/icon_robot.png"
-                    alt="MineWise AI"
-                    className="w-6 h-6"
-                  />
-                </div>
-                <div>
-                  <p className="text-sm font-semibold text-gray-900">
-                    MineWise AI Assistant
-                  </p>
-                  <p className="text-[11px] text-gray-500">
-                    Ask about operations, risks, and optimization strategies.
-                  </p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg">
+                    🤖
+                  </div>
+                  <div>
+                    <h2 className="text-lg font-semibold text-gray-900">
+                      MineWise AI Assistant
+                    </h2>
+                  </div>
                 </div>
               </header>
 
-              <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#fafafa] space-y-4">
+              <div className="flex-1 overflow-y-auto px-6 py-4 bg-[#efefef] space-y-4">
                 {messages.map((msg) => (
                   <ChatMessage
                     key={msg.id}
@@ -192,14 +179,14 @@ function AIChatboxPage() {
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   placeholder="Ask about operations, request recommendations..."
-                  className="flex-1 text-sm px-4 py-2 rounded-2xl bg-[#f3f4f6] outline-none border border-transparent focus:border-[#ff7b54] transition-colors"
+                  className="flex-1 text-sm px-4 py-2 rounded-[10px] bg-[#efefef] outline-none border border-transparent focus:border-[#ff7b54] transition-colors"
                   aria-label="Message input"
                 />
 
                 <button
                   type="submit"
                   disabled={isLoading}
-                  className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg hover:bg-black transition-colors disabled:opacity-60"
+                  className="w-10 h-10 rounded-[10px] bg-[#1c2534] flex items-center justify-center text-white text-lg hover:bg-black transition-colors disabled:opacity-60"
                   aria-label="Send message"
                 >
                   ↑
@@ -214,7 +201,7 @@ function AIChatboxPage() {
                     key={s}
                     type="button"
                     onClick={() => handleSuggestionClick(s)}
-                    className="px-4 py-2 rounded-full bg-white text-xs text-gray-800 shadow-sm hover:bg-gray-50 transition-colors"
+                    className="px-4 py-2 rounded-[10px] bg-[#1C2534] text-xs text-white hover:bg-gray-50 transition-colors"
                   >
                     {s}
                   </button>

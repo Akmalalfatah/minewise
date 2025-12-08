@@ -119,3 +119,8 @@ export async function getAISummary(filters = {}) {
   });
   return res.data.ai_summary;
 }
+
+export async function getDashboard() {
+  const res = await apiClient.get("/dashboard");
+  return res.data;
+}

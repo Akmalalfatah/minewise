@@ -21,35 +21,19 @@ function SimulationPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* TITLE */}
-        <header>
-          <h1 className="text-2xl font-semibold text-gray-900">
-            Simulation Analysis
-          </h1>
-          <p className="text-sm text-gray-600 mt-1">
-            Jalankan skenario simulasi untuk melihat dampak perubahan cuaca,
-            kesehatan alat, dan keterlambatan kapal terhadap produksi serta
-            risiko operasi.
-          </p>
-        </header>
-
-        {/* AI SCENARIO CONTROL PANEL */}
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
         <section
           aria-label="AI simulation scenario controls"
-          className="bg-white rounded-3xl p-6 flex flex-col gap-6 shadow-sm"
+          className="bg-white rounded-3xl p-6 flex flex-col gap-6"
         >
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg">
-              🤖
+            <div className="IconWrapper size-8 px-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
+              <img className="IconWarning size-[18px]" src="/icons/icon_combo_chart.png" alt="" />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
                 AI Scenario
               </h2>
-              <p className="text-xs text-gray-500">
-                Atur parameter simulasi untuk mengevaluasi skenario produksi.
-              </p>
             </div>
           </div>
 
@@ -89,7 +73,7 @@ function SimulationPage() {
             <button
               type="button"
               onClick={handleRunScenario}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-[#1c2534] text-white text-sm font-semibold hover:bg-black transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] bg-[#1c2534] text-white text-sm font-semibold hover:bg-black transition-colors"
             >
               ▶ Run Scenario
             </button>
@@ -97,7 +81,7 @@ function SimulationPage() {
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full border border-gray-300 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] border border-gray-300 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors"
             >
               ⟲ Reset Parameter
             </button>
@@ -149,8 +133,8 @@ function SimulationPage() {
           className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white"
         >
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center">
-              💡
+            <div className="IconWrapper size-8 p-[7px] bg-white rounded-2xl flex justify-center items-center">
+              <img className="IconRobot size-[18px]" src="/icons/icon_robot_black.png" alt="" />
             </div>
             <div>
               <h2 className="text-lg font-semibold">
@@ -162,8 +146,8 @@ function SimulationPage() {
                   {activeScenario === "baseline"
                     ? "Baseline"
                     : activeScenario === "optimized"
-                    ? "Optimized"
-                    : "Conservative"}
+                      ? "Optimized"
+                      : "Conservative"}
                 </span>
                 .
               </p>
@@ -204,7 +188,7 @@ function ScenarioControlCard({
   onChange,
 }) {
   return (
-    <div className="bg-[#f7f7f8] rounded-3xl p-4 flex flex-col gap-3">
+    <div className="bg-[#efefef] rounded-[20px] p-4 flex flex-col gap-3">
       <div className="flex justify-between items-center">
         <p className="text-sm font-semibold text-gray-900">{label}</p>
         <p className="text-xs font-medium text-gray-700">{valueLabel}</p>
@@ -237,9 +221,8 @@ function ScenarioResultCard({
         <button
           type="button"
           onClick={onSelect}
-          className={`w-4 h-4 rounded-full border-2 ${
-            isActive ? "border-white bg-white" : "border-white/50"
-          }`}
+          className={`w-4 h-4 rounded-full border-2 ${isActive ? "border-white bg-white" : "border-white/50"
+            }`}
           aria-label={`Select ${title}`}
         />
       </div>

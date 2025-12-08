@@ -46,7 +46,7 @@ export const notificationStore = create((set) => ({
 
   markAllRead: () =>
     set(() => {
-      localStorage.setItem(UNREAD_KEY, "0");
+      localStorage.setItem(UNREAD_KEY, JSON.stringify(0));
       return { unreadCount: 0 };
     }),
 

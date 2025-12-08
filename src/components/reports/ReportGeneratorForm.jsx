@@ -17,12 +17,12 @@ function ReportGeneratorForm({
     <section
       data-layer="report_generator_form"
       aria-labelledby="report-generator-title"
-      className="ReportGeneratorForm w-[1365px] h-[1029px] p-6 bg-white/70 rounded-3xl inline-flex flex-col justify-center items-center gap-8"
+      className="w-full max-w-[1365px] p-6 bg-white/70 rounded-3xl"
     >
-      <div className="self-stretch h-[976px] flex flex-col justify-start items-start gap-8">
+      <div className="w-full flex flex-col gap-8">
         {/* Header */}
-        <header className="inline-flex justify-start items-center gap-3">
-          <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl flex justify-center items-center gap-2.5">
+        <header className="flex items-center gap-3">
+          <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl flex justify-center items-center">
             <img
               data-layer="icon_pen_report"
               className="w-5 h-5"
@@ -32,29 +32,26 @@ function ReportGeneratorForm({
           </div>
           <h1
             id="report-generator-title"
-            className="justify-start text-black text-sm font-semibold font-['Inter']"
+            className="text-black text-sm font-semibold font-['Inter']"
           >
             Generate Custom Report
           </h1>
         </header>
 
         {/* Body */}
-        <section
-          aria-label="Report configuration"
-          className="self-stretch h-[987px] relative"
-        >
-          <p className="w-[1317px] left-0 top-0 absolute justify-start text-black/60 text-sm font-normal font-['Inter']">
+        <section aria-label="Report configuration" className="w-full flex flex-col gap-8">
+          <p className="text-black/60 text-sm font-normal font-['Inter']">
             Select sections and configure your report
           </p>
 
           {/* Top filters: Report Type & Time Period */}
-          <section className="w-[1317px] h-16 left-0 top-[49px] absolute">
+          <div className="w-full flex gap-[112px]">
             {/* Report Type */}
-            <div className="w-[593px] left-[20px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
-              <label className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+            <div className="flex-1 flex flex-col gap-3">
+              <label className="text-black text-sm font-semibold font-['Inter']">
                 Report Type
               </label>
-              <div className="self-stretch h-9 px-1.5 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
+              <div className="h-9 px-1.5 py-[10px] bg-[#efefef] rounded-[5px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
                 <select
                   value={reportTypeValue || ""}
                   onChange={(e) => {
@@ -75,23 +72,15 @@ function ReportGeneratorForm({
                     </option>
                   ))}
                 </select>
-                <div className="w-6 h-6 flex items-center justify-center pointer-events-none">
-                  <img
-                    data-layer="icon_dropdown_report_type"
-                    className="w-6 h-6"
-                    src="/icons/icon_dropdown.png"
-                    alt=""
-                  />
-                </div>
               </div>
             </div>
 
             {/* Time Period */}
-            <div className="w-[593px] left-[705px] top-[0.50px] absolute inline-flex flex-col justify-center items-center gap-3">
-              <label className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+            <div className="flex-1 flex flex-col gap-3">
+              <label className="text-black text-sm font-semibold font-['Inter']">
                 Time Period
               </label>
-              <div className="w-[593px] h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 inline-flex justify-between items-center gap-2.5">
+              <div className="h-9 px-2 py-[10px] bg-[#efefef] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
                 <select
                   value={timePeriodValue || ""}
                   onChange={(e) => {
@@ -112,38 +101,27 @@ function ReportGeneratorForm({
                     </option>
                   ))}
                 </select>
-                <div className="w-6 h-6 flex items-center justify-center pointer-events-none">
-                  <img
-                    data-layer="icon_dropdown_time_period"
-                    className="w-6 h-6"
-                    src="/icons/icon_dropdown.png"
-                    alt=""
-                  />
-                </div>
               </div>
             </div>
-          </section>
+          </div>
 
           {/* Sections list */}
-          <section
-            aria-label="Report sections selection"
-            className="w-[1317px] left-0 top-[152px] absolute inline-flex flex-col justify-start items-start gap-6"
-          >
-            <div className="self-stretch inline-flex justify-between items-center">
-              <h2 className="justify-start text-black text-sm font-semibold font-['Inter']">
+          <div aria-label="Report sections selection" className="w-full flex flex-col gap-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-black text-sm font-semibold font-['Inter']">
                 Report Section
               </h2>
             </div>
 
-            <div className="self-stretch flex flex-col justify-start items-start gap-6">
+            <div className="flex flex-col gap-6">
               {sectionsList.map((section) => {
                 const checked = selectedSections.includes(section);
                 return (
                   <article
                     key={section}
-                    className="self-stretch h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex flex-col justify-center items-start gap-2.5"
+                    className="h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex items-center"
                   >
-                    <label className="inline-flex justify-start items-center gap-3 w-full cursor-pointer">
+                    <label className="flex items-center gap-3 w-full cursor-pointer">
                       <input
                         type="checkbox"
                         checked={checked}
@@ -153,11 +131,11 @@ function ReportGeneratorForm({
                         className="w-4 h-4"
                         aria-label={section}
                       />
-                      <div className="inline-flex flex-col justify-start items-start gap-px">
-                        <span className="self-stretch justify-start text-black text-sm font-semibold font-['Inter']">
+                      <div className="flex flex-col gap-px">
+                        <span className="text-black text-sm font-semibold font-['Inter']">
                           {section}
                         </span>
-                        <span className="self-stretch justify-start text-black/60 text-xs font-normal font-['Inter']">
+                        <span className="text-black/60 text-xs font-normal font-['Inter']">
                           {section === "Executive Summary" &&
                             "High-level overview and key insights"}
                           {section === "Operational Overview" &&
@@ -181,14 +159,14 @@ function ReportGeneratorForm({
                 );
               })}
             </div>
-          </section>
+          </div>
 
           {/* Action buttons */}
-          <footer className="left-0 top-[849px] absolute inline-flex justify-start items-center gap-3">
+          <footer className="flex items-center gap-3">
             <button
               type="button"
               onClick={onGenerateReport}
-              className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center gap-2.5"
+              className="w-40 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Generate Report
@@ -198,7 +176,7 @@ function ReportGeneratorForm({
             <button
               type="button"
               onClick={onDownloadReport}
-              className="w-40 h-14 px-4 py-3.5 bg-gray-800 rounded-[10px] inline-flex justify-center items-center gap-2.5"
+              className="w-30 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Download

@@ -76,7 +76,6 @@ function ReportPage() {
         alert("Report generation request sent");
       }
     } catch (err) {
-      console.error(err);
       alert("Failed to generate report");
     }
   };
@@ -95,22 +94,13 @@ function ReportPage() {
       a.remove();
       window.URL.revokeObjectURL(url);
     } catch (err) {
-      console.error(err);
       alert("Failed to download report");
     }
   };
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        <header aria-label="Reports introduction">
-          <h1 className="text-2xl font-semibold text-gray-900">Reports</h1>
-          <p className="text-sm text-gray-600">
-            Generate custom reports berdasarkan section yang kamu pilih,
-            lengkap dengan ringkasan eksekutif dan analisis operasional.
-          </p>
-        </header>
-
+    <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
         <section aria-label="Report generator form" className="mt-2">
           <ReportGeneratorForm
             reportTypeValue={

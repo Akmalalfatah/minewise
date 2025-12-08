@@ -1,11 +1,24 @@
 import React, { useState } from "react";
-import { useGlobalFilter } from "../../context/GlobalFilterContext";
+
+// Mock context untuk demo
+const GlobalFilterContext = React.createContext();
+const useGlobalFilter = () => {
+  const [location, setLocation] = useState("PIT A");
+  const [timePeriod, setTimePeriod] = useState("Today");
+  const [shift, setShift] = useState("Shift 1");
+
+  return {
+    location,
+    setLocation,
+    timePeriod,
+    setTimePeriod,
+    shift,
+    setShift,
+  };
+};
 
 function GlobalFilterBar() {
   const [expanded, setExpanded] = useState(false);
-  const [showLocation, setShowLocation] = useState(false);
-  const [showTime, setShowTime] = useState(false);
-  const [showShift, setShowShift] = useState(false);
 
   const {
     location,
@@ -17,170 +30,81 @@ function GlobalFilterBar() {
   } = useGlobalFilter();
 
   return (
-    <section
+    <div
       data-layer="global_filter_bar"
-      aria-label="Global filters"
-      className="GlobalFilterBar w-[592px] h-[71px] px-[22px] py-[17px] bg-white rounded-[15px] inline-flex justify-start items-center gap-[17px] relative overflow-visible"
+      className={`GlobalFilterBar h-[71px] px-2 py-3.5 bg-white rounded-[50px] inline-flex items-center gap-[18px] overflow-hidden transition-all duration-300
+        ${expanded ? "w-[585px]" : "w-[100px]"}`}
     >
-      {/* Toggle main filter bar */}
       <button
         type="button"
         data-layer="filter_button_container"
-        onClick={() => {
-          setExpanded(!expanded);
-          setShowLocation(false);
-          setShowTime(false);
-          setShowShift(false);
-        }}
-        className="FilterButtonContainer flex justify-start items-center gap-3 cursor-pointer select-none"
+        onClick={() => setExpanded(!expanded)}
+        className="FilterButtonContainer flex items-center gap-3 shrink-0 focus:outline-none"
       >
-        <div className="w-[34px] h-[37px] relative overflow-hidden flex justify-center items-center">
-          <img
-            className="w-[18px] h-[18px]"
-            src="/icons/icon_filter.png"
-            alt="Filter icon"
-          />
+        <div data-layer="icon_wrapper" className="IconWrapper size-[57px] bg-[#1c2534] rounded-full flex justify-center items-center shrink-0">
+          <img data-layer="icon_filter_filter" className="size-[31px]" src="/icons/icon_filter_filter.png" />
         </div>
-
-        <span className="text-black text-sm font-normal">Filters</span>
-
-        <div
-          className={`w-1.5 h-3 border-[1.5px] border-black transition-transform duration-300 ${
-            expanded ? "rotate-180" : ""
-          }`}
-        ></div>
+        <img
+          src="/icons/icon_expand_right.png"
+          alt="expand"
+          className={`w-2 h-3 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+        />
       </button>
 
-      {/* Dropdowns */}
       <div
-        className={`absolute left-[160px] top-[18px] flex justify-start items-center gap-3 origin-top transition-all duration-300 
-          ${
-            expanded
-              ? "opacity-100 scale-y-100 translate-y-2"
-              : "opacity-0 scale-y-0 -translate-y-3 pointer-events-none"
-          }`}
+        data-layer="filter_groups_container"
+        className={`FilterGroupsContainer flex items-center gap-3 transition-all duration-300
+          ${expanded ? "opacity-100 translate-x-0" : "opacity-0 translate-x-6 pointer-events-none"}`}
       >
-        {/* Location filter */}
-        <div className="relative">
-          <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
-            <span className="text-black text-xs">{location}</span>
-            <button
-              type="button"
-              onClick={() => {
-                setShowLocation(!showLocation);
-                setShowTime(false);
-                setShowShift(false);
-              }}
-              className="w-4 h-4 cursor-pointer flex items-center justify-center"
-            >
-              <img
-                className="w-4 h-4"
-                src="/icons/icon_expand.png"
-                alt="Toggle location filter options"
-              />
-            </button>
+        <div data-layer="filter_item_location" className="w-[145px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2">
+          <div className="size-13 bg-[#1c2534] flex justify-center items-center rounded-full shrink-0">
+            <img className="size-[27px]" src="/icons/icon_location.png" />
           </div>
-
-          {showLocation && (
-            <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
-              {["PIT A", "PIT B", "PIT C", "Port A", "Port B"].map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer text-left"
-                  onClick={() => {
-                    setLocation(opt);
-                    setShowLocation(false);
-                  }}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          )}
+          <select
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="bg-transparent outline-none w-full text-black text-base font-normal cursor-pointer"
+          >
+            <option value="PIT A">PIT A</option>
+            <option value="PIT B">PIT B</option>
+            <option value="PIT C">PIT C</option>
+            <option value="Port A">Port A</option>
+            <option value="Port B">Port B</option>
+          </select>
         </div>
 
-        {/* Time filter */}
-        <div className="relative">
-          <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
-            <span className="text-black text-xs">{timePeriod}</span>
-            <button
-              type="button"
-              onClick={() => {
-                setShowTime(!showTime);
-                setShowLocation(false);
-                setShowShift(false);
-              }}
-              className="w-4 h-4 cursor-pointer flex items-center justify-center"
-            >
-              <img
-                className="w-4 h-4"
-                src="/icons/icon_expand.png"
-                alt="Toggle time filter options"
-              />
-            </button>
+        <div data-layer="filter_item_time" className="w-[150px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2">
+          <div className="size-13 bg-[#1c2534] rounded-full flex justify-center items-center shrink-0">
+            <img className="size-[31px]" src="/icons/icon_clock.png" />
           </div>
-
-          {showTime && (
-            <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
-              {["Today", "Last 24 Hours", "Weekly", "Monthly"].map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer text-left"
-                  onClick={() => {
-                    setTimePeriod(opt);
-                    setShowTime(false);
-                  }}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          )}
+          <select
+            value={timePeriod}
+            onChange={(e) => setTimePeriod(e.target.value)}
+            className="bg-transparent outline-none w-full text-black text-base font-normal cursor-pointer"
+          >
+            <option value="Today">Today</option>
+            <option value="Last 24 Hours">Last 24 Hours</option>
+            <option value="Weekly">Weekly</option>
+            <option value="Monthly">Monthly</option>
+          </select>
         </div>
 
-        {/* Shift filter */}
-        <div className="relative">
-          <div className="w-28 h-9 px-[9px] bg-[#F7F7F7] rounded-[10px] flex justify-between items-center">
-            <span className="text-black text-xs">{shift}</span>
-            <button
-              type="button"
-              onClick={() => {
-                setShowShift(!showShift);
-                setShowLocation(false);
-                setShowTime(false);
-              }}
-              className="w-4 h-4 cursor-pointer flex items-center justify-center"
-            >
-              <img
-                className="w-4 h-4"
-                src="/icons/icon_expand.png"
-                alt="Toggle shift filter options"
-              />
-            </button>
+        <div data-layer="filter_item_shift" className="w-[150px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2">
+          <div className="size-13 bg-[#1c2534] rounded-full flex justify-center items-center shrink-0">
+            <img className="size-[27px]" src="/icons/icon_shift.png" />
           </div>
-
-          {showShift && (
-            <div className="absolute mt-2 w-40 bg-white shadow-xl rounded-xl p-3 flex flex-col gap-2 z-50 transition-all duration-300">
-              {["Shift 1", "Shift 2", "Shift 3"].map((opt) => (
-                <button
-                  key={opt}
-                  type="button"
-                  className="text-black p-2 hover:bg-gray-200 rounded-lg cursor-pointer text-left"
-                  onClick={() => {
-                    setShift(opt);
-                    setShowShift(false);
-                  }}
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          )}
+          <select
+            value={shift}
+            onChange={(e) => setShift(e.target.value)}
+            className="bg-transparent outline-none w-full text-black text-base font-normal cursor-pointer"
+          >
+            <option value="Shift 1">Shift 1</option>
+            <option value="Shift 2">Shift 2</option>
+            <option value="Shift 3">Shift 3</option>
+          </select>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 

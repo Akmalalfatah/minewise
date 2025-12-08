@@ -53,22 +53,15 @@ function PortWeatherConditions() {
                 className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
               >
                 <img
-                  className="IconWeather size-[18px]"
-                  src="/icons/icon_weather.png"
-                  alt="Weather icon"
+                  className="IconEnvironment size-[18px]"
+                  src="/icons/icon_environment.png"
+                  alt="Environment icon"
                 />
               </figure>
 
               <h2 className="PortWeatherConditionTitle text-black text-sm font-semibold">
                 Port Weather Conditions
               </h2>
-
-              <button
-                type="button"
-                className="HeaderActionButtonFilter size-8 px-2 py-[7px] right-0 top-0 absolute bg-[#efefef] rounded-2xl inline-flex flex-col justify-center items-center"
-              >
-                <div className="IconFilter size-[21px] relative" />
-              </button>
             </div>
           </header>
 

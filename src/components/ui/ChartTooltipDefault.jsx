@@ -1,9 +1,8 @@
-import { Bar, BarChart, XAxis } from "recharts";
+import { Bar, BarChart, XAxis, YAxis, CartesianGrid } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,73 +13,60 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-export const description = "A stacked bar chart with a legend";
-export const iframeHeight = "600px";
-export const containerClassName =
-  "[&>div]:w-full [&>div]:max-w-md flex items-center justify-center min-h-svh";
-
-const chartData = [
-  { date: "2024-07-15", running: 450, swimming: 300 },
-  { date: "2024-07-16", running: 380, swimming: 420 },
-  { date: "2024-07-17", running: 520, swimming: 120 },
-  { date: "2024-07-18", running: 140, swimming: 550 },
-  { date: "2024-07-19", running: 600, swimming: 350 },
-  { date: "2024-07-20", running: 480, swimming: 400 },
-];
+const COLOR_PRIMARY = "#FF7B54";
 
 const chartConfig = {
-  running: {
-    label: "Running",
-    color: "var(--chart-1)",
-  },
-  swimming: {
-    label: "Swimming",
-    color: "var(--chart-2)",
-  },
+  value: { label: "Value", color: COLOR_PRIMARY },
 };
 
-export function ChartTooltipDefault() {
+export function ChartTooltipDefault({ data = [] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tooltip - Default</CardTitle>
-        <CardDescription>
-          Default tooltip with ChartTooltipContent.
-        </CardDescription>
+        <CardTitle className="text-sm font-semibold">
+          Grafik Perbandingan Nilai
+        </CardTitle>
       </CardHeader>
 
       <CardContent>
         <ChartContainer config={chartConfig}>
-          <BarChart accessibilityLayer data={chartData}>
+          <BarChart
+            accessibilityLayer
+            data={data}
+            margin={{ top: 12, right: 20, left: 10, bottom: 12 }}
+          >
+            <CartesianGrid stroke="#E5E7EB" strokeDasharray="3 3" vertical={false} />
+
             <XAxis
-              dataKey="date"
+              dataKey="label"
               tickLine={false}
-              tickMargin={10}
               axisLine={false}
-              tickFormatter={(value) =>
-                new Date(value).toLocaleDateString("en-US", {
-                  weekday: "short",
-                })
+              tickMargin={8}
+              tick={{ fill: "#6A7D9B", fontSize: 11 }}
+            />
+
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tick={{ fill: "#6A7D9B", fontSize: 11 }}
+            />
+
+            <ChartTooltip
+              cursor={{ fill: "rgba(255, 123, 84, 0.15)" }}
+              content={
+                <ChartTooltipContent
+                  formatter={(value) => `${value}`}
+                  labelFormatter={(label) => label}
+                />
               }
             />
 
             <Bar
-              dataKey="running"
-              stackId="a"
-              fill="var(--color-running)"
-              radius={[0, 0, 4, 4]}
-            />
-            <Bar
-              dataKey="swimming"
-              stackId="a"
-              fill="var(--color-swimming)"
-              radius={[4, 4, 0, 0]}
-            />
-
-            <ChartTooltip
-              content={<ChartTooltipContent />}
-              cursor={false}
-              defaultIndex={1}
+              dataKey="value"
+              fill={COLOR_PRIMARY}
+              radius={[4, 4, 4, 4]}
+              barSize={32}
             />
           </BarChart>
         </ChartContainer>

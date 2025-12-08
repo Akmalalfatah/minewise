@@ -1,45 +1,18 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
 
-const roadSegments = [
-  {
-    segment: "Road A",
-    status: "Licin",
-    speed: "12 km/h",
-    friction: "0.35",
-    water: "5 cm",
-  },
-  {
-    segment: "Road B",
-    status: "Normal",
-    speed: "25 km/h",
-    friction: "0.65",
-    water: "0 cm",
-  },
-  {
-    segment: "Road C",
-    status: "Banjir",
-    speed: "8 km/h",
-    friction: "0.21",
-    water: "17 cm",
-  },
-];
-
-export function RoadSegmentTable() {
+export function TableData({ data = [] }) {
   return (
     <Table>
-      <TableCaption>Road Condition by Segment</TableCaption>
-
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[150px]">Segmen</TableHead>
+          <TableHead className="w-[150px] font-semibold">Segmen</TableHead>
           <TableHead>Status</TableHead>
           <TableHead>Speed</TableHead>
           <TableHead>Friction</TableHead>
@@ -48,16 +21,18 @@ export function RoadSegmentTable() {
       </TableHeader>
 
       <TableBody>
-        {roadSegments.map((item) => (
-          <TableRow key={item.segment}>
-            <TableCell className="font-medium">{item.segment}</TableCell>
+        {data.map((item, index) => (
+          <TableRow key={item.road || index}>
+            <TableCell className="font-semibold">{item.road}</TableCell>
             <TableCell>{item.status}</TableCell>
-            <TableCell>{item.speed}</TableCell>
+            <TableCell>{item.speed} km/h</TableCell>
             <TableCell>{item.friction}</TableCell>
-            <TableCell className="font-semibold">{item.water}</TableCell>
+            <TableCell>{item.water} cm</TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
   );
 }
+
+export default TableData;

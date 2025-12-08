@@ -21,7 +21,7 @@ function ProfileCard({
             alt={`${profileName} profile`}
           />
 
-          <div className="w-48 inline-flex flex-col justify-start items-start gap-2">
+          <div className="w-48 inline-flex flex-col gap-2">
             <div className="inline-flex justify-start items-center gap-2">
               <h2 className="text-black text-xl font-semibold font-['Inter']">
                 {profileName}
@@ -29,8 +29,8 @@ function ProfileCard({
 
             <img
               className="w-5 h-5"
-              src="/icons/icon_verified.png"
-              alt="Verified account"
+              src="/icons/icon_edit.png"
+              alt="edit account icon"
             />
             </div>
 
