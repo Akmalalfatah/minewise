@@ -1,57 +1,42 @@
-import apiClient from "./apiClient";
+function buildQuery(filters = {}) {
+  const params = new URLSearchParams();
 
-export async function getEnvironmentConditions(filters = {}) {
-  const { location, timePeriod, shift } = filters;
-
-  const res = await apiClient.get("/mine-planner/environment-conditions", {
-    params: {
-      location,
-      time: timePeriod,
-      shift,
-    },
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.append(key, value);
+    }
   });
 
-  return res.data.environment_conditions;
+  const qs = params.toString();
+  return qs ? `?${qs}` : "";
 }
 
-export async function getMineRoadConditions(filters = {}) {
-  const { location, timePeriod, shift } = filters;
-
-  const res = await apiClient.get("/mine-planner/road-conditions", {
-    params: {
-      location,
-      time: timePeriod,
-      shift,
-    },
+async function fetchMinePlanner(path, filters = {}) {
+  const query = buildQuery(filters);
+  const res = await fetch(`/api/mine-planner/${path}${query}`, {
+    credentials: "include",
   });
 
-  return res.data.road_conditions;
+  if (!res.ok) {
+    throw new Error(`Failed to fetch ${path}: ${res.status} ${res.statusText}`);
+  }
+
+  const payload = await res.json();
+  return payload;
 }
 
-export async function getEquipmentStatusMine(filters = {}) {
-  const { location, timePeriod, shift } = filters;
-
-  const res = await apiClient.get("/mine-planner/equipment-status", {
-    params: {
-      location,
-      time: timePeriod,
-      shift,
-    },
-  });
-
-  return res.data.equipment_status;
+export function getEnvironmentConditions(filters = {}) {
+  return fetchMinePlanner("environment-conditions", filters);
 }
 
-export async function getAIMineRecommendation(filters = {}) {
-  const { location, timePeriod, shift } = filters;
+export function getAIMineRecommendation(filters = {}) {
+  return fetchMinePlanner("ai-mine-recommendation", filters);
+}
 
-  const res = await apiClient.get("/mine-planner/ai-mine-recommendation", {
-    params: {
-      location,
-      time: timePeriod,
-      shift,
-    },
-  });
+export function getMineRoadConditions(filters = {}) {
+  return fetchMinePlanner("road-conditions", filters);
+}
 
-  return res.data.ai_mine_recommendation;
+export function getEquipmentStatusMine(filters = {}) {
+  return fetchMinePlanner("equipment-status", filters);
 }
