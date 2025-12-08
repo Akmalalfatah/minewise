@@ -1,14 +1,14 @@
 import express from "express";
 import {
-    getChatMessage,
-    getReasoningData,
-    postUserMessage,
+  getChat,
+  postChat,
+  getReasoningData
 } from "../controllers/aiChatController.js";
 
 const router = express.Router();
 
-router.get("/chat", getChatMessage);
+router.get("/chat", getChat);
+router.post("/chat", postChat);
 router.get("/reasoning", getReasoningData);
-router.post("/chat", postUserMessage);
 
 export default router;

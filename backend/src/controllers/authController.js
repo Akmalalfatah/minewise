@@ -39,9 +39,7 @@ export async function login(req, res) {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Email dan password wajib diisi" });
+    return res.status(400).json({ message: "Email dan password wajib diisi" });
   }
 
   try {
@@ -61,18 +59,13 @@ export async function login(req, res) {
     );
 
     if (!rows || rows.length === 0) {
-      return res
-        .status(401)
-        .json({ message: "Email atau password salah" });
+      return res.status(401).json({ message: "Email atau password salah" });
     }
 
     const user = rows[0];
-
     const passwordMatch = await bcrypt.compare(password, user.password);
     if (!passwordMatch) {
-      return res
-        .status(401)
-        .json({ message: "Email atau password salah" });
+      return res.status(401).json({ message: "Email atau password salah" });
     }
 
     const accessToken = createAccessToken(user);
@@ -91,7 +84,6 @@ export async function login(req, res) {
       },
     });
   } catch (err) {
-    console.error("Login error:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 }
@@ -130,21 +122,20 @@ export async function refreshToken(req, res) {
     }
 
     const user = rows[0];
-
     const newAccessToken = createAccessToken(user);
 
     return res.json({
       access_token: newAccessToken,
     });
   } catch (err) {
-    console.error("refreshToken error:", err);
-
     return res.status(401).json({ message: "Refresh token tidak valid" });
   }
 }
 
 export async function getCurrentUser(req, res) {
   try {
+    const userId = req.user.sub;
+
     const [rows] = await db.query(
       `SELECT 
           u.id,
@@ -155,7 +146,9 @@ export async function getCurrentUser(req, res) {
           r.role_name AS role_name
        FROM users u
        JOIN roles r ON u.role_id = r.id
-       LIMIT 1`
+       WHERE u.id = ?
+       LIMIT 1`,
+      [userId]
     );
 
     if (!rows || rows.length === 0) {
@@ -175,7 +168,6 @@ export async function getCurrentUser(req, res) {
       },
     });
   } catch (err) {
-    console.error("getCurrentUser error:", err);
     return res.status(500).json({ message: "Internal server error" });
   }
 }

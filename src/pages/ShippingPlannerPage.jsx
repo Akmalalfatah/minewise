@@ -13,8 +13,7 @@ function ShippingPlannerPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
-      <div className="max-w-6xl mx-auto flex flex-col gap-6">
-        {/* GLOBAL FILTER BAR + VIEW TOGGLE */}
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
         <section
           aria-label="Global filters and view toggle"
           className="flex justify-between items-center gap-4"

@@ -1,11 +1,8 @@
-import { TrendingUp } from "lucide-react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Area, AreaChart, CartesianGrid, XAxis, YAxis, Line } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -14,105 +11,98 @@ import {
   ChartContainer,
   ChartTooltip,
   ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
 } from "@/components/ui/chart";
 
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
 const chartConfig = {
-  desktop: {
-    label: "Desktop",
-    color: "var(--chart-1)",
+  production: {
+    label: "Production",
+    color: "#FF7B54",
   },
-  mobile: {
-    label: "Mobile",
-    color: "var(--chart-2)",
+  target: {
+    label: "Target",
+    color: "#8E929A",
   },
 };
 
-export function ChartAreaGradient() {
+export function ChartAreaGradient({ data = [] }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Area Chart - Gradient</CardTitle>
-        <CardDescription>
-          Showing total visitors for the last 6 months
-        </CardDescription>
+        <CardTitle>Data produksi dan target dengan intensitas hujan</CardTitle>
       </CardHeader>
 
       <CardContent>
         <ChartContainer config={chartConfig}>
           <AreaChart
             accessibilityLayer
-            data={chartData}
+            data={data}
             margin={{
-              left: 12,
-              right: 12,
+              top: 10,
+              left: 20,
+              right: 20,
+              bottom: 10,
             }}
           >
-            <CartesianGrid vertical={false} />
+            <CartesianGrid
+              stroke="#D1D5DB"
+              strokeDasharray="3 3"
+              vertical={false}
+            />
 
             <XAxis
-              dataKey="month"
+              dataKey="label"
               tickLine={false}
               axisLine={false}
               tickMargin={8}
-              tickFormatter={(value) => value.slice(0, 3)}
+              tick={{ fill: "#8E929A", fontSize: 11 }}
             />
 
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <YAxis
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              tick={{ fill: "#8E929A", fontSize: 11 }}
+            />
+
+            <ChartTooltip
+              cursor={{ stroke: "#FF7B54", strokeOpacity: 0.2 }}
+              content={<ChartTooltipContent />}
+            />
 
             <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-desktop)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-desktop)" stopOpacity={0.1} />
-              </linearGradient>
-
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="var(--color-mobile)" stopOpacity={0.8} />
-                <stop offset="95%" stopColor="var(--color-mobile)" stopOpacity={0.1} />
+              <linearGradient id="fillProduction" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#FF7B54" stopOpacity={0.45} />
+                <stop offset="95%" stopColor="#FF7B54" stopOpacity={0.05} />
               </linearGradient>
             </defs>
 
             <Area
-              dataKey="mobile"
               type="natural"
-              fill="url(#fillMobile)"
-              fillOpacity={0.4}
-              stroke="var(--color-mobile)"
-              stackId="a"
+              dataKey="production"
+              fill="url(#fillProduction)"
+              stroke="#FF7B54"
+              strokeWidth={2}
+              name="Production"
             />
 
-            <Area
-              dataKey="desktop"
+            <Line
               type="natural"
-              fill="url(#fillDesktop)"
-              fillOpacity={0.4}
-              stroke="var(--color-desktop)"
-              stackId="a"
+              dataKey="target"
+              stroke="#8E929A"
+              strokeWidth={2}
+              dot={false}
+              name="Target"
+            />
+
+            <ChartLegend
+              verticalAlign="bottom"
+              content={<ChartLegendContent />}
             />
           </AreaChart>
         </ChartContainer>
       </CardContent>
-
-      <CardFooter>
-        <div className="flex w-full items-start gap-2 text-sm">
-          <div className="grid gap-2">
-            <div className="flex items-center gap-2 leading-none font-medium">
-              Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
-            </div>
-            <div className="text-muted-foreground flex items-center gap-2 leading-none">
-              January - June 2024
-            </div>
-          </div>
-        </div>
-      </CardFooter>
     </Card>
   );
 }

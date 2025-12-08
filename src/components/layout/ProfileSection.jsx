@@ -14,7 +14,7 @@ function ProfileSection({ profileImage }) {
   }, [user, fetchCurrentUser]);
 
   const imageSrc =
-    profileImage || user?.avatarUrl || "https://placehold.co/28x28";
+    profileImage || user?.avatarUrl || "/icon/profile_picture";
 
   const handleToggle = () => setIsOpen((prev) => !prev);
 
@@ -32,15 +32,15 @@ function ProfileSection({ profileImage }) {
     <div className="relative">
       <div
         onClick={handleToggle}
-        className="h-9 px-3 bg-white rounded-full shadow-[0_1px_4px_rgba(0,0,0,0.06)] border border-gray-200 flex items-center gap-2 cursor-pointer"
+        className="h-14 bg-white rounded-full flex items-center gap-2 cursor-pointer"
       >
         <img
           src="/icons/icon_expand_down.png"
           alt=""
-          className="w-2 h-2 opacity-60"
+          className="w-3 h-2"
         />
 
-        <div className="w-7 h-7 rounded-full overflow-hidden">
+        <div className="w-11 h-11 rounded-full overflow-hidden">
           <img
             src={imageSrc}
             alt="User avatar"

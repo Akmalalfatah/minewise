@@ -1,164 +1,116 @@
 import React, { useEffect, useState } from "react";
 import { getReasoningData } from "../../services/aiChatService";
 
-function AiReasoningChainCard() {
-  const [data, setData] = useState(null);
+const DEFAULT_STEPS = [
+  "AI menganalisis konteks permintaan.",
+  "AI mengecek data cuaca dan kondisi jalan.",
+  "AI membandingkan pola historis.",
+  "AI menyusun rekomendasi terbaik."
+];
+
+function ReasoningChainPanel() {
+  const [steps, setSteps] = useState(DEFAULT_STEPS);
+  const [dataSources, setDataSources] = useState({
+    weather: "Connected",
+    equipment: "Connected",
+    road: "Connected",
+    vessel: "Connected"
+  });
 
   useEffect(() => {
     async function load() {
-      try {
-        const result = await getReasoningData();
-        setData(result);
-      } catch (error) {
-        console.error("Failed to load reasoning data:", error);
-        setData({
-          reasoning_steps: [],
-          data_sources: {},
-        });
+      const result = await getReasoningData();
+      if (!result) return;
+
+      if (Array.isArray(result.reasoning_steps) && result.reasoning_steps.length) {
+        setSteps(result.reasoning_steps);
+      }
+
+      if (result.data_sources) {
+        setDataSources((prev) => ({
+          ...prev,
+          ...result.data_sources
+        }));
       }
     }
+
     load();
   }, []);
 
-  if (!data) return null;
-
-  const stepsRaw =
-    Array.isArray(data.reasoning_steps)
-      ? data.reasoning_steps
-      : Array.isArray(data.steps)
-        ? data.steps
-        : [];
-
-  const steps =
-    stepsRaw.length > 0
-      ? stepsRaw
-      : [
-          "AI menganalisis konteks permintaan dan kondisi operasional terkini.",
-          "AI mengecek data cuaca, kondisi jalan, dan status peralatan.",
-          "AI membandingkan pola historis dengan kondisi saat ini.",
-          "AI menyusun rekomendasi yang paling aman dan efisien.",
-        ];
-
-  const dataSources = data.data_sources || {
-    weather: "Live",
-    equipment: "Live",
-    road: "Live",
-    vessel: "Live",
-  };
-
   return (
-    <section
-      data-layer="ai_reasoning_chain_card"
-      aria-label="AI reasoning chain and data sources"
-      className="w-96 h-[625px] px-6 py-8 bg-white rounded-3xl inline-flex justify-center items-center"
-    >
-      <main className="w-96 h-[563px] flex flex-col gap-10">
-        {/* Header + Reasoning Steps */}
-        <header className="flex flex-col gap-6">
-          <div className="flex flex-col gap-3">
-            <div className="inline-flex items-center gap-[3px]">
-              <div className="w-8 h-8 flex justify-center items-center">
-                <img
-                  className="w-4 h-4"
-                  src="/icons/reasoning_icon.png"
-                  alt="Reasoning Icon"
-                />
-              </div>
-              <h2 className="text-black text-sm font-semibold">
-                AI Reasoning Chain
-              </h2>
-            </div>
-
-            <p className="text-stone-500 text-sm">
-              Understanding how the AI makes decisions
+    <section className="w-full h-[520px] bg-white rounded-3xl px-6 py-6 flex flex-col">
+      <div className="flex-1 flex flex-col justify-between">
+        <header className="flex items-center">
+          <div>
+            <h2 className="text-base font-semibold text-gray-900">
+              AI Reasoning Chain
+            </h2>
+            <p className="text-sm text-gray-500">
+              Memahami bagaimana AI membuat keputusan.
             </p>
           </div>
-
-          {/* Steps */}
-          <section
-            aria-label="Steps taken by AI to reach a decision"
-            className="flex flex-col"
-          >
-            {steps.length > 0 ? (
-              <ol className="flex flex-col gap-7">
-                {steps.map((step, index) => (
-                  <li
-                    key={index}
-                    className="inline-flex items-center gap-2"
-                  >
-                    <div className="w-8 h-8 bg-gray-800 rounded-2xl flex justify-center items-center">
-                      <span className="text-white text-sm">
-                        {index + 1}
-                      </span>
-                    </div>
-                    <p className="w-72 text-black text-sm">{step}</p>
-                  </li>
-                ))}
-              </ol>
-            ) : (
-              <p className="text-stone-500 text-sm">
-                No reasoning data available yet.
-              </p>
-            )}
-          </section>
         </header>
 
-        {/* Data sources */}
-        <section
-          aria-label="AI data sources"
-          className="flex flex-col gap-6"
-        >
-          <h3 className="text-black/60 text-sm">Data Sources</h3>
 
-          <ul className="flex flex-col gap-3">
-            <li className="flex justify-between items-center">
-              <span className="text-black text-sm font-semibold">
-                Weather API
-              </span>
-              <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
-                <span className="text-white text-xs font-semibold">
-                  {dataSources.weather ?? "-"}
+        <section className="mb-4">
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            Reasoning Steps
+          </h3>
+          <ol className="flex flex-col gap-5 text-sm text-gray-800">
+            {steps.map((step, index) => (
+              <li key={index} className="flex items-start gap-3">
+                <div className="w-7 h-7 rounded-full bg-[#111827] flex items-center justify-center text-[11px] text-white font-semibold">
+                  {index + 1}
+                </div>
+                <p className="flex items-center justify-center">{step}</p>
+              </li>
+            ))}
+          </ol>
+        </section>
+
+        <section>
+          <h3 className="text-sm font-semibold text-gray-700 mb-3">
+            Data Sources
+          </h3>
+
+          <ul className="flex flex-col gap-2 text-sm">
+            <li className="flex items-center justify-between">
+              <span className="text-gray-800">Weather API</span>
+              <div className="w-20 h-6 rounded-md bg-emerald-500 flex items-center justify-center">
+                <span className="text-[11px] font-semibold text-white">
+                  {dataSources.weather || "Connected"}
                 </span>
               </div>
             </li>
-
-            <li className="flex justify-between items-center">
-              <span className="text-black text-sm font-semibold">
-                Equipment Sensors
-              </span>
-              <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
-                <span className="text-white text-xs font-semibold">
-                  {dataSources.equipment ?? "-"}
+            <li className="flex items-center justify-between">
+              <span className="text-gray-800">Equipment Sensors</span>
+              <div className="w-20 h-6 rounded-md bg-emerald-500 flex items-center justify-center">
+                <span className="text-[11px] font-semibold text-white">
+                  {dataSources.equipment || "Connected"}
                 </span>
               </div>
             </li>
-
-            <li className="flex justify-between items-center">
-              <span className="text-black text-sm font-semibold">
-                Road Monitoring
-              </span>
-              <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
-                <span className="text-white text-xs font-semibold">
-                  {dataSources.road ?? "-"}
+            <li className="flex items-center justify-between">
+              <span className="text-gray-800">Road Monitoring</span>
+              <div className="w-20 h-6 rounded-md bg-emerald-500 flex items-center justify-center">
+                <span className="text-[11px] font-semibold text-white">
+                  {dataSources.road || "Connected"}
                 </span>
               </div>
             </li>
-
-            <li className="flex justify-between items-center">
-              <span className="text-black text-sm font-semibold">
-                Vessel Tracking
-              </span>
-              <div className="w-24 h-6 bg-green-500 rounded-md flex justify-center items-center">
-                <span className="text-white text-xs font-semibold">
-                  {dataSources.vessel ?? "-"}
+            <li className="flex items-center justify-between">
+              <span className="text-gray-800">Vessel Tracking</span>
+              <div className="w-20 h-6 rounded-md bg-emerald-500 flex items-center justify-center">
+                <span className="text-[11px] font-semibold text-white">
+                  {dataSources.vessel || "Connected"}
                 </span>
               </div>
             </li>
           </ul>
         </section>
-      </main>
+      </div>
     </section>
   );
 }
 
-export default AiReasoningChainCard;
+export default ReasoningChainPanel;

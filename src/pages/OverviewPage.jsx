@@ -31,7 +31,6 @@ function OverviewPage() {
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
-      {/* wrapper lebar 1440px seperti Dashboard */}
       <div className="w-full max-w-[1440px] py-8 px-10 flex flex-col gap-6">
 
         {/* GLOBAL FILTER + TOGGLE VIEW */}
@@ -43,12 +42,12 @@ function OverviewPage() {
 
           <nav
             aria-label="Planner view toggle"
-            className="inline-flex bg-white rounded-full p-1 shadow-sm"
+            className="inline-flex bg-white rounded-full p-1 h-[71px]"
           >
             <button
               type="button"
               onClick={() => setActiveView("mine")}
-              className={`px-6 py-2 rounded-full text-xs font-semibold transition ${
+              className={`px-6 py-2 rounded-full text-base font-semibold transition ${
                 activeView === "mine"
                   ? "bg-[#1c2534] text-white"
                   : "text-gray-700 hover:bg-gray-100"
@@ -61,7 +60,7 @@ function OverviewPage() {
             <button
               type="button"
               onClick={() => setActiveView("shipping")}
-              className={`px-6 py-2 rounded-full text-xs font-semibold transition ${
+              className={`px-6 py-2 rounded-full text-base font-semibold transition ${
                 activeView === "shipping"
                   ? "bg-[#1c2534] text-white"
                   : "text-gray-700 hover:bg-gray-100"

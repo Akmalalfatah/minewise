@@ -57,18 +57,31 @@
                 "status": "Normal",
                 "speed": 22,
                 "friction": 0.45,
-                "water": 0
+                "water": 0,
+                "surface_type": "Asphalt"
             },
             {
                 "road": "Road B",
                 "status": "Waspada",
                 "speed": 12,
                 "friction": 0.35,
-                "water": 5
+                "water": 5,
+                "surface_type": "Coal Road"
+            },
+            {
+                "road": "Road C",
+                "status": "Banjir",
+                "speed": 8,
+                "friction": 0.21,
+                "water": 17,
+                "surface_type": "Gravel"
             }
         ],
         "route_efficiency_score": 62,
-        "ai_flag": "Friction rendah pada Road B."
+        "ai_flag": [
+            "Friction rendah pada Road B.",
+            "Water level meningkat pada Road C."
+        ]
     },
     "causes_of_downtime": {
         "total_downtime_hours": 6.4,

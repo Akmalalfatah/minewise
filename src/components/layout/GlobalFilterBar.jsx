@@ -47,7 +47,7 @@ function GlobalFilterBar() {
         <img
           src="/icons/icon_expand_right.png"
           alt="expand"
-          className={`w-3 h-3 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
+          className={`w-2 h-3 transition-transform duration-300 ${expanded ? "rotate-180" : ""}`}
         />
       </button>
 

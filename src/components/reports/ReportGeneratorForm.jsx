@@ -51,7 +51,7 @@ function ReportGeneratorForm({
               <label className="text-black text-sm font-semibold font-['Inter']">
                 Report Type
               </label>
-              <div className="h-9 px-1.5 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
+              <div className="h-9 px-1.5 py-[10px] bg-[#efefef] rounded-[5px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
                 <select
                   value={reportTypeValue || ""}
                   onChange={(e) => {
@@ -80,7 +80,7 @@ function ReportGeneratorForm({
               <label className="text-black text-sm font-semibold font-['Inter']">
                 Time Period
               </label>
-              <div className="h-9 px-2 py-[5px] bg-zinc-100 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
+              <div className="h-9 px-2 py-[10px] bg-[#efefef] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-zinc-100 flex justify-between items-center gap-2.5">
                 <select
                   value={timePeriodValue || ""}
                   onChange={(e) => {

@@ -1,10 +1,9 @@
 import * as React from "react";
-import { Label, Pie, PieChart, Sector } from "recharts";
+import { Label, Pie, PieChart, Sector, Cell } from "recharts";
 
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -24,37 +23,22 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const description = "An interactive pie chart";
-
-const desktopData = [
-  { month: "january", desktop: 186, fill: "var(--color-january)" },
-  { month: "february", desktop: 305, fill: "var(--color-february)" },
-  { month: "march", desktop: 237, fill: "var(--color-march)" },
-  { month: "april", desktop: 173, fill: "var(--color-april)" },
-  { month: "may", desktop: 209, fill: "var(--color-may)" },
-];
+const COLOR_PRIMARY = "#FF7B54";
+const COLOR_SECONDARY = "#6A7D9B";
+const COLOR_TERTIARY = "#1C2534";
+const COLOR_OTHER = "#1C2534";
 
 const chartConfig = {
-  visitors: { label: "Visitors" },
-  desktop: { label: "Desktop" },
-  mobile: { label: "Mobile" },
-  january: { label: "January", color: "var(--chart-1)" },
-  february: { label: "February", color: "var(--chart-2)" },
-  march: { label: "March", color: "var(--chart-3)" },
-  april: { label: "April", color: "var(--chart-4)" },
-  may: { label: "May", color: "var(--chart-5)" },
+  maintenance: { label: "Maintenance", color: COLOR_PRIMARY },
+  weather: { label: "Weather", color: COLOR_SECONDARY },
+  road_conditions: { label: "Road Conditions", color: COLOR_TERTIARY },
 };
 
-export function ChartPieInteractive() {
+export function ChartPieInteractive({ data = [] }) {
   const id = "pie-interactive";
-  const [activeMonth, setActiveMonth] = React.useState(desktopData[0].month);
+  const [activeIndex, setActiveIndex] = React.useState(0);
 
-  const activeIndex = React.useMemo(
-    () => desktopData.findIndex((item) => item.month === activeMonth),
-    [activeMonth]
-  );
-
-  const months = React.useMemo(() => desktopData.map((item) => item.month), []);
+  const names = React.useMemo(() => data.map((item) => item.name), [data]);
 
   return (
     <Card data-chart={id} className="flex flex-col">
@@ -62,22 +46,23 @@ export function ChartPieInteractive() {
 
       <CardHeader className="flex-row items-start space-y-0 pb-0">
         <div className="grid gap-1">
-          <CardTitle>Pie Chart - Interactive</CardTitle>
-          <CardDescription>January - June 2024</CardDescription>
+          <CardTitle>Downtime Causes</CardTitle>
         </div>
 
-        <Select value={activeMonth} onValueChange={setActiveMonth}>
-          <SelectTrigger
-            className="ml-auto h-7 w-[130px] rounded-lg pl-2.5"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Select month" />
+        <Select
+          value={data[activeIndex]?.name}
+          onValueChange={(val) =>
+            setActiveIndex(data.findIndex((i) => i.name === val))
+          }
+        >
+          <SelectTrigger className="ml-auto h-7 w-[150px] rounded-lg pl-2.5">
+            <SelectValue placeholder="Select" />
           </SelectTrigger>
 
           <SelectContent align="end" className="rounded-xl">
-            {months.map((key) => {
-              const cfg = chartConfig[key];
-              if (!cfg) return null;
+            {names.map((key) => {
+              const color =
+                chartConfig[key.toLowerCase()]?.color || COLOR_OTHER;
 
               return (
                 <SelectItem
@@ -85,12 +70,12 @@ export function ChartPieInteractive() {
                   value={key}
                   className="rounded-lg [&_span]:flex"
                 >
-                  <div className="flex items-center gap-2 text-xs">
+                  <div className="flex items-center text-xs gap-2">
                     <span
                       className="flex h-3 w-3 shrink-0 rounded-xs"
-                      style={{ backgroundColor: `var(--color-${key})` }}
+                      style={{ backgroundColor: color }}
                     />
-                    {cfg.label}
+                    {key}
                   </div>
                 </SelectItem>
               );
@@ -103,7 +88,7 @@ export function ChartPieInteractive() {
         <ChartContainer
           id={id}
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[300px]"
+          className="mx-auto aspect-square w-full max-w-[220px]"
         >
           <PieChart>
             <ChartTooltip
@@ -112,10 +97,11 @@ export function ChartPieInteractive() {
             />
 
             <Pie
-              data={desktopData}
-              dataKey="desktop"
-              nameKey="month"
-              innerRadius={60}
+              data={data}
+              dataKey="value"
+              nameKey="name"
+              innerRadius={45}
+              outerRadius={90}
               strokeWidth={5}
               activeIndex={activeIndex}
               activeShape={(props) => {
@@ -125,13 +111,20 @@ export function ChartPieInteractive() {
                     <Sector {...props} outerRadius={outerRadius + 10} />
                     <Sector
                       {...props}
-                      outerRadius={outerRadius + 25}
-                      innerRadius={outerRadius + 12}
+                      outerRadius={outerRadius + 20}
+                      innerRadius={outerRadius + 15}
                     />
                   </g>
                 );
               }}
             >
+              {data.map((entry, index) => {
+                const key = entry.name.toLowerCase();
+                const color = chartConfig[key]?.color || COLOR_OTHER;
+
+                return <Cell key={index} fill={color} />;
+              })}
+
               <Label
                 content={({ viewBox }) => {
                   if (viewBox && "cx" in viewBox && "cy" in viewBox) {
@@ -142,12 +135,8 @@ export function ChartPieInteractive() {
                         textAnchor="middle"
                         dominantBaseline="middle"
                       >
-                        <tspan
-                          x={viewBox.cx}
-                          y={viewBox.cy}
-                          className="fill-foreground text-3xl font-bold"
-                        >
-                          {desktopData[activeIndex].desktop.toLocaleString()}
+                        <tspan className="fill-foreground text-3xl font-bold">
+                          {data[activeIndex].value}
                         </tspan>
 
                         <tspan
@@ -155,7 +144,7 @@ export function ChartPieInteractive() {
                           y={(viewBox.cy || 0) + 24}
                           className="fill-muted-foreground"
                         >
-                          Visitors
+                          Hours
                         </tspan>
                       </text>
                     );
