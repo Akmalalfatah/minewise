@@ -24,9 +24,8 @@ function AIRecommendationCard() {
     load();
   }, [location, timePeriod, shift]);
 
-  if (!data) return null;
-
-  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+  // Kalau data null, kita tetap render card dengan fallback text
+  const scenarios = Array.isArray(data?.scenarios) ? data.scenarios : [];
 
   const defaultScenario = {
     title: "Recommendation not available",
@@ -39,14 +38,14 @@ function AIRecommendationCard() {
   const scenario3 = scenarios[2] || defaultScenario;
 
   const analysisSources =
-    data.analysis_sources ||
+    data?.analysis_sources ||
     "Weather, road conditions, equipment utilization, and production targets.";
 
   return (
     <section
       data-layer="ai_recommendation_card"
       aria-label="AI mining recommendation"
-      className="AiRecommendationCard w-full min-h-[492px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="AiRecommendationCard w-full h-full min-h-[492px] p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
     >
       <div
         data-layer="ai_recommendation_container"
@@ -84,11 +83,13 @@ function AIRecommendationCard() {
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-6"
         >
+          {/* SCENARIOS */}
           <section
             data-layer="scenario_list_container"
             aria-label="Recommended scenarios"
             className="ScenarioListContainer self-stretch flex flex-col justify-start items-start gap-[22px]"
           >
+            {/* Scenario 1 */}
             <article
               data-layer="scenario1_wrapper"
               className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-center items-start gap-2.5"
@@ -112,6 +113,7 @@ function AIRecommendationCard() {
               </div>
             </article>
 
+            {/* Scenario 2 */}
             <article
               data-layer="scenario2_wrapper"
               className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
@@ -129,6 +131,7 @@ function AIRecommendationCard() {
               </div>
             </article>
 
+            {/* Scenario 3 */}
             <article
               data-layer="scenario3_wrapper"
               className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
@@ -144,6 +147,7 @@ function AIRecommendationCard() {
             </article>
           </section>
 
+          {/* ANALYSIS SECTION */}
           <section
             data-layer="analysis_section_container"
             aria-label="Analysis basis"

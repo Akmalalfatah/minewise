@@ -24,9 +24,24 @@ function EnvironmentConditionTable() {
     load();
   }, [location, timePeriod, shift]);
 
-  if (!data) return null;
+  // Fallback values supaya card tetap muncul meski data null
+  const area = data?.area ?? "-";
+  const loc = data?.location ?? "-";
+  const rainfall = data?.rainfall ?? "-";
+  const temperature = data?.temperature ?? "-";
+  const humidity = data?.humidity ?? "-";
+  const wind = data?.wind ?? "-";
+  const pressure = data?.pressure ?? "-";
+  const visibility = data?.visibility ?? "-";
+  const lightning =
+    typeof data?.lightning === "boolean"
+      ? data.lightning
+        ? "Detected"
+        : "0"
+      : data?.lightning ?? "-";
+  const updated = data?.updated ?? "-";
 
-  const risk = data.risk || {
+  const risk = data?.risk || {
     score: "-",
     title: "No risk data available",
     subtitle: "AI risk analysis is not available for the current filter.",
@@ -73,10 +88,10 @@ function EnvironmentConditionTable() {
                   Environment Conditions
                 </h2>
               </div>
-
             </div>
           </header>
 
+          {/* AREA ROW */}
           <section
             data-layer="area_row_container"
             aria-label="Environment area"
@@ -92,7 +107,7 @@ function EnvironmentConditionTable() {
               data-layer="area_value"
               className="AreaValue text-right text-black text-xs font-semibold"
             >
-              {data.area}
+              {area}
             </span>
           </section>
 
@@ -101,6 +116,7 @@ function EnvironmentConditionTable() {
             className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
           />
 
+          {/* INFO ROWS */}
           <section
             data-layer="info_rows_container"
             aria-label="Environment condition details"
@@ -125,15 +141,15 @@ function EnvironmentConditionTable() {
               data-layer="value_column"
               className="ValueColumn inline-flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold"
             >
-              <span>{data.location}</span>
-              <span>{data.rainfall}</span>
-              <span>{data.temperature}</span>
-              <span>{data.humidity}</span>
-              <span>{data.wind}</span>
-              <span>{data.pressure}</span>
-              <span>{data.visibility}</span>
-              <span>{data.lightning}</span>
-              <span>{data.updated}</span>
+              <span>{loc}</span>
+              <span>{rainfall}</span>
+              <span>{temperature}</span>
+              <span>{humidity}</span>
+              <span>{wind}</span>
+              <span>{pressure}</span>
+              <span>{visibility}</span>
+              <span>{lightning}</span>
+              <span>{updated}</span>
             </div>
           </section>
         </div>
@@ -144,6 +160,7 @@ function EnvironmentConditionTable() {
         className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
       />
 
+      {/* RISK SECTION */}
       <section
         data-layer="risk_section_container"
         aria-label="Weather-based risk"
