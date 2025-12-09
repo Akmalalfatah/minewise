@@ -147,11 +147,14 @@ function ReportPage() {
     try {
       const res = await generateReport(payload);
 
+      const reportId =
+        (res && (res.report_id || res.id || (res.report && res.report.id))) ||
+        null;
+
       addNotification({
         senderName: user?.fullname || "User",
         message: "has generated a new report! Check it out.",
-        timeAgo: "Just now",
-        payload,
+        reportId,
       });
 
       await refreshRecentReports();
