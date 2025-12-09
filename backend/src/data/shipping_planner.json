@@ -1,38 +1,42 @@
 {
-    "port_weather_conditions": {
-        "area": "PIT A",
-        "location": "PIT A",
-        "rainfall": "41.0 mm",
-        "temperature": "25.8°C – 32.3°C",
-        "humidity": "82%",
-        "wind": "10.87 km/h",
-        "pressure": "1007.87 hPa",
-        "visibility": "1.4 km",
-        "lightning": true,
-        "updated": "July 9, 2025",
-        "riskScore": 79,
-        "riskTitle": "High risk of weather-related delays",
-        "riskSubtitle": "Heavy rainfall and visibility issues detected."
-    },
-    "ai_recommendation": {
-        "scenarios": [
+    "locations": {
+      "Port A": {
+        "port_weather_conditions": {
+          "area": "Port A",
+          "location": "Port A",
+          "rainfall": "41.0 mm",
+          "temperature": "25.8°C – 32.3°C",
+          "humidity": "82%",
+          "wind": "10.87 km/h",
+          "pressure": "1007.87 hPa",
+          "visibility": "1.4 km",
+          "lightning": true,
+          "updated": "July 9, 2025",
+          "riskScore": 79,
+          "riskTitle": "High risk of weather-related delays",
+          "riskSubtitle": "Heavy rainfall and visibility issues detected.",
+          "source_location": "Port A"
+        },
+        "ai_recommendation": {
+          "scenarios": [
             {
-                "title": "Scenario 1 - Most Recommended",
-                "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its workload."
+              "title": "Scenario 1 - Most Recommended",
+              "description": "Prioritize loading vessels already berthed at Port A and delay new arrivals by 4–6 hours to avoid peak congestion."
             },
             {
-                "title": "Scenario 2",
-                "description": "Set hauling via Road C due to low friction index. Rerouting through Road B reduces operational risk."
+              "title": "Scenario 2",
+              "description": "Coordinate with mine planners to smooth coal delivery into the port stockpile and prevent sudden surge in loading demand."
             },
             {
-                "title": "Scenario 3",
-                "description": "Advance shift by 2 hours to avoid incoming rainfall and maintain productivity."
+              "title": "Scenario 3",
+              "description": "Advance loading for high-priority contracts before heavy rainfall window to reduce demurrage risk."
             }
-        ],
-        "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking"
-    },
-    "vessel_schedules": [
-        {
+          ],
+          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking",
+          "source_location": "Port A"
+        },
+        "vessel_schedules": [
+          {
             "vessel_name": "MV Sunrise",
             "eta": "2025-01-10T08:00:00Z",
             "etb": "2025-01-10T12:00:00Z",
@@ -40,9 +44,10 @@
             "laycan_start": "2025-01-09",
             "laycan_end": "2025-01-11",
             "destination": "China",
-            "status": "On Route"
-        },
-        {
+            "status": "On Route",
+            "source_location": "Port A"
+          },
+          {
             "vessel_name": "MV Ocean Spirit",
             "eta": "2025-01-15T09:00:00Z",
             "etb": "2025-01-15T13:00:00Z",
@@ -50,65 +55,198 @@
             "laycan_start": "2025-01-14",
             "laycan_end": "2025-01-16",
             "destination": "India",
-            "status": "Scheduled"
-        }
-    ],
-    "coal_volume_ready": [
-        {
+            "status": "Scheduled",
+            "source_location": "Port A"
+          }
+        ],
+        "coal_volume_ready": [
+          {
             "stockpile": "SP-01",
             "volume": 52000,
             "grade": "GAR 4200",
-            "updated_at": "2025-01-08T10:00:00Z"
-        },
-        {
+            "updated_at": "2025-01-08T10:00:00Z",
+            "source_location": "Port A"
+          },
+          {
             "stockpile": "SP-02",
             "volume": 38000,
             "grade": "GAR 5000",
-            "updated_at": "2025-01-08T10:00:00Z"
-        }
-    ],
-    "loading_progress": [
-        {
+            "updated_at": "2025-01-08T10:00:00Z",
+            "source_location": "Port A"
+          }
+        ],
+        "loading_progress": [
+          {
             "vessel_name": "MV Sunrise",
             "progress": 65,
             "tonnage_loaded": 32500,
             "tonnage_target": 50000,
-            "last_update": "2025-01-09T14:00:00Z"
-        },
-        {
+            "last_update": "2025-01-09T14:00:00Z",
+            "status": "Loading",
+            "source_location": "Port A"
+          },
+          {
             "vessel_name": "MV Ocean Spirit",
             "progress": 0,
             "tonnage_loaded": 0,
             "tonnage_target": 55000,
-            "last_update": "2025-01-09T14:00:00Z"
+            "last_update": "2025-01-09T14:00:00Z",
+            "status": "Not started",
+            "source_location": "Port A"
+          }
+        ],
+        "port_congestion": {
+          "updatedText": "Updated: Jul 9, 2025 - 07:00 AM (Asia/Makassar)",
+          "shipsLoading": [
+            {
+              "name": "MV Mahakan Queen (Panamax)",
+              "source_location": "Port A"
+            },
+            {
+              "name": "MV Kalimantan Pride (Ultramax)",
+              "source_location": "Port A"
+            }
+          ],
+          "shipsWaiting": [
+            {
+              "name": "MV Baruna",
+              "eta": "Jul 29",
+              "source_location": "Port A"
+            },
+            {
+              "name": "MV Atrantis",
+              "eta": "Aug 01",
+              "source_location": "Port A"
+            },
+            {
+              "name": "MV Arwana",
+              "eta": "Aug 04",
+              "source_location": "Port A"
+            }
+          ],
+          "shipsCompletedText": "(No recent departure)",
+          "congestionLevel": "High",
+          "operationalNote": "Increased queue length indicates port congestion. Expect 2–4 hours additional delay for incoming vessels.",
+          "source_location": "Port A"
         }
-    ],
-    "port_congestion": {
-        "updatedText": "Updated: Jul 9, 2025 - 07:00 AM (Asia/Makassar)",
-        "shipsLoading": [
+      },
+  
+      "Port B": {
+        "port_weather_conditions": {
+          "area": "Port B",
+          "location": "Port B",
+          "rainfall": "18.5 mm",
+          "temperature": "26.0°C – 31.2°C",
+          "humidity": "76%",
+          "wind": "8.4 km/h",
+          "pressure": "1009.10 hPa",
+          "visibility": "3.8 km",
+          "lightning": false,
+          "updated": "July 9, 2025",
+          "riskScore": 48,
+          "riskTitle": "Moderate weather-related risk",
+          "riskSubtitle": "Rain and wind are manageable, visibility remains good for loading operations.",
+          "source_location": "Port B"
+        },
+        "ai_recommendation": {
+          "scenarios": [
             {
-                "name": "MV Mahakan Queen (Panamax)"
+              "title": "Scenario 1 - Smooth Turnaround",
+              "description": "Maintain current loading sequence and allocate one additional crane for high-priority vessel to shorten port stay."
             },
             {
-                "name": "MV Kalimantan Pride (Ultramax)"
+              "title": "Scenario 2",
+              "description": "Use Port B as relief port when Port A congestion index is high to avoid demurrage on incoming vessels."
+            },
+            {
+              "title": "Scenario 3",
+              "description": "Coordinate with tug and pilot schedule to avoid idle time during vessel berthing and unberthing."
             }
+          ],
+          "analysis_sources": "Weather API, Port Operations Log, Vessel Tracking",
+          "source_location": "Port B"
+        },
+        "vessel_schedules": [
+          {
+            "vessel_name": "MV Borneo Star",
+            "eta": "2025-01-12T07:00:00Z",
+            "etb": "2025-01-12T11:00:00Z",
+            "etd": "2025-01-13T18:00:00Z",
+            "laycan_start": "2025-01-11",
+            "laycan_end": "2025-01-13",
+            "destination": "Philippines",
+            "status": "On Route",
+            "source_location": "Port B"
+          },
+          {
+            "vessel_name": "MV Nusantara",
+            "eta": "2025-01-18T06:00:00Z",
+            "etb": "2025-01-18T10:00:00Z",
+            "etd": "2025-01-19T16:00:00Z",
+            "laycan_start": "2025-01-17",
+            "laycan_end": "2025-01-19",
+            "destination": "Vietnam",
+            "status": "Scheduled",
+            "source_location": "Port B"
+          }
         ],
-        "shipsWaiting": [
+        "coal_volume_ready": [
+          {
+            "stockpile": "PB-SP-01",
+            "volume": 43000,
+            "grade": "GAR 5000",
+            "updated_at": "2025-01-08T11:00:00Z",
+            "source_location": "Port B"
+          },
+          {
+            "stockpile": "PB-SP-02",
+            "volume": 29000,
+            "grade": "GAR 4200",
+            "updated_at": "2025-01-08T11:00:00Z",
+            "source_location": "Port B"
+          }
+        ],
+        "loading_progress": [
+          {
+            "vessel_name": "MV Borneo Star",
+            "progress": 80,
+            "tonnage_loaded": 34400,
+            "tonnage_target": 43000,
+            "last_update": "2025-01-09T15:00:00Z",
+            "status": "Loading",
+            "source_location": "Port B"
+          },
+          {
+            "vessel_name": "MV Nusantara",
+            "progress": 0,
+            "tonnage_loaded": 0,
+            "tonnage_target": 29000,
+            "last_update": "2025-01-09T15:00:00Z",
+            "status": "Not started",
+            "source_location": "Port B"
+          }
+        ],
+        "port_congestion": {
+          "updatedText": "Updated: Jul 9, 2025 - 07:15 AM (Asia/Makassar)",
+          "shipsLoading": [
             {
-                "name": "MV Baruna",
-                "eta": "Jul 29"
-            },
-            {
-                "name": "MV Atrantis",
-                "eta": "Aug 01"
-            },
-            {
-                "name": "MV Arwana",
-                "eta": "Aug 04"
+              "name": "MV Borneo Star",
+              "source_location": "Port B"
             }
-        ],
-        "shipsCompletedText": "(No recent departure)",
-        "congestionLevel": "High",
-        "operationalNote": "Increased queue length indicates port congestion. Expect 2–4 hours additional delay for incoming vessels."
+          ],
+          "shipsWaiting": [
+            {
+              "name": "MV Nusantara",
+              "eta": "Jul 21",
+              "source_location": "Port B"
+            }
+          ],
+          "shipsCompletedText": "1 vessel departed in the last 12 hours.",
+          "congestionLevel": "Medium",
+          "operationalNote": "Port traffic is stable. Port B can be used to offload demand when Port A congestion increases.",
+          "source_location": "Port B"
+        }
+      }
     }
-}
+  }
+  

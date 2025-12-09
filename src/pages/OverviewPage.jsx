@@ -15,7 +15,7 @@ import PortCongestionStatus from "../components/shipping-planner/PortCongestionS
 
 function OverviewPage() {
   const user = userStore((state) => state.user);
-  const { location, timePeriod, shift } = useGlobalFilter();
+  const { location } = useGlobalFilter();
 
   const defaultView = useMemo(() => {
     if (user?.role === "mine_planner") return "mine";
@@ -29,16 +29,16 @@ function OverviewPage() {
     setActiveView(defaultView);
   }, [defaultView]);
 
+  const locationType = activeView === "mine" ? "pit" : "port";
+
   return (
     <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
       <div className="w-full max-w-[1440px] py-8 px-10 flex flex-col gap-6">
-
-        {/* GLOBAL FILTER + TOGGLE VIEW */}
         <section
           aria-label="Global filters and overview view switcher"
           className="flex justify-between items-center gap-4"
         >
-          <GlobalFilterBar />
+          <GlobalFilterBar locationType={locationType} />
 
           <nav
             aria-label="Planner view toggle"
@@ -72,14 +72,11 @@ function OverviewPage() {
           </nav>
         </section>
 
-        {/* CONTENT */}
         {activeView === "mine" ? (
           <section
             aria-label="Mine planner overview"
             className="flex flex-col gap-5"
           >
-
-            {/* ROW 1: Environment + AI Recommendation */}
             <section
               aria-label="Environment conditions and AI recommendations"
               className="flex flex-col lg:flex-row gap-6 items-stretch"
@@ -88,7 +85,6 @@ function OverviewPage() {
               <AIRecommendationCard />
             </section>
 
-            {/* ROW 2: Mine Road & Site Conditions + Equipment Status */}
             <section
               aria-label="Mine road conditions and equipment status"
               className="flex flex-col lg:flex-row gap-6 items-stretch"
@@ -102,22 +98,16 @@ function OverviewPage() {
             aria-label="Shipping planner overview"
             className="flex flex-col gap-5"
           >
-            {/* SUB-HEADER */}
             <header
               aria-label="Shipping planner description"
               className="flex flex-col gap-1"
             >
               <p className="text-xs text-gray-500 mt-1">
-                Current filter:&nbsp;
+                Current location:&nbsp;
                 <span className="font-medium text-gray-700">{location}</span>
-                {" · "}
-                <span className="font-medium text-gray-700">{timePeriod}</span>
-                {" · "}
-                <span className="font-medium text-gray-700">{shift}</span>
               </p>
             </header>
 
-            {/* ROW 1: Port Weather + AI Recommendation */}
             <section
               aria-label="Port weather conditions and AI shipping recommendations"
               className="flex flex-col lg:flex-row gap-6 items-stretch"
@@ -130,7 +120,6 @@ function OverviewPage() {
               </section>
             </section>
 
-            {/* ROW 2: Vessel Schedule + Coal Volume */}
             <section
               aria-label="Vessel schedule and coal volume"
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"
@@ -143,7 +132,6 @@ function OverviewPage() {
               </section>
             </section>
 
-            {/* ROW 3: Loading Progress + Port Congestion Status */}
             <section
               aria-label="Loading progress and port congestion status"
               className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch"

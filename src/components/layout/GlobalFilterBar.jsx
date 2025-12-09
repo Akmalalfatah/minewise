@@ -1,110 +1,113 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useGlobalFilter } from "../../context/GlobalFilterContext";
 
-function GlobalFilterBar() {
+function GlobalFilterBar({ locationType = "all" }) {
   const [expanded, setExpanded] = useState(false);
   const { location, setLocation, resetFilter } = useGlobalFilter();
+
+  const locationOptions = useMemo(() => {
+    if (locationType === "pit") return ["PIT A", "PIT B"];
+    if (locationType === "port") return ["Port A", "Port B"];
+    return ["PIT A", "PIT B", "PIT C", "Port A", "Port B"];
+  }, [locationType]);
+
+  useEffect(() => {
+    if (!locationOptions.includes(location)) {
+      setLocation(locationOptions[0]);
+    }
+  }, [location, locationOptions, setLocation]);
 
   const handleToggle = () => {
     setExpanded((prev) => !prev);
   };
 
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
-  };
-
-  const handleReset = () => {
-    resetFilter();
+  const handleIconClick = (e) => {
+    if (e.shiftKey) {
+      resetFilter();
+    } else {
+      handleToggle();
+    }
   };
 
   return (
-    <section
-      data-layer="global_filter_bar"
-      aria-label="Global filters"
-      className={`GlobalFilterBar h-[71px] px-2 py-3.5 bg-white rounded-[50px] inline-flex items-center gap-[18px] overflow-hidden transition-all duration-300
-        ${expanded ? "w-[325px]" : "w-[100px]"}`}
-      role="group"
+    <header
+      data-layer="global_filter_header"
+      aria-label="Global Filters"
+      className="inline-flex items-center"
     >
-      <button
-        type="button"
-        data-layer="filter_button_container"
-        onClick={handleToggle}
-        className="FilterButtonContainer flex items-center gap-3 shrink-0 focus:outline-none"
-        title="Toggle global filter"
-        onContextMenu={(e) => {
-          e.preventDefault();
-          handleReset();
-        }}
-        aria-expanded={expanded}
-        aria-controls="global-filter-form"
+      <div
+        data-layer="global_filter_bar"
+        className={`GlobalFilterBar h-[71px] px-2 py-3.5 bg-white rounded-[50px]
+        inline-flex items-center gap-[18px] overflow-hidden transition-all duration-300
+        ${expanded ? "w-[330px]" : "w-[100px]"}`}
       >
-        <div
-          data-layer="icon_wrapper"
-          className="IconWrapper size-[57px] bg-[#1c2534] rounded-full flex justify-center items-center shrink-0"
-        >
-          <img
-            data-layer="icon_filter_filter"
-            className="size-[31px]"
-            src="/icons/icon_filter_filter.png"
-            alt="Open global filters"
-          />
-        </div>
-        <img
-          src="/icons/icon_expand_right.png"
-          alt=""
-          aria-hidden="true"
-          className={`w-2 h-3 transition-transform duration-300 ${
-            expanded ? "rotate-180" : ""
-          }`}
-        />
-      </button>
 
-      <form
-        id="global-filter-form"
-        aria-label="Global location filter"
-        onSubmit={(e) => e.preventDefault()}
-        className={`FilterGroupsContainer flex items-center gap-3 transition-all duration-300
+        <button
+          type="button"
+          aria-expanded={expanded}
+          aria-label={expanded ? "Hide Filters" : "Show Filters"}
+          onClick={handleIconClick}
+          className="FilterButtonContainer flex items-center gap-3 shrink-0 focus:outline-none"
+        >
+          <div className="IconWrapper size-[57px] bg-[#1c2534] rounded-full flex justify-center items-center shrink-0">
+            <img
+              src="/icons/icon_filter_filter.png"
+              alt="Filter Icon"
+              className="size-[31px]"
+            />
+          </div>
+
+          <img
+            src="/icons/icon_expand_right.png"
+            className={`w-2 h-3 transition-transform duration-300 ${
+              expanded ? "rotate-180" : ""
+            }`}
+            alt=""
+            aria-hidden="true"
+          />
+        </button>
+
+        <section
+          aria-label="Location Filter"
+          className={`FilterGroupsContainer flex items-center gap-3 transition-all duration-300
           ${
             expanded
               ? "opacity-100 translate-x-0"
               : "opacity-0 translate-x-6 pointer-events-none"
           }`}
-      >
-        <fieldset
-          data-layer="filter_item_location"
-          className="w-[205px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2 border-0 m-0 p-0"
         >
-          <legend className="sr-only">Filter by location</legend>
-
-          <label
-            htmlFor="global-location-select"
-            className="flex items-center gap-2 w-full"
+          <div
+            data-layer="filter_item_location"
+            className="w-[200px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2"
           >
-            <span className="size-13 bg-[#1c2534] flex justify-center items-center rounded-full shrink-0">
+            <div className="size-13 bg-[#1c2534] flex justify-center items-center rounded-full shrink-0">
               <img
-                className="size-[27px]"
                 src="/icons/icon_location.png"
-                alt=""
-                aria-hidden="true"
+                className="size-[27px]"
+                alt="Location Icon"
               />
-            </span>
+            </div>
+
+            <label htmlFor="global-filter-location" className="sr-only">
+              Select Location
+            </label>
 
             <select
-              id="global-location-select"
+              id="global-filter-location"
               value={location}
-              onChange={handleLocationChange}
+              onChange={(e) => setLocation(e.target.value)}
               className="bg-transparent outline-none w-full text-black text-base font-normal cursor-pointer"
             >
-              <option value="PIT A">PIT A</option>
-              <option value="PIT B">PIT B</option>
-              <option value="PIT C">PIT C</option>
-              <option value="Port A">Port A</option>
-              <option value="Port B">Port B</option>
+              {locationOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
             </select>
-          </label>
-        </fieldset>
-      </form>
-    </section>
+          </div>
+        </section>
+      </div>
+    </header>
   );
 }
 

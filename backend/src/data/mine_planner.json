@@ -1,124 +1,262 @@
 {
-    "environment_conditions": {
-        "area": "PIT A",
-        "location": "PIT A",
-        "rainfall": "45.8 mm (Heavy)",
-        "temperature": "24.1°C – 28.9°C",
-        "humidity": "82%",
-        "wind": "18 km/h",
-        "pressure": "1008 hPa",
-        "visibility": "1.2 km",
-        "lightning": true,
-        "updated": "July 8, 2025",
-        "risk": {
+    "locations": {
+      "PIT A": {
+        "environment_conditions": {
+          "area": "PIT A",
+          "location": "PIT A",
+          "rainfall": "45.8 mm (Heavy)",
+          "temperature": "24.1°C – 28.9°C",
+          "humidity": "82%",
+          "wind": "18 km/h",
+          "pressure": "1008 hPa",
+          "visibility": "1.2 km",
+          "lightning": true,
+          "updated": "July 8, 2025",
+          "risk": {
             "score": 79,
             "title": "High weather-related danger",
             "subtitle": "High risk of weather-related delays detected."
-        }
-    },
-    "ai_recommendation": {
-        "scenarios": [
+          },
+          "source_location": "PIT A"
+        },
+        "ai_recommendation": {
+          "scenarios": [
             {
-                "title": "Scenario 1 - Most Recommended",
-                "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its current workload and minimize potential delays."
+              "title": "Scenario 1 - Most Recommended",
+              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its current workload and minimize potential delays."
             },
             {
-                "title": "Scenario 2",
-                "description": "Set hauling for Road B for one day to lessen friction index and increased slip risk. Rerouting through Road A will maintain safer hauling operations with minimal impact on travel time."
+              "title": "Scenario 2",
+              "description": "Set hauling for Road B for one day to lessen friction index and increased slip risk. Rerouting through Road A will maintain safer hauling operations with minimal impact on travel time."
             },
             {
-                "title": "Scenario 3",
-                "description": "Scenario 3 is an “over-plan” to anticipate the upcoming rainfall. The excess rainy loading and hauling activities are compensated to achieve better material processing."
+              "title": "Scenario 3",
+              "description": "Scenario 3 is an “over-plan” to anticipate the upcoming rainfall. The excess rainy loading and hauling activities are compensated to achieve better material processing."
             }
-        ],
-        "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking"
-    },
-    "road_conditions": {
-        "segment_name": "SEG_ROAD_PL01",
-        "road_condition_label": "Slippery",
-        "travel_time": "16.2 min",
-        "friction_index": 0.32,
-        "water_depth": "9.6 cm",
-        "speed_limit": "40 km/h",
-        "actual_speed": "25 km/h",
-        "alert": {
+          ],
+          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking",
+          "source_location": "PIT A"
+        },
+        "road_conditions": {
+          "segment_name": "SEG_ROAD_PL01",
+          "road_condition_label": "Slippery",
+          "travel_time": "16.2 min",
+          "friction_index": 0.32,
+          "water_depth": "9.6 cm",
+          "speed_limit": "40 km/h",
+          "actual_speed": "25 km/h",
+          "alert": {
             "title": "High Risk Alert",
             "description": "Water depth detected on segment 01 (9.6cm). Slowdown and route reevaluation required."
-        }
-    },
-    "equipment_status": {
-        "summary": {
+          },
+          "source_location": "PIT A"
+        },
+        "equipment_status": {
+          "summary": {
             "excellent": 31,
             "good": 37,
             "maintenanceRequired": 17,
             "slightlyDamaged": 12,
             "severelyDamaged": 8
+          },
+          "equipments": [
+            {
+              "id": "ALAT_01",
+              "type": "Excavator",
+              "model": "Hitachi ZX200",
+              "condition": "Good",
+              "operatingHours": 4,
+              "maintenanceHours": 0
+            },
+            {
+              "id": "ALAT_02",
+              "type": "Dozer",
+              "model": "Komatsu PC200",
+              "condition": "Excellent",
+              "operatingHours": 3,
+              "maintenanceHours": 0
+            },
+            {
+              "id": "ALAT_03",
+              "type": "Dump Truck",
+              "model": "CAT 777D",
+              "condition": "Slightly Damaged",
+              "operatingHours": 5,
+              "maintenanceHours": 1
+            },
+            {
+              "id": "ALAT_04",
+              "type": "Wheel Loader",
+              "model": "Komatsu PC300",
+              "condition": "Good",
+              "operatingHours": 2,
+              "maintenanceHours": 0
+            }
+          ],
+          "fleet_overview": [
+            {
+              "equipmentType": "Excavator",
+              "active": 9,
+              "maintenance": 2,
+              "idle": 3
+            },
+            {
+              "equipmentType": "Dozer",
+              "active": 5,
+              "maintenance": 1,
+              "idle": 1
+            },
+            {
+              "equipmentType": "Truck",
+              "active": 8,
+              "maintenance": 3,
+              "idle": 2
+            },
+            {
+              "equipmentType": "Wheel Loader",
+              "active": 10,
+              "maintenance": 2,
+              "idle": 5
+            },
+            {
+              "equipmentType": "Grader",
+              "active": 7,
+              "maintenance": 0,
+              "idle": 4
+            }
+          ],
+          "source_location": "PIT A"
+        }
+      },
+  
+      "PIT B": {
+        "environment_conditions": {
+          "area": "PIT B",
+          "location": "PIT B",
+          "rainfall": "18.3 mm (Moderate)",
+          "temperature": "25.2°C – 30.4°C",
+          "humidity": "74%",
+          "wind": "14 km/h",
+          "pressure": "1006 hPa",
+          "visibility": "2.8 km",
+          "lightning": false,
+          "updated": "July 8, 2025",
+          "risk": {
+            "score": 52,
+            "title": "Moderate weather-related risk",
+            "subtitle": "Rainfall present but visibility and wind are still within safe range."
+          },
+          "source_location": "PIT B"
         },
-        "equipments": [
+        "ai_recommendation": {
+          "scenarios": [
             {
-                "id": "ALAT_01",
-                "type": "Excavator",
-                "model": "Hitachi ZX200",
-                "condition": "Good",
-                "operatingHours": 4,
-                "maintenanceHours": 0
+              "title": "Scenario 1 - Balance Production",
+              "description": "Keep current fleet in PIT B and send only 1 dump truck to PIT A to keep production close to target while supporting PIT A backlog."
             },
             {
-                "id": "ALAT_02",
-                "type": "Dozer",
-                "model": "Komatsu PC200",
-                "condition": "Excellent",
-                "operatingHours": 3,
-                "maintenanceHours": 0
+              "title": "Scenario 2",
+              "description": "Prioritize hauling on Road D with better friction index and lower water depth to maintain consistent cycle time."
             },
             {
-                "id": "ALAT_03",
-                "type": "Dump Truck",
-                "model": "CAT 777D",
-                "condition": "Slightly Damaged",
-                "operatingHours": 5,
-                "maintenanceHours": 1
-            },
-            {
-                "id": "ALAT_04",
-                "type": "Wheel Loader",
-                "model": "Komatsu PC300",
-                "condition": "Good",
-                "operatingHours": 2,
-                "maintenanceHours": 0
+              "title": "Scenario 3",
+              "description": "Schedule short preventive maintenance window for two excavators during low-rain period to avoid unplanned downtime."
             }
-        ],
-        "fleet_overview": [
+          ],
+          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Production History",
+          "source_location": "PIT B"
+        },
+        "road_conditions": {
+          "segment_name": "SEG_ROAD_PB01",
+          "road_condition_label": "Wet",
+          "travel_time": "13.5 min",
+          "friction_index": 0.4,
+          "water_depth": "3.2 cm",
+          "speed_limit": "45 km/h",
+          "actual_speed": "30 km/h",
+          "alert": {
+            "title": "Caution Recommended",
+            "description": "Road surface is wet but still operable. Maintain recommended speed and monitor water depth."
+          },
+          "source_location": "PIT B"
+        },
+        "equipment_status": {
+          "summary": {
+            "excellent": 28,
+            "good": 40,
+            "maintenanceRequired": 10,
+            "slightlyDamaged": 9,
+            "severelyDamaged": 5
+          },
+          "equipments": [
             {
-                "equipmentType": "Excavator",
-                "active": 9,
-                "maintenance": 2,
-                "idle": 3
+              "id": "PB_ALAT_01",
+              "type": "Excavator",
+              "model": "Hitachi ZX200",
+              "condition": "Excellent",
+              "operatingHours": 5,
+              "maintenanceHours": 0
             },
             {
-                "equipmentType": "Dozer",
-                "active": 5,
-                "maintenance": 1,
-                "idle": 1
+              "id": "PB_ALAT_02",
+              "type": "Dump Truck",
+              "model": "CAT 777D",
+              "condition": "Good",
+              "operatingHours": 4,
+              "maintenanceHours": 0
             },
             {
-                "equipmentType": "Truck",
-                "active": 8,
-                "maintenance": 3,
-                "idle": 2
+              "id": "PB_ALAT_03",
+              "type": "Dozer",
+              "model": "Komatsu D85",
+              "condition": "Good",
+              "operatingHours": 3,
+              "maintenanceHours": 0
             },
             {
-                "equipmentType": "Wheel Loader",
-                "active": 10,
-                "maintenance": 2,
-                "idle": 5
-            },
-            {
-                "equipmentType": "Grader",
-                "active": 7,
-                "maintenance": 0,
-                "idle": 4
+              "id": "PB_ALAT_04",
+              "type": "Wheel Loader",
+              "model": "Komatsu WA380",
+              "condition": "Maintenance Required",
+              "operatingHours": 6,
+              "maintenanceHours": 1
             }
-        ]
+          ],
+          "fleet_overview": [
+            {
+              "equipmentType": "Excavator",
+              "active": 7,
+              "maintenance": 1,
+              "idle": 2
+            },
+            {
+              "equipmentType": "Dozer",
+              "active": 4,
+              "maintenance": 1,
+              "idle": 1
+            },
+            {
+              "equipmentType": "Truck",
+              "active": 10,
+              "maintenance": 1,
+              "idle": 2
+            },
+            {
+              "equipmentType": "Wheel Loader",
+              "active": 6,
+              "maintenance": 1,
+              "idle": 2
+            },
+            {
+              "equipmentType": "Grader",
+              "active": 5,
+              "maintenance": 0,
+              "idle": 2
+            }
+          ],
+          "source_location": "PIT B"
+        }
+      }
     }
-}
+  }
+  
