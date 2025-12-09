@@ -1,5 +1,4 @@
 import { loadJSON } from "../utils/jsonLoader.js";
-import { applyFilters } from "../utils/filterUtil.js";
 
 function getPortSlice(filters = {}) {
   const json = loadJSON("shipping_planner.json");
@@ -37,34 +36,19 @@ export function getAIShippingRecommendation(filters = {}) {
 
 export function getVesselSchedules(filters = {}) {
   const { slice } = getPortSlice(filters);
-  let list = slice.vessel_schedules || [];
-
-  if (Array.isArray(list)) {
-    list = applyFilters(list, filters);
-  }
-
+  const list = slice.vessel_schedules || [];
   return list;
 }
 
 export function getCoalVolumeReady(filters = {}) {
   const { slice } = getPortSlice(filters);
-  let list = slice.coal_volume_ready || [];
-
-  if (Array.isArray(list)) {
-    list = applyFilters(list, filters);
-  }
-
+  const list = slice.coal_volume_ready || [];
   return list;
 }
 
 export function getLoadingProgress(filters = {}) {
   const { slice } = getPortSlice(filters);
-  let list = slice.loading_progress || [];
-
-  if (Array.isArray(list)) {
-    list = applyFilters(list, filters);
-  }
-
+  const list = slice.loading_progress || [];
   return list;
 }
 
