@@ -1,25 +1,18 @@
 {
-    "generator_form": {
-        "report_types": [
-            "Operational",
-            "Weather Impact",
-            "Equipment Status"
-        ],
-        "time_periods": [
-            "Daily",
-            "Weekly",
-            "Monthly"
-        ],
-        "formats": [
-            "PDF",
-            "CSV"
-        ]
-    },
-    "recent_reports": [
-        {
-            "title": "Weekly Summary Report",
-            "date": "2025-02-15",
-            "frequency": "Weekly"
-        }
+  "generator_form": {
+    "report_types": [
+      { "id": "daily", "label": "Daily" },
+      { "id": "weekly", "label": "Weekly" },
+      { "id": "monthly", "label": "Monthly" }
+    ],
+    "time_periods": [
+      { "id": "today", "label": "Today" },
+      { "id": "last_7_days", "label": "Last 7 Days" },
+      { "id": "last_30_days", "label": "Last 30 Days" }
+    ],
+    "formats": [
+      { "id": "pdf", "label": "PDF" }
     ]
+  },
+  "recent_reports": []
 }

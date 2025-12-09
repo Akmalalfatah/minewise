@@ -1,8 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ReportGeneratorForm from "../components/reports/ReportGeneratorForm";
-import { generateReport, downloadReport } from "../services/reportService";
+import {
+  generateReport,
+  downloadReport,
+  getRecentReports,
+  downloadRecentReport,
+} from "../services/reportService";
 import { userStore } from "../store/userStore";
 import { notificationStore } from "../store/notificationStore";
+
+function RecentReportCard({ report, onDownload, onView }) {
+  const dateLabel = report.generated_at
+    ? new Date(report.generated_at).toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+      })
+    : "-";
+
+  const sectionsLabel = (() => {
+    try {
+      const arr = JSON.parse(report.sections || "[]");
+      if (!Array.isArray(arr) || arr.length === 0) return "Custom sections";
+      if (arr.length <= 2) return arr.join(", ");
+      return `${arr.slice(0, 2).join(", ")} +${arr.length - 2} more`;
+    } catch {
+      return "Custom sections";
+    }
+  })();
+
+  return (
+    <div className="w-full p-4 bg-[#f3f4f6] rounded-xl shadow-sm flex items-center justify-between border border-[#e0e3e8]">
+      <div className="flex items-center gap-3">
+        <div className="w-9 h-9 rounded-lg bg-[#1C2534] flex items-center justify-center">
+          <img
+            src="/icons/icon_pdf.png"
+            alt="PDF"
+            className="w-5 h-5 object-contain"
+          />
+        </div>
+        <div className="flex flex-col">
+          <span className="text-sm font-semibold text-[#111827]">
+            {report.title || "MineWise Report"}
+          </span>
+          <span className="text-xs text-[#6b7280]">{dateLabel}</span>
+          <span className="text-xs text-[#9ca3af] mt-0.5">
+            {sectionsLabel}
+          </span>
+        </div>
+      </div>
+
+      <div className="flex items-center gap-2">
+        <button
+          type="button"
+          onClick={onView}
+          className="px-3 py-2 bg-white border border-[#d1d5db] text-xs font-semibold text-[#1C2534] rounded-lg hover:bg-[#e5e7eb] transition"
+        >
+          View
+        </button>
+        <button
+          type="button"
+          onClick={onDownload}
+          className="px-4 py-2 bg-[#1C2534] text-white text-xs font-semibold rounded-lg hover:opacity-90 transition"
+        >
+          Download
+        </button>
+      </div>
+    </div>
+  );
+}
 
 function ReportPage() {
   const reportTypes = [
@@ -31,6 +99,8 @@ function ReportPage() {
   const [reportType, setReportType] = useState("");
   const [timePeriod, setTimePeriod] = useState("");
   const [selectedSections, setSelectedSections] = useState([]);
+  const [notes, setNotes] = useState("");
+  const [recentReports, setRecentReports] = useState([]);
 
   const addNotification = notificationStore((state) => state.addNotification);
   const user = userStore((state) => state.user);
@@ -55,7 +125,21 @@ function ReportPage() {
     report_type: reportType || null,
     time_period: timePeriod || null,
     sections: selectedSections,
+    notes: notes || "",
   });
+
+  const refreshRecentReports = async () => {
+    try {
+      const list = await getRecentReports();
+      setRecentReports(list);
+    } catch (err) {
+      console.error("Failed to load recent reports", err);
+    }
+  };
+
+  useEffect(() => {
+    refreshRecentReports();
+  }, []);
 
   const handleGenerateReport = async () => {
     const payload = buildPayload();
@@ -65,12 +149,14 @@ function ReportPage() {
 
       addNotification({
         senderName: user?.fullname || "User",
-        message: "has made a new report! Check it out.",
+        message: "has generated a new report! Check it out.",
         timeAgo: "Just now",
         payload,
       });
 
-      if (res && res.status === "ok") {
+      await refreshRecentReports();
+
+      if (res && res.status === "success") {
         alert("Report generation started");
       } else {
         alert("Report generation request sent");
@@ -98,9 +184,35 @@ function ReportPage() {
     }
   };
 
+  const handleDownloadRecent = async (id) => {
+    try {
+      const { blob, filename } = await downloadRecentReport(id);
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename || "report.pdf";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      alert("Failed to download report");
+    }
+  };
+
+  const handleViewRecent = async (id) => {
+    try {
+      const { blob } = await downloadRecentReport(id);
+      const url = window.URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (err) {
+      alert("Failed to open report");
+    }
+  };
+
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
-      <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
+      <div className="max-w-[1440px] mx-auto flex flex-col gap-8">
         <section aria-label="Report generator form" className="mt-2">
           <ReportGeneratorForm
             reportTypeValue={
@@ -113,12 +225,39 @@ function ReportPage() {
             timePeriods={timePeriods}
             sectionsList={sectionsList}
             selectedSections={selectedSections}
+            notesValue={notes}
+            onChangeNotes={setNotes}
             onChangeReportType={handleChangeReportType}
             onChangeTimePeriod={handleChangeTimePeriod}
             onToggleSection={handleToggleSection}
             onGenerateReport={handleGenerateReport}
             onDownloadReport={handleDownloadReport}
           />
+        </section>
+
+        <section aria-label="Recent reports">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-[#1C2534] text-lg font-bold">
+              Recent Reports
+            </h2>
+          </div>
+
+          {recentReports.length === 0 ? (
+            <div className="w-full p-6 bg-white rounded-2xl border border-[#e5e7eb] text-sm text-[#6b7280]">
+              No reports generated yet. Generate a report to see it listed here.
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {recentReports.map((r) => (
+                <RecentReportCard
+                  key={r.id}
+                  report={r}
+                  onDownload={() => handleDownloadRecent(r.id)}
+                  onView={() => handleViewRecent(r.id)}
+                />
+              ))}
+            </div>
+          )}
         </section>
       </div>
     </main>

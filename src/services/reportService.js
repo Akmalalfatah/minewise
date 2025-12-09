@@ -1,47 +1,41 @@
 import apiClient from "./apiClient";
 
-export async function getReportGeneratorForm() {
-    try {
-        const res = await apiClient.get("/reports/generator-form");
-        return res.data?.generator_form || null;
-    } catch (err) {
-        console.error("Failed to fetch report generator form:", err);
-        return null;
-    }
-}
-
 export async function generateReport(payload) {
-    try {
-        const res = await apiClient.post("/reports/generate", payload);
-        return res.data || null;
-    } catch (err) {
-        console.error("Failed to generate report:", err);
-        throw err;
-    }
+  const res = await apiClient.post("/reports/generate", payload);
+  return res.data;
 }
 
 export async function downloadReport(payload) {
-    try {
-        const res = await apiClient.post("/reports/download", payload, {
-            responseType: "blob"
-        });
-        const contentDisposition = res.headers && res.headers["content-disposition"];
-        let filename = "report.pdf";
-        if (contentDisposition) {
-            const match = /filename\*=UTF-8''(.+)|filename="?([^;"]+)"?/.exec(contentDisposition);
-            if (match) {
-                filename = decodeURIComponent(match[1] || match[2]);
-            }
-        }
-        return { blob: res.data, filename };
-    } catch (err) {
-        console.error("Failed to download report:", err);
-        throw err;
-    }
+  const res = await apiClient.post("/reports/download", payload, {
+    responseType: "blob",
+  });
+
+  let filename = "MineWise_Report.pdf";
+  const disposition = res.headers["content-disposition"];
+  if (disposition) {
+    const match = disposition.match(/filename="?([^"]+)"?/i);
+    if (match && match[1]) filename = match[1];
+  }
+
+  return { blob: res.data, filename };
 }
 
-export default {
-    getReportGeneratorForm,
-    generateReport,
-    downloadReport
-};
+export async function getRecentReports() {
+  const res = await apiClient.get("/reports/recent");
+  return res.data?.recent_reports || [];
+}
+
+export async function downloadRecentReport(id) {
+  const res = await apiClient.get(`/reports/download/${id}`, {
+    responseType: "blob",
+  });
+
+  let filename = "MineWise_Report.pdf";
+  const disposition = res.headers["content-disposition"];
+  if (disposition) {
+    const match = disposition.match(/filename="?([^"]+)"?/i);
+    if (match && match[1]) filename = match[1];
+  }
+
+  return { blob: res.data, filename };
+}

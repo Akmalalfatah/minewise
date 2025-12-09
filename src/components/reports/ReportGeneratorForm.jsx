@@ -7,9 +7,11 @@ function ReportGeneratorForm({
   timePeriods = [],
   sectionsList = [],
   selectedSections = [],
+  notesValue,
   onChangeReportType,
   onChangeTimePeriod,
   onToggleSection,
+  onChangeNotes,
   onGenerateReport,
   onDownloadReport,
 }) {
@@ -20,7 +22,6 @@ function ReportGeneratorForm({
       className="w-full max-w-[1365px] p-6 bg-white/70 rounded-3xl"
     >
       <div className="w-full flex flex-col gap-8">
-        {/* Header */}
         <header className="flex items-center gap-3">
           <div className="w-8 h-8 p-1.5 bg-gray-800 rounded-2xl flex justify-center items-center">
             <img
@@ -38,15 +39,15 @@ function ReportGeneratorForm({
           </h1>
         </header>
 
-        {/* Body */}
-        <section aria-label="Report configuration" className="w-full flex flex-col gap-8">
+        <section
+          aria-label="Report configuration"
+          className="w-full flex flex-col gap-8"
+        >
           <p className="text-black/60 text-sm font-normal font-['Inter']">
-            Select sections and configure your report
+            Select sections, add notes, and configure your report
           </p>
 
-          {/* Top filters: Report Type & Time Period */}
           <div className="w-full flex gap-[112px]">
-            {/* Report Type */}
             <div className="flex-1 flex flex-col gap-3">
               <label className="text-black text-sm font-semibold font-['Inter']">
                 Report Type
@@ -75,7 +76,6 @@ function ReportGeneratorForm({
               </div>
             </div>
 
-            {/* Time Period */}
             <div className="flex-1 flex flex-col gap-3">
               <label className="text-black text-sm font-semibold font-['Inter']">
                 Time Period
@@ -105,64 +105,89 @@ function ReportGeneratorForm({
             </div>
           </div>
 
-          {/* Sections list */}
-          <div aria-label="Report sections selection" className="w-full flex flex-col gap-6">
-            <div className="flex justify-between items-center">
-              <h2 className="text-black text-sm font-semibold font-['Inter']">
-                Report Section
-              </h2>
+          <div className="w-full grid grid-cols-1 lg:grid-cols-[2fr,1.4fr] gap-8">
+            <div
+              aria-label="Report sections selection"
+              className="w-full flex flex-col gap-6"
+            >
+              <div className="flex justify-between items-center">
+                <h2 className="text-black text-sm font-semibold font-['Inter']">
+                  Report Section
+                </h2>
+              </div>
+
+              <div className="flex flex-col gap-3">
+                {sectionsList.map((section) => {
+                  const checked = selectedSections.includes(section);
+                  return (
+                    <article
+                      key={section}
+                      className="h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex items-center"
+                    >
+                      <label className="flex items-center gap-3 w-full cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={checked}
+                          onChange={() =>
+                            onToggleSection && onToggleSection(section)
+                          }
+                          className="w-4 h-4 accent-gray-800"
+                          aria-label={section}
+                        />
+                        <div className="flex flex-col gap-px">
+                          <span className="text-black text-sm font-semibold font-['Inter']">
+                            {section}
+                          </span>
+                          <span className="text-black/60 text-xs font-normal font-['Inter']">
+                            {section === "Executive Summary" &&
+                              "High-level overview and key insights"}
+                            {section === "Operational Overview" &&
+                              "Current status of all operations"}
+                            {section === "Weather Analysis" &&
+                              "Forecast and impact assessment"}
+                            {section === "Equipment Status" &&
+                              "Equipment availability and utilization"}
+                            {section === "Road Conditions" &&
+                              "Haul road status and restrictions"}
+                            {section === "AI Recommendations" &&
+                              "AI-driven operational suggestions"}
+                            {section === "Scenario Analysis" &&
+                              "Simulation results and comparisons"}
+                            {section === "Risk Assessment" &&
+                              "Risk factors and mitigation strategies"}
+                          </span>
+                        </div>
+                      </label>
+                    </article>
+                  );
+                })}
+              </div>
             </div>
 
-            <div className="flex flex-col gap-6">
-              {sectionsList.map((section) => {
-                const checked = selectedSections.includes(section);
-                return (
-                  <article
-                    key={section}
-                    className="h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex items-center"
-                  >
-                    <label className="flex items-center gap-3 w-full cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={checked}
-                        onChange={() =>
-                          onToggleSection && onToggleSection(section)
-                        }
-                        className="w-4 h-4"
-                        aria-label={section}
-                      />
-                      <div className="flex flex-col gap-px">
-                        <span className="text-black text-sm font-semibold font-['Inter']">
-                          {section}
-                        </span>
-                        <span className="text-black/60 text-xs font-normal font-['Inter']">
-                          {section === "Executive Summary" &&
-                            "High-level overview and key insights"}
-                          {section === "Operational Overview" &&
-                            "Current status of all operations"}
-                          {section === "Weather Analysis" &&
-                            "Forecast and impact assessment"}
-                          {section === "Equipment Status" &&
-                            "Forecast and impact assessment"}
-                          {section === "Road Conditions" &&
-                            "Fleet availability and maintenance"}
-                          {section === "AI Recommendations" &&
-                            "Haul road status and recommendations"}
-                          {section === "Scenario Analysis" &&
-                            "Simulation results and comparisons"}
-                          {section === "Risk Assessment" &&
-                            "Risk factors and mitigation strategies"}
-                        </span>
-                      </div>
-                    </label>
-                  </article>
-                );
-              })}
+            <div className="w-full flex flex-col gap-3">
+              <h2 className="text-black text-sm font-semibold font-['Inter']">
+                Additional Notes
+              </h2>
+              <div className="w-full px-3 py-2 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300">
+                <textarea
+                  value={notesValue || ""}
+                  onChange={(e) =>
+                    onChangeNotes && onChangeNotes(e.target.value)
+                  }
+                  rows={5}
+                  className="w-full bg-transparent outline-none resize-none text-sm font-normal font-['Inter'] text-black placeholder:text-black/40"
+                  placeholder="Add context for this report, e.g. weather anomaly, unexpected downtime, or operational decisions by planner."
+                  aria-label="Additional notes for the report"
+                />
+              </div>
+              <p className="text-xs text-black/50 font-['Inter']">
+                Optional: these notes will be added as an “Operator Notes” section
+                in the generated PDF.
+              </p>
             </div>
           </div>
 
-          {/* Action buttons */}
-          <footer className="flex items-center gap-3">
+          <footer className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={onGenerateReport}
