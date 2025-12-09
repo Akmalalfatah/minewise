@@ -7,6 +7,7 @@ import shippingPlannerRoutes from "./routes/shippingPlannerRoutes.js";
 import reportsRoutes from "./routes/reportsRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -19,11 +20,14 @@ app.use(
 
 app.use(express.json());
 
+app.use("/uploads", express.static("uploads"));
+
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mine-planner", minePlannerRoutes);
 app.use("/api/shipping-planner", shippingPlannerRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/ai", aiChatRoutes);
+app.use("/api/users", userRoutes);
 
 export default app;
