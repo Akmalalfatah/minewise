@@ -1,4 +1,5 @@
-import React, { useEffect } from "react";
+// src/pages/DashboardPage.jsx
+import React, { useEffect, useState } from "react";
 import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
 import AISummaryInformationCard from "../components/dashboard/AISummaryInformationCard";
@@ -11,25 +12,73 @@ import RoadConditionOverviewCard from "../components/dashboard/RoadConditionOver
 import TotalProductionCard from "../components/dashboard/TotalProductionCard";
 import VesselStatusCard from "../components/dashboard/VesselStatusCard";
 import WeatherConditionCard from "../components/dashboard/WeatherConditionCard";
-import { getDashboard } from "../services/dashboardService";
+
+import {
+  getTotalProduction,
+  getWeatherCondition,
+  getProductionEfficiency,
+  getEquipmentStatus,
+  getVesselStatus,
+  getProductionWeatherOverview,
+  getRoadConditionOverview,
+  getCausesOfDowntime,
+  getDecisionImpact,
+  getAISummary,
+} from "../services/dashboardService";
 
 function DashboardPage() {
-  const { location } = useGlobalFilter();
-  const [dashboardData, setDashboardData] = React.useState(null);
+  const { location, timePeriod, shift } = useGlobalFilter();
+  const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const data = await getDashboard({ location });
-        setDashboardData(data);
-      } catch (err) {
-        console.error("Failed to load dashboard data:", err);
+        const filters = { location, timePeriod, shift };
+
+        const [
+          total_production,
+          weather_condition,
+          production_efficiency,
+          equipment_status,
+          vessel_status,
+          production_weather_overview,
+          road_condition_overview,
+          causes_of_downtime,
+          decision_impact,
+          ai_summary,
+        ] = await Promise.all([
+          getTotalProduction(filters),
+          getWeatherCondition(filters),
+          getProductionEfficiency(filters),
+          getEquipmentStatus(filters),
+          getVesselStatus(filters),
+          getProductionWeatherOverview(filters),
+          getRoadConditionOverview(filters),
+          getCausesOfDowntime(filters),
+          getDecisionImpact(filters),
+          getAISummary(filters),
+        ]);
+
+        setDashboardData({
+          total_production,
+          weather_condition,
+          production_efficiency,
+          equipment_status,
+          vessel_status,
+          production_weather_overview,
+          road_condition_overview,
+          causes_of_downtime,
+          decision_impact,
+          ai_summary,
+        });
+      } catch (error) {
+        console.error("Failed to load dashboard data:", error);
         setDashboardData(null);
       }
     }
 
     fetchData();
-  }, [location]);
+  }, [location, timePeriod, shift]);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
@@ -56,9 +105,7 @@ function DashboardPage() {
             <ProductionWeatherOverviewCard
               data={dashboardData?.production_weather_overview}
             />
-            <CausesOfDowntimeCard
-              data={dashboardData?.causes_of_downtime}
-            />
+            <CausesOfDowntimeCard data={dashboardData?.causes_of_downtime} />
           </div>
 
           <div className="w-[530px]">
@@ -68,9 +115,14 @@ function DashboardPage() {
           </div>
         </section>
 
-        <section aria-label="Decision impact and AI summary" className="flex gap-6">
+        <section
+          aria-label="Decision impact and AI summary"
+          className="flex gap-6"
+        >
           <div className="flex-1">
-            <DecisionImpactAnalysisCard data={dashboardData?.decision_impact} />
+            <DecisionImpactAnalysisCard
+              data={dashboardData?.decision_impact}
+            />
           </div>
 
           <div className="w-[604px]">
