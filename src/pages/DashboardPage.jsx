@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
+
 import AISummaryInformationCard from "../components/dashboard/AISummaryInformationCard";
 import CausesOfDowntimeCard from "../components/dashboard/CausesOfDowntimeCard";
 import DecisionImpactAnalysisCard from "../components/dashboard/DecisionImpactAnalysisCard";
@@ -13,64 +14,17 @@ import TotalProductionCard from "../components/dashboard/TotalProductionCard";
 import VesselStatusCard from "../components/dashboard/VesselStatusCard";
 import WeatherConditionCard from "../components/dashboard/WeatherConditionCard";
 
-import {
-  getTotalProduction,
-  getWeatherCondition,
-  getProductionEfficiency,
-  getEquipmentStatus,
-  getVesselStatus,
-  getProductionWeatherOverview,
-  getRoadConditionOverview,
-  getCausesOfDowntime,
-  getDecisionImpact,
-  getAISummary,
-} from "../services/dashboardService";
+import { getDashboard } from "../services/dashboardService";
 
 function DashboardPage() {
-  const { location, timePeriod, shift } = useGlobalFilter();
+  const { location } = useGlobalFilter();
   const [dashboardData, setDashboardData] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const filters = { location, timePeriod, shift };
-
-        const [
-          total_production,
-          weather_condition,
-          production_efficiency,
-          equipment_status,
-          vessel_status,
-          production_weather_overview,
-          road_condition_overview,
-          causes_of_downtime,
-          decision_impact,
-          ai_summary,
-        ] = await Promise.all([
-          getTotalProduction(filters),
-          getWeatherCondition(filters),
-          getProductionEfficiency(filters),
-          getEquipmentStatus(filters),
-          getVesselStatus(filters),
-          getProductionWeatherOverview(filters),
-          getRoadConditionOverview(filters),
-          getCausesOfDowntime(filters),
-          getDecisionImpact(filters),
-          getAISummary(filters),
-        ]);
-
-        setDashboardData({
-          total_production,
-          weather_condition,
-          production_efficiency,
-          equipment_status,
-          vessel_status,
-          production_weather_overview,
-          road_condition_overview,
-          causes_of_downtime,
-          decision_impact,
-          ai_summary,
-        });
+        const data = await getDashboard({ location });
+        setDashboardData(data);
       } catch (error) {
         console.error("Failed to load dashboard data:", error);
         setDashboardData(null);
@@ -78,7 +32,7 @@ function DashboardPage() {
     }
 
     fetchData();
-  }, [location, timePeriod, shift]);
+  }, [location]);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
