@@ -16,7 +16,6 @@ import { parseFilters } from "../utils/filterUtil.js";
 
 const router = express.Router();
 
-// GET /dashboard -> sudah mendukung filter (location, dst)
 router.get("/", (req, res) => {
   const filters = parseFilters(req.query);
   const payload = getDashboard(filters);
