@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { userStore } from "./userStore";
 
 const STORAGE_KEY = "notifications";
 const UNREAD_KEY = "unreadCount";
@@ -26,13 +27,26 @@ export const notificationStore = create((set) => ({
   addNotification: (notif) =>
     set((state) => {
       const now = Date.now();
-      const withMeta = {
+      const currentUserState = userStore.getState();
+      const currentUser = currentUserState.user || currentUserState.profile;
+
+      const senderName =
+        notif.senderName ||
+        currentUser?.full_name ||
+        currentUser?.fullName ||
+        currentUser?.name ||
+        currentUser?.username ||
+        "User";
+
+      const item = {
         id: now,
         createdAt: now,
-        ...notif,
+        senderName,
+        message: notif.message || "has generated a new report! Check it out.",
+        reportUrl: notif.reportUrl || null,
       };
 
-      const updated = [withMeta, ...state.notifications];
+      const updated = [item, ...state.notifications];
       const unread = state.unreadCount + 1;
 
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));

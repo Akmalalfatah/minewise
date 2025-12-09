@@ -1,4 +1,9 @@
-export function timeAgo(timestamp) {
+export function timeAgo(input) {
+const timestamp =
+typeof input === "number" ? input : new Date(input).getTime();
+
+if (Number.isNaN(timestamp)) return "";
+
 const now = Date.now();
 const diff = Math.floor((now - timestamp) / 1000);
 

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-function formatTimeAgo(createdAt) {
+function formatTimeAgo(createdAt, now) {
   if (!createdAt) return "";
-  const diffMs = Date.now() - createdAt;
+  const diffMs = now - createdAt;
   const diffMinutes = Math.floor(diffMs / (1000 * 60));
 
   if (diffMinutes < 1) return "Just now";
@@ -17,6 +17,14 @@ function formatTimeAgo(createdAt) {
 
 function NotificationCard({ notifications = [], onCheck, onClearAll }) {
   const [openIndex, setOpenIndex] = useState(null);
+  const [now, setNow] = useState(Date.now());
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setNow(Date.now());
+    }, 60000);
+    return () => clearInterval(id);
+  }, []);
 
   const handleToggle = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
@@ -43,46 +51,56 @@ function NotificationCard({ notifications = [], onCheck, onClearAll }) {
         <p className="text-gray-500 text-sm">No notifications yet.</p>
       )}
 
-      {notifications.map((n, i) => (
-        <div key={n.id ?? i} className="flex flex-col gap-2 w-80">
-          <button
-            type="button"
-            onClick={() => handleToggle(i)}
-            className="flex justify-between items-start w-full"
-          >
-            <p className="text-black text-sm leading-[18px] text-left mr-3">
-              <span className="font-semibold">{n.senderName} </span>
-              {n.message}
-            </p>
+      {notifications.map((n, i) => {
+        const displayName =
+          n.senderName ||
+          n.sender ||
+          n.user ||
+          n.actorName ||
+          n.generatedBy ||
+          "User";
 
-            <img
-              src="/icons/icon_expand_down.png"
-              alt=""
-              className={`w-2.5 h-2.5 flex-shrink-0 transition-transform ${
-                openIndex === i ? "rotate-180" : ""
-              }`}
-            />
-          </button>
+        const timeText = formatTimeAgo(n.createdAt, now);
 
-          <time className="text-stone-500 text-xs">
-            {n.timeAgo || formatTimeAgo(n.createdAt)}
-          </time>
-
-          {openIndex === i && (
+        return (
+          <div key={n.id ?? i} className="flex flex-col gap-2 w-80">
             <button
               type="button"
-              onClick={() => onCheck && onCheck(n)}
-              className="mt-1 w-16 h-6 px-2 py-1 bg-zinc-100 rounded-md text-black text-sm"
+              onClick={() => handleToggle(i)}
+              className="flex justify-between items-start w-full"
             >
-              Check
-            </button>
-          )}
+              <p className="text-black text-sm leading-[18px] text-left mr-3">
+                <span className="font-semibold">{displayName} </span>
+                {n.message || "has generated a new report! Check it out."}
+              </p>
 
-          {i !== notifications.length - 1 && (
-            <hr className="mt-2 w-80 outline outline-[0.5px] outline-stone-300" />
-          )}
-        </div>
-      ))}
+              <img
+                src="/icons/icon_expand_down.png"
+                alt=""
+                className={`w-2.5 h-2.5 flex-shrink-0 transition-transform ${
+                  openIndex === i ? "rotate-180" : ""
+                }`}
+              />
+            </button>
+
+            <time className="text-stone-500 text-xs">{timeText}</time>
+
+            {openIndex === i && (
+              <button
+                type="button"
+                onClick={() => onCheck && onCheck(n)}
+                className="mt-1 w-16 h-6 px-2 py-1 bg-zinc-100 rounded-md text-black text-sm"
+              >
+                Check
+              </button>
+            )}
+
+            {i !== notifications.length - 1 && (
+              <hr className="mt-2 w-80 outline outline-[0.5px] outline-stone-300" />
+            )}
+          </div>
+        );
+      })}
     </section>
   );
 }

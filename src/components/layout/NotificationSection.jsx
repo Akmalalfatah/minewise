@@ -3,6 +3,12 @@ import { notificationStore } from "../../store/notificationStore";
 
 function NotificationSection({ onClick }) {
   const unreadCount = notificationStore((state) => state.unreadCount);
+  const markAllRead = notificationStore((state) => state.markAllRead);
+
+  const handleClick = () => {
+    markAllRead();
+    if (onClick) onClick();
+  };
 
   const iconSrc =
     unreadCount > 0
@@ -13,7 +19,7 @@ function NotificationSection({ onClick }) {
     <button
       type="button"
       data-layer="notification_section"
-      onClick={onClick}
+      onClick={handleClick}
       className="NotificationSection w-12 h-12 bg-white rounded-full flex items-center justify-center"
     >
       <div className="relative w-11 h-11 bg-gray-100 rounded-full flex items-center justify-center">
