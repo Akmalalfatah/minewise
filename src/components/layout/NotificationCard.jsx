@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { notificationStore } from "../../store/notificationStore";
+import { downloadRecentReport } from "../../services/reportService";
 
 function formatTimeAgo(createdAt, now) {
   if (!createdAt) return "";
@@ -15,7 +17,7 @@ function formatTimeAgo(createdAt, now) {
   return `${diffDays} days ago`;
 }
 
-function NotificationCard({ notifications = [], onCheck, onClearAll }) {
+function NotificationCard({ notifications = [], onClearAll }) {
   const [openIndex, setOpenIndex] = useState(null);
   const [now, setNow] = useState(Date.now());
 
@@ -28,6 +30,33 @@ function NotificationCard({ notifications = [], onCheck, onClearAll }) {
 
   const handleToggle = (index) => {
     setOpenIndex((prev) => (prev === index ? null : index));
+  };
+
+  const handleCheck = async (notif) => {
+    try {
+      if (notif.reportUrl) {
+        window.open(notif.reportUrl, "_blank");
+      } else if (notif.reportId) {
+        const newWindow = window.open("", "_blank");
+        const { blob, filename } = await downloadRecentReport(notif.reportId);
+        const url = window.URL.createObjectURL(blob);
+
+        if (newWindow) {
+          newWindow.location.href = url;
+        } else {
+          const a = document.createElement("a");
+          a.href = url;
+          a.download = filename;
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+        }
+      }
+    } catch (err) {
+      console.error("Error opening report:", err);
+    } finally {
+      notificationStore.getState().removeNotification(notif.id);
+    }
   };
 
   return (
@@ -88,9 +117,9 @@ function NotificationCard({ notifications = [], onCheck, onClearAll }) {
             {openIndex === i && (
               <button
                 type="button"
-                onClick={() => onCheck && onCheck(n)}
+                onClick={() => handleCheck(n)}
                 className="mt-1 w-16 h-6 px-2 py-1 bg-zinc-100 rounded-md text-black text-sm"
-              >
+             >
                 Check
               </button>
             )}

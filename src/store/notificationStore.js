@@ -39,11 +39,11 @@ export const notificationStore = create((set) => ({
         "User";
 
       const item = {
-        id: now,
-        createdAt: now,
+        ...notif,
+        id: notif.id ?? now,
+        createdAt: notif.createdAt ?? now,
         senderName,
         message: notif.message || "has generated a new report! Check it out.",
-        reportUrl: notif.reportUrl || null,
       };
 
       const updated = [item, ...state.notifications];
@@ -67,8 +67,15 @@ export const notificationStore = create((set) => ({
   removeNotification: (id) =>
     set((state) => {
       const updated = state.notifications.filter((n) => n.id !== id);
+      const unread = Math.max(0, state.unreadCount - 1);
+
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      return { notifications: updated };
+      localStorage.setItem(UNREAD_KEY, JSON.stringify(unread));
+
+      return {
+        notifications: updated,
+        unreadCount: unread,
+      };
     }),
 
   clearNotifications: () => {
