@@ -1,113 +1,223 @@
 {
-    "total_production": {
-        "produce_ton": 12850,
-        "target_ton": 15000,
-        "avg_production_per_day": 1850,
-        "deviation_pct": -14.3,
-        "source_location": "PIT A"
-    },
-    "weather_condition": {
-        "rain_probability_pct": 62,
-        "wind_speed_kmh": 24,
-        "visibility_km": 1.2,
-        "extreme_weather_flag": true,
-        "source_location": "PIT A"
-    },
-    "production_efficiency": {
-        "effective_hours": 17.2,
-        "maintenance_hours": 2.8,
-        "efficiency_rate": 86.0,
-        "source_location": "PIT A"
-    },
-    "equipment_status": {
-        "active": 12,
-        "standby": 5,
-        "under_repair": 3,
-        "maintenance": 2,
-        "source_location": "PIT A"
-    },
-    "vessel_status": {
-        "loading": 2,
-        "waiting": 1,
-        "non_delay_risk": true,
-        "vessel_name": "MV Makassar"
-    },
-    "production_weather_overview": {
-        "production": [
-            1240,
-            1300,
-            1400,
-            1150
-        ],
-        "target": [
-            1500,
-            1500,
-            1500,
-            1500
-        ],
-        "ai_flag": [
+    "locations": {
+      "PIT A": {
+        "total_production": {
+          "produce_ton": 12850,
+          "target_ton": 15000,
+          "avg_production_per_day": 1850,
+          "deviation_pct": -14.3,
+          "source_location": "PIT A"
+        },
+        "weather_condition": {
+          "rain_probability_pct": 62,
+          "wind_speed_kmh": 24,
+          "visibility_km": 1.2,
+          "extreme_weather_flag": true,
+          "source_location": "PIT A"
+        },
+        "production_efficiency": {
+          "effective_hours": 17.2,
+          "maintenance_hours": 2.8,
+          "efficiency_rate": 86.0,
+          "source_location": "PIT A"
+        },
+        "equipment_status": {
+          "active": 12,
+          "standby": 5,
+          "under_repair": 3,
+          "maintenance": 2,
+          "source_location": "PIT A"
+        },
+        "vessel_status": {
+          "loading": 2,
+          "waiting": 1,
+          "non_delay_risk": true,
+          "vessel_name": "MV Makassar",
+          "source_location": "PIT A"
+        },
+        "production_weather_overview": {
+          "production": [1240, 1300, 1400, 1150],
+          "target": [1500, 1500, 1500, 1500],
+          "ai_flag": [
             "Produksi menurun 14.3% dari target.",
             "Cuaca ekstrem berpotensi menghambat hauling."
-        ]
-    },
-    "road_condition_overview": {
-        "segments": [
+          ],
+          "source_location": "PIT A"
+        },
+        "road_condition_overview": {
+          "segments": [
             {
-                "road": "Road A",
-                "status": "Normal",
-                "speed": 22,
-                "friction": 0.45,
-                "water": 0,
-                "surface_type": "Asphalt"
+              "road": "Road A",
+              "status": "Normal",
+              "speed": 22,
+              "friction": 0.45,
+              "water": 0,
+              "surface_type": "Asphalt"
             },
             {
-                "road": "Road B",
-                "status": "Waspada",
-                "speed": 12,
-                "friction": 0.35,
-                "water": 5,
-                "surface_type": "Coal Road"
+              "road": "Road B",
+              "status": "Waspada",
+              "speed": 12,
+              "friction": 0.35,
+              "water": 5,
+              "surface_type": "Coal Road"
             },
             {
-                "road": "Road C",
-                "status": "Banjir",
-                "speed": 8,
-                "friction": 0.21,
-                "water": 17,
-                "surface_type": "Gravel"
+              "road": "Road C",
+              "status": "Banjir",
+              "speed": 8,
+              "friction": 0.21,
+              "water": 17,
+              "surface_type": "Gravel"
             }
-        ],
-        "route_efficiency_score": 62,
-        "ai_flag": [
+          ],
+          "route_efficiency_score": 62,
+          "ai_flag": [
             "Friction rendah pada Road B.",
             "Water level meningkat pada Road C."
-        ]
-    },
-    "causes_of_downtime": {
-        "total_downtime_hours": 6.4,
-        "lost_output_ton": 820,
-        "top_causes": {
+          ],
+          "source_location": "PIT A"
+        },
+        "causes_of_downtime": {
+          "total_downtime_hours": 6.4,
+          "lost_output_ton": 820,
+          "top_causes": {
             "Maintenance": 42,
             "Weather": 33,
             "Road_conditions": 25
-        },
-        "ai_breakdown": [
+          },
+          "ai_breakdown": [
             "Maintenance spike detected due to component failures.",
             "Maintanance has one major flawed."
-        ]
-    },
-    "decision_impact": {
-        "correlation": {
+          ],
+          "source_location": "PIT A"
+        },
+        "decision_impact": {
+          "correlation": {
             "rain_vs_production": -0.72,
             "visibility_vs_loading": -0.35
-        }
-    },
-    "ai_summary": {
-        "summary_points": [
+          },
+          "source_location": "PIT A"
+        },
+        "ai_summary": {
+          "summary_points": [
             "Produksi menurun 14.3% dari target.",
             "Cuaca ekstrem berpotensi menghambat hauling.",
             "Road B menyebabkan bottleneck pada haul fleet.",
             "AI menyarankan maintenance shift penyesuaian."
-        ]
+          ],
+          "source_location": "PIT A"
+        }
+      },
+  
+      "PIT B": {
+        "total_production": {
+          "produce_ton": 15200,
+          "target_ton": 15000,
+          "avg_production_per_day": 1900,
+          "deviation_pct": 1.3,
+          "source_location": "PIT B"
+        },
+        "weather_condition": {
+          "rain_probability_pct": 35,
+          "wind_speed_kmh": 16,
+          "visibility_km": 3.2,
+          "extreme_weather_flag": false,
+          "source_location": "PIT B"
+        },
+        "production_efficiency": {
+          "effective_hours": 18.5,
+          "maintenance_hours": 1.7,
+          "efficiency_rate": 91.0,
+          "source_location": "PIT B"
+        },
+        "equipment_status": {
+          "active": 15,
+          "standby": 4,
+          "under_repair": 1,
+          "maintenance": 1,
+          "source_location": "PIT B"
+        },
+        "vessel_status": {
+          "loading": 1,
+          "waiting": 2,
+          "non_delay_risk": false,
+          "vessel_name": "MV Barito",
+          "source_location": "PIT B"
+        },
+        "production_weather_overview": {
+          "production": [1500, 1480, 1520, 1490],
+          "target": [1500, 1500, 1500, 1500],
+          "ai_flag": [
+            "Produksi mendekati atau sedikit di atas target.",
+            "Tidak ada anomali cuaca signifikan yang mempengaruhi hauling."
+          ],
+          "source_location": "PIT B"
+        },
+        "road_condition_overview": {
+          "segments": [
+            {
+              "road": "Road D",
+              "status": "Normal",
+              "speed": 24,
+              "friction": 0.48,
+              "water": 0,
+              "surface_type": "Asphalt"
+            },
+            {
+              "road": "Road E",
+              "status": "Aman",
+              "speed": 20,
+              "friction": 0.4,
+              "water": 1,
+              "surface_type": "Coal Road"
+            },
+            {
+              "road": "Road F",
+              "status": "Waspada",
+              "speed": 15,
+              "friction": 0.3,
+              "water": 6,
+              "surface_type": "Gravel"
+            }
+          ],
+          "route_efficiency_score": 78,
+          "ai_flag": [
+            "Sebagian besar segmen dalam kondisi aman.",
+            "Road F berpotensi menjadi bottleneck saat hujan deras."
+          ],
+          "source_location": "PIT B"
+        },
+        "causes_of_downtime": {
+          "total_downtime_hours": 3.2,
+          "lost_output_ton": 410,
+          "top_causes": {
+            "Maintenance": 20,
+            "Weather": 15,
+            "Road_conditions": 10
+          },
+          "ai_breakdown": [
+            "Downtime didominasi oleh planned maintenance.",
+            "Tidak ada anomali signifikan pada pola cuaca."
+          ],
+          "source_location": "PIT B"
+        },
+        "decision_impact": {
+          "correlation": {
+            "rain_vs_production": -0.35,
+            "visibility_vs_loading": -0.18
+          },
+          "source_location": "PIT B"
+        },
+        "ai_summary": {
+          "summary_points": [
+            "Produksi PIT B sedikit di atas target.",
+            "Kondisi cuaca relatif stabil.",
+            "Road F perlu dimonitor saat intensitas hujan meningkat.",
+            "Rekomendasi AI: fokus optimasi jadwal maintenance."
+          ],
+          "source_location": "PIT B"
+        }
+      }
     }
-}
+  }

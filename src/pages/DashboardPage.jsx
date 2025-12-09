@@ -14,21 +14,26 @@ import WeatherConditionCard from "../components/dashboard/WeatherConditionCard";
 import { getDashboard } from "../services/dashboardService";
 
 function DashboardPage() {
-  const { location, timePeriod, shift } = useGlobalFilter();
+  const { location } = useGlobalFilter();
   const [dashboardData, setDashboardData] = React.useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getDashboard();
-      setDashboardData(data);
+      try {
+        const data = await getDashboard({ location });
+        setDashboardData(data);
+      } catch (err) {
+        console.error("Failed to load dashboard data:", err);
+        setDashboardData(null);
+      }
     }
+
     fetchData();
-  }, [location, timePeriod, shift]);
+  }, [location]);
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
-
         <header aria-label="Global filters">
           <GlobalFilterBar />
         </header>
@@ -36,19 +41,30 @@ function DashboardPage() {
         <section aria-label="Summary cards" className="flex gap-6">
           <TotalProductionCard data={dashboardData?.total_production} />
           <WeatherConditionCard data={dashboardData?.weather_condition} />
-          <EfficiencyProductionCard data={dashboardData?.production_efficiency} />
+          <EfficiencyProductionCard
+            data={dashboardData?.production_efficiency}
+          />
           <EquipmentStatusCard data={dashboardData?.equipment_status} />
           <VesselStatusCard data={dashboardData?.vessel_status} />
         </section>
 
-        <section aria-label="Production, downtime, and road condition" className="flex gap-6">
+        <section
+          aria-label="Production, downtime, and road condition"
+          className="flex gap-6"
+        >
           <div className="flex flex-col gap-6">
-            <ProductionWeatherOverviewCard data={dashboardData?.production_weather_overview} />
-            <CausesOfDowntimeCard data={dashboardData?.causes_of_downtime} />
+            <ProductionWeatherOverviewCard
+              data={dashboardData?.production_weather_overview}
+            />
+            <CausesOfDowntimeCard
+              data={dashboardData?.causes_of_downtime}
+            />
           </div>
 
           <div className="w-[530px]">
-            <RoadConditionOverviewCard data={dashboardData?.road_condition_overview} />
+            <RoadConditionOverviewCard
+              data={dashboardData?.road_condition_overview}
+            />
           </div>
         </section>
 
@@ -61,7 +77,6 @@ function DashboardPage() {
             <AISummaryInformationCard data={dashboardData?.ai_summary} />
           </div>
         </section>
-
       </div>
     </main>
   );

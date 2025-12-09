@@ -120,7 +120,14 @@ export async function getAISummary(filters = {}) {
   return res.data.ai_summary;
 }
 
-export async function getDashboard() {
-  const res = await apiClient.get("/dashboard");
+export async function getDashboard(filters = {}) {
+  const { location, timePeriod, shift } = filters;
+  const res = await apiClient.get("/dashboard", {
+    params: {
+      location,
+      time: timePeriod,
+      shift,
+    },
+  });
   return res.data;
 }
