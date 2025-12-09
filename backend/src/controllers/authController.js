@@ -50,6 +50,7 @@ export async function login(req, res) {
           u.email,
           u.password,
           u.employee_id,
+          u.avatar_url,
           r.id AS role_id,
           r.role_name AS role_name
        FROM users u
@@ -79,6 +80,7 @@ export async function login(req, res) {
         fullname: user.fullname,
         email: user.email,
         employee_id: user.employee_id,
+        avatar_url: user.avatar_url,
         role_id: user.role_id,
         role_name: user.role_name,
       },
@@ -107,6 +109,7 @@ export async function refreshToken(req, res) {
           u.fullname,
           u.email,
           u.employee_id,
+          u.avatar_url,
           r.id AS role_id,
           r.role_name AS role_name
        FROM users u
@@ -142,6 +145,7 @@ export async function getCurrentUser(req, res) {
           u.fullname,
           u.email,
           u.employee_id,
+          u.avatar_url,
           r.id AS role_id,
           r.role_name AS role_name
        FROM users u
@@ -163,6 +167,7 @@ export async function getCurrentUser(req, res) {
         fullname: user.fullname,
         email: user.email,
         employee_id: user.employee_id,
+        avatar_url: user.avatar_url,
         role_id: user.role_id,
         role_name: user.role_name,
       },
