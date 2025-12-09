@@ -1,23 +1,26 @@
 import express from "express";
 import {
-    getTotalProduction,
-    getWeatherCondition,
-    getProductionEfficiency,
-    getEquipmentStatus,
-    getVesselStatus,
-    getProductionWeatherOverview,
-    getRoadConditionOverview,
-    getCausesOfDowntime,
-    getDecisionImpact,
-    getAISummary
+  getTotalProduction,
+  getWeatherCondition,
+  getProductionEfficiency,
+  getEquipmentStatus,
+  getVesselStatus,
+  getProductionWeatherOverview,
+  getRoadConditionOverview,
+  getCausesOfDowntime,
+  getDecisionImpact,
+  getAISummary,
 } from "../controllers/dashboardController.js";
-import { loadJSON } from "../utils/jsonLoader.js";
+import { getDashboard } from "../services/dashboardService.js";
+import { parseFilters } from "../utils/filterUtil.js";
 
 const router = express.Router();
 
+// GET /dashboard -> sudah mendukung filter (location, dst)
 router.get("/", (req, res) => {
-    const json = loadJSON("dashboard.json");
-    res.json(json);
+  const filters = parseFilters(req.query);
+  const payload = getDashboard(filters);
+  res.json(payload);
 });
 
 router.get("/total-production", getTotalProduction);
