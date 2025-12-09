@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { getCoalVolumeReady } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function CoalVolumeCard({ onSeeMore }) {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getCoalVolumeReady();
-      setData(result);
+      try {
+        const filters = { location, timePeriod, shift };
+        const result = await getCoalVolumeReady(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load coal volume:", err);
+        setData(null);
+      }
     }
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   const stockpiles = data?.stockpiles || [];
 
@@ -24,7 +32,6 @@ function CoalVolumeCard({ onSeeMore }) {
         data-layer="coal_volume_container"
         className="CoalVolumeContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-        {/* Header */}
         <header
           data-layer="header_container"
           className="HeaderContainer self-stretch inline-flex justify-between items-center"
@@ -83,7 +90,6 @@ function CoalVolumeCard({ onSeeMore }) {
           </button>
         </header>
 
-        {/* Stockpile Cards */}
         <div
           data-layer="coal_cards_container"
           className="CoalCardsContainer w-full inline-flex justify-start items-center gap-3"
@@ -100,7 +106,6 @@ function CoalVolumeCard({ onSeeMore }) {
                   data-layer="coal_card_header_wrapper"
                   className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-3"
                 >
-                  {/* Card Header */}
                   <header
                     data-layer="coal_card_header_container"
                     className="CoalCardHeaderContainer self-stretch inline-flex justify-start items-center gap-3"
@@ -130,7 +135,6 @@ function CoalVolumeCard({ onSeeMore }) {
                     </h3>
                   </header>
 
-                  {/* Data Section */}
                   <section
                     data-layer="coal_card_content_container"
                     className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3"

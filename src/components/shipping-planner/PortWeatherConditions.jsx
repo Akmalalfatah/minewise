@@ -1,19 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { getPortWeatherConditions } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function PortWeatherConditions() {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getPortWeatherConditions();
-      setData(result);
+      try {
+        const filters = { location, timePeriod, shift };
+        const result = await getPortWeatherConditions(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load port weather conditions:", err);
+        setData(null);
+      }
     }
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   const area = data?.area || "-";
-  const location = data?.location || "-";
+  const loc = data?.location || "-";
   const rainfall = data?.rainfall || "-";
   const temperature = data?.temperature || "-";
   const humidity = data?.humidity || "-";
@@ -39,7 +47,6 @@ function PortWeatherConditions() {
           data-layer="content_container"
           className="ContentContainer self-stretch flex flex-col justify-start items-start gap-3"
         >
-          {/* Header */}
           <header
             data-layer="header_container"
             className="HeaderContainer self-stretch flex flex-col justify-start items-start gap-2.5"
@@ -65,7 +72,6 @@ function PortWeatherConditions() {
             </div>
           </header>
 
-          {/* Area */}
           <section className="AreaSectionContainer self-stretch inline-flex justify-between items-center">
             <span className="AreaLabel text-black text-xs font-semibold">
               Area:
@@ -77,10 +83,8 @@ function PortWeatherConditions() {
 
           <hr className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]" />
 
-          {/* Weather info */}
           <section className="WeatherInfoSection self-stretch inline-flex justify-between items-center">
             <dl className="w-full flex justify-between">
-              {/* Labels */}
               <div className="LabelColumnContainer inline-flex flex-col justify-center items-start gap-3 text-black text-sm font-semibold">
                 <dt>Location</dt>
                 <dt>Rainfall</dt>
@@ -93,16 +97,15 @@ function PortWeatherConditions() {
                 <dt>Updated</dt>
               </div>
 
-              {/* Values */}
               <div className="ValueColumnContainer inline-flex flex-col justify-start items-end gap-3 text-black text-sm font-semibold">
-                <dd>{location}</dd>
+                <dd>{loc}</dd>
                 <dd>{rainfall}</dd>
                 <dd>{temperature}</dd>
                 <dd>{humidity}</dd>
                 <dd>{wind}</dd>
                 <dd>{pressure}</dd>
                 <dd>{visibility}</dd>
-                <dd>{lightning}</dd>
+                <dd>{lightning ? "Detected" : "None"}</dd>
                 <dd>{updated}</dd>
               </div>
             </dl>
@@ -111,7 +114,6 @@ function PortWeatherConditions() {
 
         <hr className="DividerMiddle self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]" />
 
-        {/* Risk section */}
         <section className="RiskSectionContainer self-stretch flex flex-col justify-start items-start gap-2.5">
           <h3 className="RiskSectionTitle self-stretch text-black text-sm font-semibold">
             Weather-Based Risk

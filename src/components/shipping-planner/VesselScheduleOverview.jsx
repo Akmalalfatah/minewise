@@ -1,16 +1,24 @@
 import React, { useEffect, useState } from "react";
 import { getVesselSchedule } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function VesselScheduleOverview({ onSeeMore }) {
   const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
     async function load() {
-      const result = await getVesselSchedule();
-      setData(result);
+      try {
+        const filters = { location, timePeriod, shift };
+        const result = await getVesselSchedule(filters);
+        setData(result);
+      } catch (err) {
+        console.error("Failed to load vessel schedule:", err);
+        setData(null);
+      }
     }
     load();
-  }, []);
+  }, [location, timePeriod, shift]);
 
   const vessels = data?.vessels || [];
 
@@ -23,7 +31,6 @@ function VesselScheduleOverview({ onSeeMore }) {
         data-layer="vessel_schedule_container"
         className="VesselScheduleContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-        {/* Header */}
         <header
           data-layer="header_container"
           className="HeaderContainer w-full h-8 inline-flex justify-between items-center"
@@ -61,7 +68,6 @@ function VesselScheduleOverview({ onSeeMore }) {
           </button>
         </header>
 
-        {/* Vessel cards */}
         <section
           data-layer="vessel_cards_container"
           className="VesselCardsContainer w-full inline-flex justify-start items-center gap-3"

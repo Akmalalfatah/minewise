@@ -1,5 +1,5 @@
 {
-    "locations": {
+    "ports": {
       "Port A": {
         "port_weather_conditions": {
           "area": "Port A",
@@ -21,15 +21,15 @@
           "scenarios": [
             {
               "title": "Scenario 1 - Most Recommended",
-              "description": "Prioritize loading vessels already berthed at Port A and delay new arrivals by 4–6 hours to avoid peak congestion."
+              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its workload."
             },
             {
               "title": "Scenario 2",
-              "description": "Coordinate with mine planners to smooth coal delivery into the port stockpile and prevent sudden surge in loading demand."
+              "description": "Set hauling via Road C due to low friction index. Rerouting through Road B reduces operational risk."
             },
             {
               "title": "Scenario 3",
-              "description": "Advance loading for high-priority contracts before heavy rainfall window to reduce demurrage risk."
+              "description": "Advance shift by 2 hours to avoid incoming rainfall and maintain productivity."
             }
           ],
           "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking",
@@ -45,6 +45,8 @@
             "laycan_end": "2025-01-11",
             "destination": "China",
             "status": "On Route",
+            "planned_load": "50,000 ton",
+            "loaded": null,
             "source_location": "Port A"
           },
           {
@@ -56,6 +58,8 @@
             "laycan_end": "2025-01-16",
             "destination": "India",
             "status": "Scheduled",
+            "planned_load": "55,000 ton",
+            "loaded": null,
             "source_location": "Port A"
           }
         ],
@@ -65,6 +69,10 @@
             "volume": 52000,
             "grade": "GAR 4200",
             "updated_at": "2025-01-08T10:00:00Z",
+            "moisture": "Standby",
+            "status": "Standby",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port A"
           },
           {
@@ -72,6 +80,10 @@
             "volume": 38000,
             "grade": "GAR 5000",
             "updated_at": "2025-01-08T10:00:00Z",
+            "moisture": "Standby",
+            "status": "Standby",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port A"
           }
         ],
@@ -83,6 +95,8 @@
             "tonnage_target": 50000,
             "last_update": "2025-01-09T14:00:00Z",
             "status": "Loading",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port A"
           },
           {
@@ -92,37 +106,21 @@
             "tonnage_target": 55000,
             "last_update": "2025-01-09T14:00:00Z",
             "status": "Not started",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port A"
           }
         ],
         "port_congestion": {
           "updatedText": "Updated: Jul 9, 2025 - 07:00 AM (Asia/Makassar)",
           "shipsLoading": [
-            {
-              "name": "MV Mahakan Queen (Panamax)",
-              "source_location": "Port A"
-            },
-            {
-              "name": "MV Kalimantan Pride (Ultramax)",
-              "source_location": "Port A"
-            }
+            { "name": "MV Mahakan Queen (Panamax)" },
+            { "name": "MV Kalimantan Pride (Ultramax)" }
           ],
           "shipsWaiting": [
-            {
-              "name": "MV Baruna",
-              "eta": "Jul 29",
-              "source_location": "Port A"
-            },
-            {
-              "name": "MV Atrantis",
-              "eta": "Aug 01",
-              "source_location": "Port A"
-            },
-            {
-              "name": "MV Arwana",
-              "eta": "Aug 04",
-              "source_location": "Port A"
-            }
+            { "name": "MV Baruna", "eta": "Jul 29" },
+            { "name": "MV Atrantis", "eta": "Aug 01" },
+            { "name": "MV Arwana", "eta": "Aug 04" }
           ],
           "shipsCompletedText": "(No recent departure)",
           "congestionLevel": "High",
@@ -135,17 +133,17 @@
         "port_weather_conditions": {
           "area": "Port B",
           "location": "Port B",
-          "rainfall": "18.5 mm",
-          "temperature": "26.0°C – 31.2°C",
-          "humidity": "76%",
-          "wind": "8.4 km/h",
-          "pressure": "1009.10 hPa",
-          "visibility": "3.8 km",
+          "rainfall": "18.0 mm",
+          "temperature": "27.0°C – 30.5°C",
+          "humidity": "68%",
+          "wind": "7.5 km/h",
+          "pressure": "1009.40 hPa",
+          "visibility": "2.8 km",
           "lightning": false,
           "updated": "July 9, 2025",
-          "riskScore": 48,
+          "riskScore": 42,
           "riskTitle": "Moderate weather-related risk",
-          "riskSubtitle": "Rain and wind are manageable, visibility remains good for loading operations.",
+          "riskSubtitle": "Light rainfall, visibility mostly acceptable for loading operations.",
           "source_location": "Port B"
         },
         "ai_recommendation": {
@@ -168,82 +166,91 @@
         },
         "vessel_schedules": [
           {
-            "vessel_name": "MV Borneo Star",
-            "eta": "2025-01-12T07:00:00Z",
-            "etb": "2025-01-12T11:00:00Z",
-            "etd": "2025-01-13T18:00:00Z",
-            "laycan_start": "2025-01-11",
-            "laycan_end": "2025-01-13",
-            "destination": "Philippines",
+            "vessel_name": "MV Samarinda Star",
+            "eta": "2025-01-18T06:00:00Z",
+            "etb": "2025-01-18T10:00:00Z",
+            "etd": "2025-01-19T18:00:00Z",
+            "laycan_start": "2025-01-17",
+            "laycan_end": "2025-01-19",
+            "destination": "Japan",
             "status": "On Route",
+            "planned_load": "60,000 ton",
+            "loaded": null,
             "source_location": "Port B"
           },
           {
-            "vessel_name": "MV Nusantara",
-            "eta": "2025-01-18T06:00:00Z",
-            "etb": "2025-01-18T10:00:00Z",
-            "etd": "2025-01-19T16:00:00Z",
-            "laycan_start": "2025-01-17",
-            "laycan_end": "2025-01-19",
-            "destination": "Vietnam",
+            "vessel_name": "MV Borneo Pride",
+            "eta": "2025-01-22T07:00:00Z",
+            "etb": "2025-01-22T11:00:00Z",
+            "etd": "2025-01-23T20:00:00Z",
+            "laycan_start": "2025-01-21",
+            "laycan_end": "2025-01-23",
+            "destination": "South Korea",
             "status": "Scheduled",
+            "planned_load": "58,000 ton",
+            "loaded": null,
             "source_location": "Port B"
           }
         ],
         "coal_volume_ready": [
           {
-            "stockpile": "PB-SP-01",
-            "volume": 43000,
-            "grade": "GAR 5000",
-            "updated_at": "2025-01-08T11:00:00Z",
+            "stockpile": "SP-B1",
+            "volume": 46000,
+            "grade": "GAR 4200",
+            "updated_at": "2025-01-09T09:00:00Z",
+            "moisture": "Standby",
+            "status": "Standby",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port B"
           },
           {
-            "stockpile": "PB-SP-02",
-            "volume": 29000,
-            "grade": "GAR 4200",
-            "updated_at": "2025-01-08T11:00:00Z",
+            "stockpile": "SP-B2",
+            "volume": 41000,
+            "grade": "GAR 5000",
+            "updated_at": "2025-01-09T09:00:00Z",
+            "moisture": "Standby",
+            "status": "Standby",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port B"
           }
         ],
         "loading_progress": [
           {
-            "vessel_name": "MV Borneo Star",
-            "progress": 80,
-            "tonnage_loaded": 34400,
-            "tonnage_target": 43000,
-            "last_update": "2025-01-09T15:00:00Z",
+            "vessel_name": "MV Samarinda Star",
+            "progress": 72,
+            "tonnage_loaded": 43200,
+            "tonnage_target": 60000,
+            "last_update": "2025-01-18T15:00:00Z",
             "status": "Loading",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port B"
           },
           {
-            "vessel_name": "MV Nusantara",
+            "vessel_name": "MV Borneo Pride",
             "progress": 0,
             "tonnage_loaded": 0,
-            "tonnage_target": 29000,
-            "last_update": "2025-01-09T15:00:00Z",
+            "tonnage_target": 58000,
+            "last_update": "2025-01-18T15:00:00Z",
             "status": "Not started",
+            "eta": "-",
+            "etd": "-",
             "source_location": "Port B"
           }
         ],
         "port_congestion": {
-          "updatedText": "Updated: Jul 9, 2025 - 07:15 AM (Asia/Makassar)",
+          "updatedText": "Updated: Jul 9, 2025 - 09:30 AM (Asia/Makassar)",
           "shipsLoading": [
-            {
-              "name": "MV Borneo Star",
-              "source_location": "Port B"
-            }
+            { "name": "MV Samarinda Star" }
           ],
           "shipsWaiting": [
-            {
-              "name": "MV Nusantara",
-              "eta": "Jul 21",
-              "source_location": "Port B"
-            }
+            { "name": "MV Borneo Pride", "eta": "Jan 22" }
           ],
-          "shipsCompletedText": "1 vessel departed in the last 12 hours.",
+          "shipsCompletedText": "Last departure: MV Nusantara Coal – Jan 15",
           "congestionLevel": "Medium",
-          "operationalNote": "Port traffic is stable. Port B can be used to offload demand when Port A congestion increases.",
+          "operationalNote": "Berthing queue is under control. Monitor rain cells and adjust pilot assignment if visibility drops below 1.5 km.",
           "source_location": "Port B"
         }
       }

@@ -29,8 +29,6 @@ function OverviewPage() {
     setActiveView(defaultView);
   }, [defaultView]);
 
-  const locationType = activeView === "mine" ? "pit" : "port";
-
   return (
     <main className="min-h-screen bg-[#f5f5f7] flex justify-center">
       <div className="w-full max-w-[1440px] py-8 px-10 flex flex-col gap-6">
@@ -38,7 +36,9 @@ function OverviewPage() {
           aria-label="Global filters and overview view switcher"
           className="flex justify-between items-center gap-4"
         >
-          <GlobalFilterBar locationType={locationType} />
+          <GlobalFilterBar
+            locationType={activeView === "mine" ? "pit" : "port"}
+          />
 
           <nav
             aria-label="Planner view toggle"
@@ -103,7 +103,7 @@ function OverviewPage() {
               className="flex flex-col gap-1"
             >
               <p className="text-xs text-gray-500 mt-1">
-                Current location:&nbsp;
+                Current location:{" "}
                 <span className="font-medium text-gray-700">{location}</span>
               </p>
             </header>

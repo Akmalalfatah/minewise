@@ -1,64 +1,74 @@
 import { loadJSON } from "../utils/jsonLoader.js";
 import { applyFilters } from "../utils/filterUtil.js";
 
-const DEFAULT_PORT = "Port A";
-
-function getLocationSlice(filters = {}) {
+function getPortSlice(filters = {}) {
   const json = loadJSON("shipping_planner.json");
-  const locations = json.locations || {};
+  const ports = json.ports || {};
 
-  if (!Object.keys(locations).length) {
+  if (!Object.keys(ports).length) {
     return { json, slice: json };
   }
 
-  const requestedLocation = (filters.location || DEFAULT_PORT).toUpperCase();
+  const requestedLocation = (filters.location || "Port A").toUpperCase();
 
   const matchedKey =
-    Object.keys(locations).find(
+    Object.keys(ports).find(
       (key) => key.toUpperCase() === requestedLocation
-    ) || DEFAULT_PORT;
+    ) || "Port A";
 
-  return {
-    json,
-    slice: locations[matchedKey] || locations[DEFAULT_PORT] || {}
-  };
+  return { json, slice: ports[matchedKey] || ports["Port A"] || {} };
 }
 
 export function getPortWeatherConditions(filters = {}) {
-  const { slice } = getLocationSlice(filters);
+  const { slice } = getPortSlice(filters);
   return slice.port_weather_conditions || null;
 }
 
 export function getAIShippingRecommendation(filters = {}) {
-  const { slice } = getLocationSlice(filters);
+  const { slice } = getPortSlice(filters);
 
   return (
     slice.ai_recommendation || {
       scenarios: [],
-      analysis_sources: "-"
+      analysis_sources: "-",
     }
   );
 }
 
 export function getVesselSchedules(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  const list = slice.vessel_schedules || [];
-  return applyFilters(list, filters);
+  const { slice } = getPortSlice(filters);
+  let list = slice.vessel_schedules || [];
+
+  if (Array.isArray(list)) {
+    list = applyFilters(list, filters);
+  }
+
+  return list;
 }
 
 export function getCoalVolumeReady(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  const list = slice.coal_volume_ready || [];
-  return applyFilters(list, filters);
+  const { slice } = getPortSlice(filters);
+  let list = slice.coal_volume_ready || [];
+
+  if (Array.isArray(list)) {
+    list = applyFilters(list, filters);
+  }
+
+  return list;
 }
 
 export function getLoadingProgress(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  const list = slice.loading_progress || [];
-  return applyFilters(list, filters);
+  const { slice } = getPortSlice(filters);
+  let list = slice.loading_progress || [];
+
+  if (Array.isArray(list)) {
+    list = applyFilters(list, filters);
+  }
+
+  return list;
 }
 
 export function getPortCongestionStatus(filters = {}) {
-  const { slice } = getLocationSlice(filters);
+  const { slice } = getPortSlice(filters);
   return slice.port_congestion || null;
 }
