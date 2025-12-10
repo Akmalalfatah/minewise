@@ -122,7 +122,7 @@ function PortWeatherConditions() {
           <div className="RiskContentContainer self-stretch inline-flex justify-start items-center gap-[18px]">
             <div className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#ffd4c7] flex justify-center items-center">
               <p className="RiskScoreValue text-center text-[#8f0b09] text-2xl font-semibold">
-                {riskScore}
+                {riskScore}<span>/100</span>
               </p>
             </div>
 

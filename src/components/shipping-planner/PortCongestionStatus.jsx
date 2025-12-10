@@ -28,7 +28,7 @@ function PortCongestionStatus() {
   return (
     <section
       data-layer="port_congestion_status_card"
-      className="PortCongestionStatusCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
+      className="PortCongestionStatusCard w-full p-6 bg-white rounded-3xl flex flex-col items-center gap-2.5 h-full"
     >
       <div
         data-layer="card_container"
@@ -70,7 +70,7 @@ function PortCongestionStatus() {
         {/* Main Content */}
         <article
           data-layer="content_container"
-          className="ContentContainer self-stretch px-[19px] py-2.5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
+          className="ContentContainer self-stretch px-[19px] py-5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
         >
           <div
             data-layer="activity_card_container"

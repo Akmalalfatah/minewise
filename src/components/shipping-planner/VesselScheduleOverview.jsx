@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getVesselSchedule } from "../../services/shippingPlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
-function VesselScheduleOverview({ onSeeMore }) {
+function VesselScheduleOverview() {
   const [data, setData] = useState(null);
   const { location, timePeriod, shift } = useFilterQuery();
 
@@ -53,19 +53,6 @@ function VesselScheduleOverview({ onSeeMore }) {
               Vessel Schedule Overview
             </h2>
           </div>
-
-          <button
-            type="button"
-            onClick={onSeeMore}
-            className="SeeMoreContainer inline-flex justify-start items-center gap-1"
-          >
-            <span className="SeeMoreLabel text-black text-xs font-semibold">
-              See More
-            </span>
-            <div className="IconExpandRight size-6 relative">
-              <div className="IconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black" />
-            </div>
-          </button>
         </header>
 
         <section

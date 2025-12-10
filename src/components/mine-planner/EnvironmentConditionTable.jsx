@@ -113,7 +113,7 @@ function EnvironmentConditionTable() {
 
           <hr
             data-layer="divider_top"
-            className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
+            className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
           />
 
           {/* INFO ROWS */}
@@ -157,7 +157,7 @@ function EnvironmentConditionTable() {
 
       <hr
         data-layer="divider_bottom"
-        className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]"
+        className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
       />
 
       {/* RISK SECTION */}
@@ -182,7 +182,7 @@ function EnvironmentConditionTable() {
             className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-[#ffd4c7]"
           >
             <p className="RiskScoreValue text-[#8f0b09] text-2xl font-semibold">
-              {risk.score}
+              {risk.score}<span>/100</span>
             </p>
           </div>
 

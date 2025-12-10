@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getCoalVolumeReady } from "../../services/shippingPlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
-function CoalVolumeCard({ onSeeMore }) {
+function CoalVolumeCard() {
   const [data, setData] = useState(null);
   const { location, timePeriod, shift } = useFilterQuery();
 
@@ -65,34 +65,11 @@ function CoalVolumeCard({ onSeeMore }) {
               Coal Volume Ready to Ship
             </h2>
           </div>
-
-          <button
-            type="button"
-            onClick={onSeeMore}
-            data-layer="see_more_container"
-            className="SeeMoreContainer inline-flex justify-start items-center gap-1"
-          >
-            <span
-              data-layer="see_more_label"
-              className="SeeMoreLabel text-black text-xs font-semibold"
-            >
-              See More
-            </span>
-            <div
-              data-layer="see_more_icon"
-              className="SeeMoreIcon size-6 relative"
-            >
-              <div
-                data-layer="see_more_icon_vector"
-                className="SeeMoreIconVector w-1.5 h-3 left-[15px] top-[18px] absolute origin-top-left rotate-180 border-2 border-black"
-              />
-            </div>
-          </button>
         </header>
 
         <div
           data-layer="coal_cards_container"
-          className="CoalCardsContainer w-full inline-flex justify-start items-center gap-3"
+          className="CoalCardsContainer w-full flex flex-wrap justify-start items-center gap-3"
         >
           {(stockpiles.length > 0 ? stockpiles.slice(0, 2) : [1, 2]).map(
             (sp, idx) => (
@@ -100,11 +77,11 @@ function CoalVolumeCard({ onSeeMore }) {
                 key={sp?.id || idx}
                 aria-label={`Coal stockpile ${sp?.name || "Loading..."}`}
                 data-layer="coal_card_container"
-                className="CoalCardContainer flex-1 min-w-[280px] h-[234px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
+                className="CoalCardContainer flex-1 min-w-[280px] h-[260px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
               >
                 <div
                   data-layer="coal_card_header_wrapper"
-                  className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-3"
+                  className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-7"
                 >
                   <header
                     data-layer="coal_card_header_container"
@@ -139,69 +116,40 @@ function CoalVolumeCard({ onSeeMore }) {
                     data-layer="coal_card_content_container"
                     className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3"
                   >
-                    <dl className="w-full space-y-3">
-                      <div
-                        data-layer="coal_card_volume_group"
-                        className="CoalCardVolumeGroup self-stretch inline-flex justify-between items-center"
-                      >
-                        <dt className="VolumeLabel text-black text-sm">
-                          Volume
-                        </dt>
-                        <dd className="VolumeValue text-black text-sm font-semibold">
-                          {sp?.volume || "-"}
-                        </dd>
-                      </div>
+                    <dl className="w-full grid grid-cols-2 gap-y-3">
+                      <dt className="text-black text-sm">Volume</dt>
+                      <dd className="text-right text-black text-sm font-semibold">
+                        {sp?.volume || "-"}
+                      </dd>
 
-                      <div
-                        data-layer="coal_card_cv_group"
-                        className="CoalCardCvGroup self-stretch inline-flex justify-between items-center"
-                      >
-                        <dt className="CvLabel text-black text-sm">CV</dt>
-                        <dd className="CvValue text-right text-black text-sm font-semibold">
-                          {sp?.cv || "-"}
-                        </dd>
-                      </div>
+                      <dt className="text-black text-sm">CV</dt>
+                      <dd className="text-right text-black text-sm font-semibold">
+                        {sp?.cv || "-"}
+                      </dd>
 
-                      <div
-                        data-layer="coal_card_moisture_group"
-                        className="CoalCardMoistureGroup self-stretch inline-flex justify-between items-center"
-                      >
-                        <dt className="MoistureLabel text-black text-sm">
-                          Moisture
-                        </dt>
-                        <dd className="MoistureValue text-right text-black text-sm font-semibold">
-                          {sp?.moisture || "-"}
-                        </dd>
-                      </div>
+                      <dt className="text-black text-sm">Moisture</dt>
+                      <dd className="text-right text-black text-sm font-semibold">
+                        {sp?.moisture || "-"}
+                      </dd>
 
-                      <div
-                        data-layer="coal_card_status_group"
-                        className="CoalCardStatusGroup self-stretch h-[19px] py-[7px] inline-flex justify-between items-center"
-                      >
-                        <dt className="StatusLabel text-black text-sm">
-                          Status
-                        </dt>
-                        <dd
-                          data-layer="coal_card_status_value_wrapper"
-                          className="CoalCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center"
-                        >
-                          <span className="StatusValue text-white text-xs font-semibold">
+                      <dt className="text-black text-sm">Status</dt>
+                      <dd className="flex justify-end">
+                        <div className="w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
+                          <span className="text-white text-xs font-semibold">
                             {sp?.status || "-"}
                           </span>
-                        </dd>
-                      </div>
+                        </div>
+                      </dd>
 
-                      <div
-                        data-layer="coal_card_schedule_group"
-                        className="CoalCardScheduleGroup self-stretch inline-flex justify-start items-center gap-[26px]"
-                      >
-                        <dt className="EtaValue text-black text-sm">
-                          ETA: {sp?.eta || "-"}
-                        </dt>
-                        <dd className="EtdValue text-black text-sm">
-                          ETD: {sp?.etd || "-"}
-                        </dd>
-                      </div>
+                      <dt className="text-black text-sm">ETA</dt>
+                      <dd className="text-right text-black text-sm">
+                        {sp?.eta || "-"}
+                      </dd>
+
+                      <dt className="text-black text-sm">ETD</dt>
+                      <dd className="text-right text-black text-sm">
+                        {sp?.etd || "-"}
+                      </dd>
                     </dl>
                   </section>
                 </div>

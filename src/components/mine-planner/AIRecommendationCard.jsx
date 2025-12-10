@@ -76,7 +76,7 @@ function AIRecommendationCard() {
 
         <hr
           data-layer="divider_top"
-          className="DividerTop self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-[#bdbdbd]"
+          className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
         <section

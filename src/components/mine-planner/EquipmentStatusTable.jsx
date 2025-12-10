@@ -76,7 +76,7 @@ function EquipmentStatusTable() {
 
         <div
           data-layer="divider_top"
-          className="DividerTop self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
+          className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
         {/* SUMMARY STATUS PILLS */}
@@ -120,7 +120,7 @@ function EquipmentStatusTable() {
               </div>
             </div>
 
-            <div className="SeverelyDamagedStatusCardContainer w-[161px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center">
+            <div className="SeverelyDamagedStatusCardContainer w-[150px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center">
               <div className="text-white text-[10px] font-bold">
                 Severely Damaged
               </div>
@@ -218,13 +218,13 @@ function EquipmentStatusTable() {
 
         <div
           data-layer="divider_bottom"
-          className="DividerBottom w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
+          className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
         {/* FLEET OVERVIEW */}
         <div
           data-layer="fleet_overview_section"
-          className="FleetOverviewSection self-stretch flex flex-col justify-start items-start gap-[9px]"
+          className="FleetOverviewSection self-stretch flex flex-col justify-start items-start gap-[20px]"
         >
           <div className="FleetOverviewTitle text-black text-sm font-semibold">
             Fleet Overview
@@ -234,7 +234,7 @@ function EquipmentStatusTable() {
             {fleetOverview.map((fleet, i) => (
               <div
                 key={`${fleet.equipmentType}-${i}`}
-                className="w-[146px] h-[111px] px-[17px] py-[13px] bg-white rounded-[10px] outline outline-1 outline-[#c1ccdd] flex flex-col gap-[7px]"
+                className="w-[140px] h-[111px] px-[17px] py-[13px] bg-white rounded-[10px] outline outline-1 outline-[#c1ccdd] flex flex-col gap-[7px]"
               >
                 <div className="text-black text-sm font-semibold">
                   {fleet.equipmentType}

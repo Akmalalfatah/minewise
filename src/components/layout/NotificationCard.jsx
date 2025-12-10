@@ -60,7 +60,7 @@ function NotificationCard({ notifications = [], onClearAll }) {
   };
 
   return (
-    <section className="w-96 px-5 py-5 bg-white rounded-3xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] flex flex-col gap-4">
+    <section className="w-90 px-5 py-5 bg-white rounded-3xl shadow-[0px_0px_30px_rgba(0,0,0,0.10)] flex flex-col gap-4">
       <div className="flex items-center justify-between w-80">
         <h2 className="text-black text-sm font-semibold">Notification</h2>
         {notifications.length > 0 && (
@@ -92,7 +92,7 @@ function NotificationCard({ notifications = [], onClearAll }) {
         const timeText = formatTimeAgo(n.createdAt, now);
 
         return (
-          <div key={n.id ?? i} className="flex flex-col gap-2 w-80">
+          <div key={n.id ?? i} className="flex flex-col gap-4 w-80">
             <button
               type="button"
               onClick={() => handleToggle(i)}
@@ -106,7 +106,7 @@ function NotificationCard({ notifications = [], onClearAll }) {
               <img
                 src="/icons/icon_expand_down.png"
                 alt=""
-                className={`w-2.5 h-2.5 flex-shrink-0 transition-transform ${
+                className={`w-2.5 h-2 flex-shrink-0 transition-transform ${
                   openIndex === i ? "rotate-180" : ""
                 }`}
               />

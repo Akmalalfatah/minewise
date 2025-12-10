@@ -215,7 +215,7 @@ function ScenarioResultCard({
   riskLevel,
 }) {
   return (
-    <div className="rounded-3xl px-5 py-4 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4">
+    <div className="rounded-3xl px-5 py-6 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4">
       <div className="flex justify-between items-center">
         <h3 className="text-sm font-semibold">{title}</h3>
         <button

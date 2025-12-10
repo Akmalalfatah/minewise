@@ -65,7 +65,7 @@ function ProfileCard({
 
   return (
     <section
-      className="w-96 px-7 py-8 relative shadow-[0px_0px_30px_0px_rgba(0,0,0,0.10)] flex flex-col items-start gap-4 bg-white rounded-3xl"
+      className="w-100 px-5 py-8 relative shadow-[0px_0px_30px_0px_rgba(0,0,0,0.10)] flex flex-col items-start gap-4 bg-white rounded-3xl"
       aria-label="User profile card"
     >
       <div className="flex flex-col justify-start items-start gap-4 w-full">

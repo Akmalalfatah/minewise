@@ -16,30 +16,6 @@ function MinePlannerPage() {
           aria-label="Mine planner introduction and current filters"
           className="flex justify-between items-start gap-4"
         >
-          <div className="flex flex-col gap-1">
-            <h1 className="text-2xl font-semibold text-gray-900">
-              Mine Planner View
-            </h1>
-            <p className="text-sm text-gray-600">
-              Pantau kondisi lingkungan pit, rekomendasi AI, kondisi jalan, dan
-              status alat untuk mendukung keputusan perencanaan tambang.
-            </p>
-
-            <p className="text-xs text-gray-500 mt-1">
-              Current filter:&nbsp;
-              <span className="font-medium text-gray-700">
-                {location}
-              </span>{" "}
-              ·{" "}
-              <span className="font-medium text-gray-700">
-                {timePeriod}
-              </span>{" "}
-              ·{" "}
-              <span className="font-medium text-gray-700">
-                {shift}
-              </span>
-            </p>
-          </div>
         </header>
 
         {/* GLOBAL FILTER BAR + TOGGLE VIEW */}

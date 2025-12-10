@@ -3,27 +3,32 @@ import RoadSegmentTable from "../ui/TableData";
 import {
   BarChart,
   Bar,
+  Cell,
   XAxis,
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
 } from "recharts";
-import { PieChart, Pie, Cell } from "recharts";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
 function RoadConditionOverviewCard({ data }) {
   if (!data) return null;
 
   const mappedSegments = data.segments
     ? data.segments.map((s) => ({
-        road: s.road,
-        status: s.status,
-        speed: s.speed,
-        friction: s.friction,
-        water: s.water,
-      }))
+      road: s.road,
+      status: s.status,
+      speed: s.speed,
+      friction: s.friction,
+      water: s.water,
+    }))
     : [];
 
   const score = data.route_efficiency_score || 0;
+
+  const riskLabel =
+    score <= 40 ? "Low Risk" : score <= 70 ? "Moderate Risk" : "High Risk";
 
   const surfaceColors = {
     Asphalt: "#464646ff",
@@ -33,19 +38,14 @@ function RoadConditionOverviewCard({ data }) {
     Unknown: "#FFFFFF",
   };
 
-  const gaugeData = [
-    { name: "score", value: score },
-    { name: "remaining", value: 100 - score },
-  ];
-
   const surfaceSummary = data.segments
     ? Object.entries(
-        data.segments.reduce((acc, seg) => {
-          const key = seg.surface_type || "Unknown";
-          acc[key] = (acc[key] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([label, value]) => ({ label, value }))
+      data.segments.reduce((acc, seg) => {
+        const key = seg.surface_type || "Unknown";
+        acc[key] = (acc[key] || 0) + 1;
+        return acc;
+      }, {})
+    ).map(([label, value]) => ({ label, value }))
     : [];
 
   return (
@@ -78,38 +78,30 @@ function RoadConditionOverviewCard({ data }) {
       </h3>
 
       <div className="grid grid-cols-2">
-        <div className="flex flex-col items-center justify-center">
-          {/* Bungkus dengan div ukuran fix, ResponsiveContainer pakai 100% */}
-          <div className="w-[200px] h-[120px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={gaugeData}
-                  dataKey="value"
-                  startAngle={180}
-                  endAngle={0}
-                  innerRadius={60}
-                  outerRadius={90}
-                  paddingAngle={2}
-                >
-                  <Cell fill="#F97316" />
-                  <Cell fill="#E5E7EB" />
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-          </div>
+        <div className="flex items-center">
+          <div className="relative w-[200px] h-[200px] flex items-center justify-center">
+            <CircularProgressbar
+              value={score}
+              maxValue={100}
+              styles={buildStyles({
+                pathColor: "#F97316",
+                trailColor: "#E5E7EB",
+                strokeLinecap: "round"
+              })}
+            />
 
-          <div className="text-center -mt-6">
-            <div className="text-[42px] font-bold text-[#F97316]">
-              {score}
+            <div className="absolute flex flex-col items-center justify-center">
+              <div className="text-[42px] font-bold text-[#F97316]">
+                {score}
+              </div>
+              <p className="text-sm font-medium text-[#F97316]">
+                {riskLabel}
+              </p>
             </div>
-            <p className="text-sm font-medium text-[#F97316]">
-              Moderate Risk
-            </p>
           </div>
         </div>
 
-        <section className="p-4 bg-[#EFEFEF] rounded-[10px] flex flex-col gap-2">
+        <section className="flex-1 p-4 bg-[#EFEFEF] rounded-[10px] flex flex-col gap-2">
           <h4 className="text-xs font-semibold text-black">AI Memprediksi</h4>
           <p className="text-xs text-black/70">
             friction, water depth, travel time, speed deviation
@@ -145,7 +137,6 @@ function RoadConditionOverviewCard({ data }) {
               margin={{ left: 35, right: 20, top: 10, bottom: 10 }}
             >
               <CartesianGrid strokeDasharray="3 3" vertical={false} />
-
               <XAxis type="number" tick={{ fontSize: 10 }} hide />
               <YAxis
                 type="category"
@@ -153,7 +144,6 @@ function RoadConditionOverviewCard({ data }) {
                 tick={{ fontSize: 11 }}
                 width={80}
               />
-
               <Bar dataKey="value" barSize={20} radius={[4, 4, 4, 4]}>
                 {surfaceSummary.map((entry, index) => (
                   <Cell

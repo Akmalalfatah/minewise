@@ -138,9 +138,9 @@ function AIChatboxPage() {
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
           <section
             aria-label="Chat area"
-            className="xl:col-span-2 flex flex-col gap-4"
+            className="xl:col-span-2 flex flex-col"
           >
-            <div className="bg-white rounded-3xl flex flex-col h-[520px] overflow-hidden">
+            <div className="bg-white rounded-t-3xl flex flex-col h-[520px] overflow-hidden">
               <header className="px-6 py-4 border-b border-gray-100 flex items-center gap-3">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center text-white text-lg">
@@ -194,20 +194,26 @@ function AIChatboxPage() {
               </form>
             </div>
 
-            <nav aria-label="Suggested prompts">
-              <div className="flex flex-wrap gap-3">
-                {suggestions.map((s) => (
-                  <button
-                    key={s}
-                    type="button"
-                    onClick={() => handleSuggestionClick(s)}
-                    className="px-4 py-2 rounded-[10px] bg-[#1C2534] text-xs text-white hover:bg-gray-50 transition-colors"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </nav>
+            <div className="bg-white rounded-b-3xl px-6 py-4 -mt-2">
+              <p className="text-xs font-semibold text-gray-700 mb-3">
+                Suggested Prompts
+              </p>
+
+              <nav aria-label="Suggested prompts">
+                <div className="flex flex-wrap gap-3">
+                  {suggestions.map((s) => (
+                    <button
+                      key={s}
+                      type="button"
+                      onClick={() => handleSuggestionClick(s)}
+                      className="px-4 py-2 rounded-[10px] bg-[#1C2534] text-xs text-white hover:bg-gray-50 transition-colors"
+                    >
+                      {s}
+                    </button>
+                  ))}
+                </div>
+              </nav>
+            </div>
           </section>
 
           <section aria-label="Reasoning chain panel" className="xl:col-span-1">

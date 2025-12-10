@@ -43,7 +43,7 @@ function MineRoadSegmentTable() {
   return (
     <section
       data-layer="road_condition_card"
-      className="RoadConditionCard w-full h-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      className="RoadConditionCard w-full h-full p-6 bg-white rounded-3xl flex flex-col items-center gap-2.5"
     >
       <div
         data-layer="road_condition_container"
@@ -192,7 +192,7 @@ function MineRoadSegmentTable() {
 
         <div
           data-layer="divider_middle"
-          className="DividerMiddle w-full h-0 outline outline-1 outline-offset-[-0.50px] outline-[#d9d9d9]"
+          className="DividerMiddle self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
         {/* SPEED + ALERT */}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getLoadingProgress } from "../../services/shippingPlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
-function LoadingProgressMonitoring({ onSeeMore }) {
+function LoadingProgressMonitoring() {
   const [data, setData] = useState(null);
   const { location, timePeriod, shift } = useFilterQuery();
 
@@ -54,19 +54,6 @@ function LoadingProgressMonitoring({ onSeeMore }) {
               Loading Progress Monitoring
             </h2>
           </div>
-
-          <button
-            type="button"
-            onClick={onSeeMore}
-            className="SeeMoreContainer inline-flex justify-start items-center gap-1"
-          >
-            <span className="SeeMoreLabel text-black text-xs font-semibold">
-              See More
-            </span>
-            <span className="SeeMoreIcon size-6 relative inline-block">
-              <span className="SeeMoreIconVector w-1.5 h-3 absolute rotate-180 border-2 border-black left-[15px] top-[18px]" />
-            </span>
-          </button>
         </header>
 
         <ul
@@ -110,7 +97,7 @@ function LoadingProgressMonitoring({ onSeeMore }) {
 
                   <div className="flex justify-between items-start">
                     <dt className="text-black text-sm">Status:</dt>
-                    <dd className="ProgressCardStatusValueWrapper w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
+                    <dd className="ProgressCardStatusValueWrapper w-[100px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
                       <span className="StatusValue text-white text-xs font-semibold">
                         {ship?.status || "-"}
                       </span>
