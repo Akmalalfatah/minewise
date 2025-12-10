@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { userStore } from "../store/userStore";
-import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
 import EnvironmentConditionTable from "../components/mine-planner/EnvironmentConditionTable";
 import AIRecommendationCard from "../components/mine-planner/AIRecommendationCard";
@@ -15,7 +14,6 @@ import PortCongestionStatus from "../components/shipping-planner/PortCongestionS
 
 function OverviewPage() {
   const user = userStore((state) => state.user);
-  const { location } = useGlobalFilter();
 
   const defaultView = useMemo(() => {
     if (user?.role === "mine_planner") return "mine";
@@ -72,17 +70,6 @@ function OverviewPage() {
           </nav>
         </section>
 
-        {/* 🔹 Current location tampil untuk kedua view */}
-        <header
-          aria-label="Planner current location"
-          className="flex flex-col gap-1"
-        >
-          <p className="text-xs text-gray-500 mt-1">
-            Current location:{" "}
-            <span className="font-medium text-gray-700">{location}</span>
-          </p>
-        </header>
-
         {activeView === "mine" ? (
           <section
             aria-label="Mine planner overview"
@@ -109,9 +96,6 @@ function OverviewPage() {
             aria-label="Shipping planner overview"
             className="flex flex-col gap-5"
           >
-            {/* 🔻 Header current location khusus shipping DIHAPUS 
-                karena sudah digantikan header global di atas */}
-
             <section
               aria-label="Port weather conditions and AI shipping recommendations"
               className="flex flex-col lg:flex-row gap-6 items-stretch"
