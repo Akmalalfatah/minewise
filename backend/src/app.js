@@ -8,6 +8,7 @@ import reportsRoutes from "./routes/reportsRoutes.js";
 import aiChatRoutes from "./routes/aiChatRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import simulationRoutes from "./routes/simulationRoutes.js";
 
 const app = express();
 
@@ -29,5 +30,6 @@ app.use("/api/shipping-planner", shippingPlannerRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/ai", aiChatRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/simulation", simulationRoutes);
 
 export default app;
