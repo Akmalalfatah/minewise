@@ -72,6 +72,17 @@ function OverviewPage() {
           </nav>
         </section>
 
+        {/* 🔹 Current location tampil untuk kedua view */}
+        <header
+          aria-label="Planner current location"
+          className="flex flex-col gap-1"
+        >
+          <p className="text-xs text-gray-500 mt-1">
+            Current location:{" "}
+            <span className="font-medium text-gray-700">{location}</span>
+          </p>
+        </header>
+
         {activeView === "mine" ? (
           <section
             aria-label="Mine planner overview"
@@ -98,15 +109,8 @@ function OverviewPage() {
             aria-label="Shipping planner overview"
             className="flex flex-col gap-5"
           >
-            <header
-              aria-label="Shipping planner description"
-              className="flex flex-col gap-1"
-            >
-              <p className="text-xs text-gray-500 mt-1">
-                Current location:{" "}
-                <span className="font-medium text-gray-700">{location}</span>
-              </p>
-            </header>
+            {/* 🔻 Header current location khusus shipping DIHAPUS 
+                karena sudah digantikan header global di atas */}
 
             <section
               aria-label="Port weather conditions and AI shipping recommendations"
