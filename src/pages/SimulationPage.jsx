@@ -1,23 +1,107 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { getSimulationOverview } from "../services/simulationService";
 
 function SimulationPage() {
-  const [expectedRainfall, setExpectedRainfall] = useState(50);
-  const [equipmentHealth, setEquipmentHealth] = useState(80);
-  const [vesselDelay, setVesselDelay] = useState(5);
+  const [expectedRainfall, setExpectedRainfall] = useState(0);
+  const [equipmentHealth, setEquipmentHealth] = useState(0);
+  const [vesselDelay, setVesselDelay] = useState(0);
+
+  const [inputParams, setInputParams] = useState(null);
+  const [scenarios, setScenarios] = useState([]);
+  const [aiRecommendations, setAiRecommendations] = useState([]);
+  const [description, setDescription] = useState("");
+
   const [activeScenario, setActiveScenario] = useState("optimized");
   const [lastRun, setLastRun] = useState(null);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const data = await getSimulationOverview();
+
+        setInputParams(data.inputParameters || null);
+        setScenarios(data.scenarios || []);
+        setAiRecommendations(data.aiRecommendations || []);
+        setDescription(data.description || "");
+
+        if (data.inputParameters) {
+          setExpectedRainfall(data.inputParameters.expectedRainfallMm ?? 0);
+          setEquipmentHealth(data.inputParameters.equipmentHealthPct ?? 0);
+          setVesselDelay(data.inputParameters.vesselDelayHours ?? 0);
+        }
+
+        const optimizedExists = (data.scenarios || []).some(
+          (s) => s.id === "optimized"
+        );
+        if (optimizedExists) {
+          setActiveScenario("optimized");
+        } else if ((data.scenarios || []).length > 0) {
+          setActiveScenario(data.scenarios[0].id);
+        } else {
+          setActiveScenario("baseline");
+        }
+      } catch (err) {
+        console.error(err);
+        setError("Failed to load simulation data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleRunScenario = () => {
     setLastRun(new Date().toLocaleTimeString());
   };
 
   const handleReset = () => {
-    setExpectedRainfall(50);
-    setEquipmentHealth(80);
-    setVesselDelay(5);
-    setActiveScenario("baseline");
+    if (inputParams) {
+      setExpectedRainfall(inputParams.expectedRainfallMm ?? 0);
+      setEquipmentHealth(inputParams.equipmentHealthPct ?? 0);
+      setVesselDelay(inputParams.vesselDelayHours ?? 0);
+    }
+    const baseline = scenarios.find((s) => s.id === "baseline");
+    setActiveScenario(baseline ? baseline.id : scenarios[0]?.id || "baseline");
     setLastRun(null);
   };
+
+  const getScenarioLabel = () => {
+    const found = scenarios.find((s) => s.id === activeScenario);
+    if (!found) {
+      if (activeScenario === "baseline") return "Baseline";
+      if (activeScenario === "optimized") return "Optimized";
+      if (activeScenario === "conservative") return "Conservative";
+      return "Selected";
+    }
+    return found.title || "Selected";
+  };
+
+  if (loading) {
+    return (
+      <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+        <div className="max-w-[1440px] mx-auto">
+          <p className="text-sm text-gray-500">Loading simulation data...</p>
+        </div>
+      </main>
+    );
+  }
+
+  if (error) {
+    return (
+      <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
+        <div className="max-w-[1440px] mx-auto">
+          <p className="text-sm text-red-500">{error}</p>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
@@ -28,7 +112,11 @@ function SimulationPage() {
         >
           <div className="flex items-center gap-3">
             <div className="IconWrapper size-8 px-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
-              <img className="IconWarning size-[18px]" src="/icons/icon_combo_chart.png" alt="" />
+              <img
+                className="IconWarning size-[18px]"
+                src="/icons/icon_combo_chart.png"
+                alt=""
+              />
             </div>
             <div>
               <h2 className="text-lg font-semibold text-gray-900">
@@ -41,7 +129,10 @@ function SimulationPage() {
             <ScenarioControlCard
               label="Expected Rainfall"
               valueLabel={`${expectedRainfall} mm`}
-              impactText="Impact: Road conditions & mining operations"
+              impactText={
+                inputParams?.impactNotes?.rainfall ||
+                "Impact: Road conditions & mining operations"
+              }
               min={0}
               max={100}
               value={expectedRainfall}
@@ -51,7 +142,10 @@ function SimulationPage() {
             <ScenarioControlCard
               label="Equipment Health"
               valueLabel={`${equipmentHealth}%`}
-              impactText="Impact: Load efficiency & operating hours"
+              impactText={
+                inputParams?.impactNotes?.equipmentHealth ||
+                "Impact: Load efficiency & operating hours"
+              }
               min={0}
               max={100}
               value={equipmentHealth}
@@ -61,7 +155,10 @@ function SimulationPage() {
             <ScenarioControlCard
               label="Vessel Delay"
               valueLabel={`${vesselDelay} jam`}
-              impactText="Impact: Road conditions & mining operations"
+              impactText={
+                inputParams?.impactNotes?.vesselDelay ||
+                "Impact: Port queue & hauling coordination"
+              }
               min={0}
               max={12}
               value={vesselDelay}
@@ -94,83 +191,55 @@ function SimulationPage() {
           </div>
         </section>
 
-        {/* SCENARIO RESULT CARDS */}
         <section
           aria-label="Scenario comparison cards"
           className="grid grid-cols-1 md:grid-cols-3 gap-4"
         >
-          <ScenarioResultCard
-            title="Baseline Scenario"
-            isActive={activeScenario === "baseline"}
-            onSelect={() => setActiveScenario("baseline")}
-            productionOutput="78%"
-            costEfficiency="71%"
-            riskLevel="60%"
-          />
-
-          <ScenarioResultCard
-            title="Optimized Scenario"
-            isActive={activeScenario === "optimized"}
-            onSelect={() => setActiveScenario("optimized")}
-            productionOutput="92%"
-            costEfficiency="89%"
-            riskLevel="45%"
-          />
-
-          <ScenarioResultCard
-            title="Conservative"
-            isActive={activeScenario === "conservative"}
-            onSelect={() => setActiveScenario("conservative")}
-            productionOutput="68%"
-            costEfficiency="76%"
-            riskLevel="35%"
-          />
+          {scenarios.map((scenario) => (
+            <ScenarioResultCard
+              key={scenario.id}
+              title={scenario.title}
+              isActive={activeScenario === scenario.id}
+              onSelect={() => setActiveScenario(scenario.id)}
+              productionOutput={scenario.productionOutputPct}
+              costEfficiency={scenario.costEfficiencyPct}
+              riskLevel={scenario.riskLevelPct}
+            />
+          ))}
         </section>
 
-        {/* AI RECOMMENDATIONS */}
         <section
           aria-label="AI optimization recommendations"
           className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white"
         >
           <div className="flex items-center gap-3">
             <div className="IconWrapper size-8 p-[7px] bg-white rounded-2xl flex justify-center items-center">
-              <img className="IconRobot size-[18px]" src="/icons/icon_robot_black.png" alt="" />
+              <img
+                className="IconRobot size-[18px]"
+                src="/icons/icon_robot_black.png"
+                alt=""
+              />
             </div>
             <div>
               <h2 className="text-lg font-semibold">
                 AI Optimization Recommendations
               </h2>
               <p className="text-xs text-gray-300">
-                Rekomendasi di bawah ini diasumsikan berdasarkan skenario{" "}
-                <span className="font-semibold">
-                  {activeScenario === "baseline"
-                    ? "Baseline"
-                    : activeScenario === "optimized"
-                      ? "Optimized"
-                      : "Conservative"}
-                </span>
-                .
+                {description || "Rekomendasi di bawah ini diasumsikan berdasarkan skenario terpilih."}{" "}
+                Saat ini berdasarkan skenario{" "}
+                <span className="font-semibold">{getScenarioLabel()}</span>.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <RecommendationCard
-              title="Production Strategy"
-              description="Pindahkan 2 unit dump truck dari PIT A ke PIT B untuk mempercepat proses hauling. Estimasi peningkatan efisiensi produksi: +8.7%."
-            />
-            <RecommendationCard
-              title="Logistics Optimization"
-              description="Sinkronkan jadwal hauling dan loading kapal agar idle time berkurang 12%. Potensi penghematan biaya operasional ±Rp110 juta/minggu."
-            />
-            <RecommendationCard
-              title="Equipment Allocation"
-              description="Jadwalkan maintenance alat EX-04 sebelum 7 Nov untuk mencegah downtime tak terencana ±6 jam/minggu."
-            />
-            <RecommendationCard
-              title="Risk Mitigation"
-              description="Tunda aktivitas malam di area PIT C saat curah hujan tinggi untuk menurunkan risiko kecelakaan hingga 15%."
-            />
+            {aiRecommendations.map((item) => (
+              <RecommendationCard
+                key={item.id}
+                title={item.title}
+                description={item.detail}
+              />
+            ))}
           </div>
         </section>
       </div>
@@ -221,8 +290,9 @@ function ScenarioResultCard({
         <button
           type="button"
           onClick={onSelect}
-          className={`w-4 h-4 rounded-full border-2 ${isActive ? "border-white bg-white" : "border-white/50"
-            }`}
+          className={`w-4 h-4 rounded-full border-2 ${
+            isActive ? "border-white bg-white" : "border-white/50"
+          }`}
           aria-label={`Select ${title}`}
         />
       </div>
@@ -237,16 +307,23 @@ function ScenarioResultCard({
 }
 
 function ScenarioMetric({ label, value }) {
+  const numericValue =
+    typeof value === "number" ? value : parseFloat(String(value).replace("%", ""));
+  const displayValue =
+    typeof value === "number" ? `${value}%` : String(value);
+
+  const width = Number.isFinite(numericValue) ? `${numericValue}%` : "0%";
+
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <span>{label}</span>
-        <span className="font-semibold">{value}</span>
+        <span className="font-semibold">{displayValue}</span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-white/20 overflow-hidden">
         <div
           className="h-1.5 rounded-full bg-[#ff7b54]"
-          style={{ width: value }}
+          style={{ width }}
         />
       </div>
     </div>
