@@ -41,7 +41,7 @@ function MineRoadSegmentTable() {
       const match = trimmed.match(/^([0-9]+(?:[.,][0-9]+)?)\s*(.*)$/);
       if (match) {
         const num = parseFloat(match[1].replace(",", "."));
-        const unit = match[2]; 
+        const unit = match[2];
         if (!isNaN(num)) {
           return { num, unit, raw: trimmed };
         }
@@ -52,16 +52,22 @@ function MineRoadSegmentTable() {
     return { num: null, unit: "", raw: String(raw) };
   };
 
-  const segmentName = data?.segment_name ?? "Segment A";
-  const roadConditionLabel = data?.road_condition_label ?? "Unknown";
+  const segments = Array.isArray(data?.segments) ? data.segments : [];
+  const activeSegment = segments[0] || null;
 
-  const travel = parseValueWithUnit(data?.travel_time, "-");
-  const frictionIndexRaw = data?.friction_index ?? "-";
-  const waterDepth = parseValueWithUnit(data?.water_depth, "-");
-  const speedLimit = parseValueWithUnit(data?.speed_limit, "-");
-  const actualSpeed = parseValueWithUnit(data?.actual_speed, "-");
+  const segmentName = activeSegment?.segment_name ?? "Segment A";
+  const roadConditionLabel = activeSegment?.road_condition_label ?? "Unknown";
 
-  const alert = data?.alert || {
+  const travel = parseValueWithUnit(activeSegment?.travel_time, "-");
+  const frictionIndexRaw =
+    activeSegment && activeSegment.friction_index !== undefined
+      ? activeSegment.friction_index
+      : "-";
+  const waterDepth = parseValueWithUnit(activeSegment?.water_depth, "-");
+  const speedLimit = parseValueWithUnit(activeSegment?.speed_limit, "-");
+  const actualSpeed = parseValueWithUnit(activeSegment?.actual_speed, "-");
+
+  const alert = activeSegment?.alert || {
     title: "No active alert",
     description: "There is no specific road condition alert for this segment.",
   };
@@ -75,13 +81,13 @@ function MineRoadSegmentTable() {
     <section
       data-layer="road_condition_card"
       className="RoadConditionCard w-full h-full p-6 bg-white rounded-3xl flex flex-col items-center gap-2.5"
+      aria-labelledby="mine-road-site-conditions-title"
     >
       <div
         data-layer="road_condition_container"
         className="RoadConditionContainer w-full flex flex-col justify-start items-start gap-3"
       >
-        {/* HEADER */}
-        <div
+        <header
           data-layer="header_container"
           className="HeaderContainer w-full relative flex flex-col justify-center items-start gap-3"
         >
@@ -100,22 +106,23 @@ function MineRoadSegmentTable() {
                 alt="Road icon"
               />
             </div>
-            <div
+            <h2
+              id="mine-road-site-conditions-title"
               data-layer="road_condition_title"
               className="RoadConditionTitle text-black text-sm font-semibold"
             >
               Mine Road &amp; Site Conditions
-            </div>
+            </h2>
           </div>
 
-          <div
+          <hr
             data-layer="divider_top"
             className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
           />
-        </div>
+        </header>
 
-        {/* SEGMENT + METRICS */}
-        <div
+        <section
+          aria-label="Road segment conditions"
           data-layer="segment_section_container"
           className="SegmentSectionContainer w-full relative overflow-hidden"
         >
@@ -123,31 +130,31 @@ function MineRoadSegmentTable() {
             data-layer="segment_info_container"
             className="SegmentInfoContainer w-full inline-flex flex-col justify-start items-start gap-[19px]"
           >
-            <div
+            <p
               data-layer="segment_name"
               className="SegmentName self-stretch text-black text-sm font-semibold"
             >
               Road Segment : {segmentName}
-            </div>
+            </p>
 
             <div
               data-layer="road_condition_badge_container"
               className="RoadConditionBadgeContainer w-[190px] h-7 px-[7px] py-[5px] bg-[#ffedb2] rounded-[7px] inline-flex justify-center items-center gap-2.5"
             >
-              <div
+              <span
                 data-layer="road_condition_badge_label"
                 className="RoadConditionBadgeLabel text-black text-sm font-semibold"
               >
                 {roadConditionLabel}
-              </div>
+              </span>
             </div>
 
             <div
               data-layer="condition_metrics_container"
               className="ConditionMetricsContainer self-stretch inline-flex justify-start items-center gap-3.5"
             >
-              {/* Travel time */}
-              <div
+              <article
+                aria-label="Travel time"
                 data-layer="travel_time_container"
                 className="TravelTimeContainer w-[136px] h-[92px] px-[19px] py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-center items-center gap-2.5"
               >
@@ -155,13 +162,13 @@ function MineRoadSegmentTable() {
                   data-layer="travel_time_block"
                   className="TravelTimeBlock w-[98px] flex flex-col justify-start items-center gap-[11px]"
                 >
-                  <div
+                  <p
                     data-layer="travel_time_label"
                     className="TravelTimeLabel self-stretch text-center text-black text-sm font-semibold"
                   >
                     Travel Time
-                  </div>
-                  <div
+                  </p>
+                  <p
                     data-layer="travel_time_value"
                     className="TravelTimeValue self-stretch text-black text-2xl font-semibold text-center flex justify-center items-baseline gap-1"
                   >
@@ -180,12 +187,12 @@ function MineRoadSegmentTable() {
                     ) : (
                       travel.raw
                     )}
-                  </div>
+                  </p>
                 </div>
-              </div>
+              </article>
 
-              {/* Friction index */}
-              <div
+              <article
+                aria-label="Friction index"
                 data-layer="friction_index_container"
                 className="FrictionIndexContainer w-[136px] h-[92px] px-5 py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-center items-center gap-2.5"
               >
@@ -193,30 +200,30 @@ function MineRoadSegmentTable() {
                   data-layer="friction_index_block"
                   className="FrictionIndexBlock w-[95px] flex flex-col justify-start items-center gap-[11px]"
                 >
-                  <div
+                  <p
                     data-layer="friction_index_label"
                     className="FrictionIndexLabel self-stretch text-black text-sm font-semibold"
                   >
                     Friction Index
-                  </div>
-                  <div
+                  </p>
+                  <p
                     data-layer="friction_index_value"
                     className="FrictionIndexValue self-stretch text-center text-black text-2xl font-semibold"
                   >
-                    {isNumber(data?.friction_index) ? (
+                    {isNumber(activeSegment?.friction_index) ? (
                       <AnimatedNumber
-                        value={data.friction_index}
+                        value={activeSegment.friction_index}
                         decimals={2}
                       />
                     ) : (
                       frictionIndexRaw
                     )}
-                  </div>
+                  </p>
                 </div>
-              </div>
+              </article>
 
-              {/* Water depth */}
-              <div
+              <article
+                aria-label="Water depth"
                 data-layer="water_depth_container"
                 className="WaterDepthContainer w-[136px] h-[92px] px-6 py-[15px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] inline-flex flex-col justify-start items-start gap-2.5"
               >
@@ -224,13 +231,13 @@ function MineRoadSegmentTable() {
                   data-layer="water_depth_block"
                   className="WaterDepthBlock w-[87px] flex flex-col justify-center items-center gap-[11px]"
                 >
-                  <div
+                  <p
                     data-layer="water_depth_label"
                     className="WaterDepthLabel self-stretch text-black text-sm font-semibold text-center"
                   >
                     Water Depth
-                  </div>
-                  <div
+                  </p>
+                  <p
                     data-layer="water_depth_value"
                     className="WaterDepthValue self-stretch text-black text-2xl font-semibold text-center flex justify-center items-baseline gap-1"
                   >
@@ -249,40 +256,39 @@ function MineRoadSegmentTable() {
                     ) : (
                       waterDepth.raw
                     )}
-                  </div>
+                  </p>
                 </div>
-              </div>
+              </article>
             </div>
           </div>
-        </div>
+        </section>
 
-        <div
+        <hr
           data-layer="divider_middle"
           className="DividerMiddle self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
-        {/* SPEED + ALERT */}
-        <div
+        <section
+          aria-label="Speed and alert information"
           data-layer="speed_section_container"
           className="SpeedSectionContainer w-full flex flex-col justify-start items-start gap-4"
         >
-          <div
+          <h3
             data-layer="speed_section_title"
             className="SpeedSectionTitle self-stretch text-black text-sm font-semibold"
           >
             Speed Information
-          </div>
+          </h3>
 
           <div
             data-layer="speed_limit_container"
             className="SpeedLimitContainer self-stretch inline-flex justify-between items-center"
           >
-            {/* Speed Limit */}
             <div className="SpeedLimitBlock w-[97px] inline-flex flex-col justify-start items-start gap-[11px]">
-              <div className="SpeedLimitLabel text-[#666666] text-xs font-semibold">
+              <p className="SpeedLimitLabel text-[#666666] text-xs font-semibold">
                 Speed Limit
-              </div>
-              <div className="SpeedLimitValue text-black text-2xl font-semibold flex items-baseline gap-1">
+              </p>
+              <p className="SpeedLimitValue text-black text-2xl font-semibold flex items-baseline gap-1">
                 {speedLimit.num !== null ? (
                   <>
                     <AnimatedNumber
@@ -298,15 +304,14 @@ function MineRoadSegmentTable() {
                 ) : (
                   speedLimit.raw
                 )}
-              </div>
+              </p>
             </div>
 
-            {/* Actual Speed */}
             <div className="ActualSpeedBlock w-24 inline-flex flex-col justify-start items-end gap-[11px]">
-              <div className="ActualSpeedLabel text-[#666666] text-xs font-semibold text-right">
+              <p className="ActualSpeedLabel text-[#666666] text-xs font-semibold text-right">
                 Actual Speed
-              </div>
-              <div className="ActualSpeedValue text-black text-2xl font-semibold text-right flex items-baseline justify-end gap-1">
+              </p>
+              <p className="ActualSpeedValue text-black text-2xl font-semibold text-right flex items-baseline justify-end gap-1">
                 {actualSpeed.num !== null ? (
                   <>
                     <AnimatedNumber
@@ -322,24 +327,25 @@ function MineRoadSegmentTable() {
                 ) : (
                   actualSpeed.raw
                 )}
-              </div>
+              </p>
             </div>
           </div>
 
-          <div
+          <aside
+            aria-label="Road condition alert"
             data-layer="alert_section_container"
             className="AlertSectionContainer self-stretch h-[82px] px-6 py-3.5 bg-[#ffedee] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#ffd4c7] flex flex-col justify-start items-start gap-2.5"
           >
             <div className="AlertTextContainer w-[277px] inline-flex flex-col justify-start items-start gap-1">
-              <div className="AlertTitle text-[#8f0b09] text-sm font-semibold">
+              <p className="AlertTitle text-[#8f0b09] text-sm font-semibold">
                 {alertTitle}
-              </div>
-              <div className="AlertDescription text-black text-xs font-semibold">
+              </p>
+              <p className="AlertDescription text-black text-xs font-semibold">
                 {alertDescription}
-              </div>
+              </p>
             </div>
-          </div>
-        </div>
+          </aside>
+        </section>
       </div>
     </section>
   );

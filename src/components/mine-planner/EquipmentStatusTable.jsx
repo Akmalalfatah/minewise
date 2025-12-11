@@ -42,13 +42,13 @@ function EquipmentStatusTable() {
     <section
       data-layer="equipment_status_card"
       className="EquipmentStatusCard w-full h-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5"
+      aria-labelledby="equipment-status-title"
     >
       <div
         data-layer="equipment_status_container"
         className="EquipmentStatusContainer w-full flex flex-col justify-start items-start gap-[18px]"
       >
-        {/* HEADER */}
-        <div
+        <header
           data-layer="header_container"
           className="HeaderContainer w-full inline-flex justify-between items-center"
         >
@@ -67,214 +67,191 @@ function EquipmentStatusTable() {
                 alt="Equipment status icon"
               />
             </div>
-            <div
+            <h2
+              id="equipment-status-title"
               data-layer="equipment_status_title"
               className="EquipmentStatusTitle text-black text-sm font-semibold"
             >
               Equipment Status
-            </div>
+            </h2>
           </div>
-        </div>
+        </header>
 
-        <div
+        <hr
           data-layer="divider_top"
           className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
-        {/* SUMMARY STATUS PILLS (animated) */}
-        <div
+        <section
+          aria-label="Equipment condition summary"
           data-layer="status_summary_section"
           className="StatusSummarySection self-stretch flex flex-col justify-start items-start gap-3"
         >
-          <div
+          <ul
             data-layer="status_summary_container"
             className="StatusSummaryContainer self-stretch inline-flex justify-center items-center gap-[18px] flex-wrap"
           >
-            {/* Excellent */}
-            <KpiCardWrapper className="ExcellentStatusCardContainer w-[110px] h-14 px-[13px] py-1 bg-[#4caf50] rounded-[10px] inline-flex flex-col justify-center items-center">
-              <div className="text-white text-[10px] font-bold">Excellent</div>
-              <AnimatedNumber
-                value={summaryExcellent}
-                decimals={0}
-                className="text-white text-2xl font-semibold"
-              />
-            </KpiCardWrapper>
+            <li>
+              <KpiCardWrapper className="ExcellentStatusCardContainer w-[110px] h-14 px-[13px] py-1 bg-[#4caf50] rounded-[10px] inline-flex flex-col justify-center items-center">
+                <p className="text-white text-[10px] font-bold">Excellent</p>
+                <AnimatedNumber
+                  value={summaryExcellent}
+                  decimals={0}
+                  className="text-white text-2xl font-semibold"
+                />
+              </KpiCardWrapper>
+            </li>
 
-            {/* Good */}
-            <KpiCardWrapper className="GoodStatusCardContainer w-[115px] h-14 px-[22px] py-1.5 bg-[#8fa90e] rounded-[10px] flex flex-col justify-center items-center">
-              <div className="text-white text-[10px] font-bold">Good</div>
-              <AnimatedNumber
-                value={summaryGood}
-                decimals={0}
-                className="text-white text-2xl font-semibold"
-              />
-            </KpiCardWrapper>
+            <li>
+              <KpiCardWrapper className="GoodStatusCardContainer w-[115px] h-14 px-[22px] py-1.5 bg-[#8fa90e] rounded-[10px] flex flex-col justify-center items-center">
+                <p className="text-white text-[10px] font-bold">Good</p>
+                <AnimatedNumber
+                  value={summaryGood}
+                  decimals={0}
+                  className="text-white text-2xl font-semibold"
+                />
+              </KpiCardWrapper>
+            </li>
 
-            {/* Maintenance Required */}
-            <KpiCardWrapper className="MaintenanceStatusCardContainer w-48 h-14 p-[7px] bg-[#e6bb30] rounded-[10px] flex flex-col justify-center items-center">
-              <div className="text-white text-[10px] font-bold">
-                Maintenance Required
-              </div>
-              <AnimatedNumber
-                value={summaryMaintenanceRequired}
-                decimals={0}
-                className="text-white text-2xl font-semibold"
-              />
-            </KpiCardWrapper>
+            <li>
+              <KpiCardWrapper className="MaintenanceStatusCardContainer w-48 h-14 p-[7px] bg-[#e6bb30] rounded-[10px] flex flex-col justify-center items-center">
+                <p className="text-white text-[10px] font-bold">
+                  Maintenance Required
+                </p>
+                <AnimatedNumber
+                  value={summaryMaintenanceRequired}
+                  decimals={0}
+                  className="text-white text-2xl font-semibold"
+                />
+              </KpiCardWrapper>
+            </li>
 
-            {/* Slightly Damaged */}
-            <KpiCardWrapper className="SlightlyDamagedStatusCardContainer w-[153px] h-14 px-1.5 py-[7px] bg-[#ff7b54] rounded-[10px] flex flex-col justify-center items-center">
-              <div className="text-white text-[10px] font-bold">
-                Slightly Damaged
-              </div>
-              <AnimatedNumber
-                value={summarySlightlyDamaged}
-                decimals={0}
-                className="text-white text-2xl font-semibold"
-              />
-            </KpiCardWrapper>
+            <li>
+              <KpiCardWrapper className="SlightlyDamagedStatusCardContainer w-[153px] h-14 px-1.5 py-[7px] bg-[#ff7b54] rounded-[10px] flex flex-col justify-center items-center">
+                <p className="text-white text-[10px] font-bold">
+                  Slightly Damaged
+                </p>
+                <AnimatedNumber
+                  value={summarySlightlyDamaged}
+                  decimals={0}
+                  className="text-white text-2xl font-semibold"
+                />
+              </KpiCardWrapper>
+            </li>
 
-            {/* Severely Damaged (pulse if > 0) */}
-            <KpiCardWrapper
-              isAlert={summarySeverelyDamaged > 0}
-              className="SeverelyDamagedStatusCardContainer w-[150px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center"
-            >
-              <div className="text-white text-[10px] font-bold">
-                Severely Damaged
-              </div>
-              <AnimatedNumber
-                value={summarySeverelyDamaged}
-                decimals={0}
-                className="text-white text-2xl font-semibold"
-              />
-            </KpiCardWrapper>
-          </div>
-        </div>
+            <li>
+              <KpiCardWrapper
+                isAlert={summarySeverelyDamaged > 0}
+                className="SeverelyDamagedStatusCardContainer w-[150px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center"
+              >
+                <p className="text-white text-[10px] font-bold">
+                  Severely Damaged
+                </p>
+                <AnimatedNumber
+                  value={summarySeverelyDamaged}
+                  decimals={0}
+                  className="text-white text-2xl font-semibold"
+                />
+              </KpiCardWrapper>
+            </li>
+          </ul>
+        </section>
 
-        {/* TABLE SECTION */}
-        <div
+        <section
+          aria-label="Equipment details table"
           data-layer="equipment_table_section"
           className="EquipmentTableSection w-full flex flex-col justify-start items-start gap-2.5"
         >
-          <div
-            data-layer="equipment_table_container"
-            className="EquipmentTableContainer w-full inline-flex justify-start items-center gap-[15px] overflow-x-auto"
-          >
-            <div className="EquipmentIdColumn w-[92px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">Equipment_ID</div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-id-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.id}
-                </div>
-              ))}
+          {equipments.length === 0 ? (
+            <p className="text-xs text-[#666666]">
+              No equipment records available for the current filters.
+            </p>
+          ) : (
+            <div className="EquipmentTableScrollArea w-full max-h-[260px] overflow-y-auto pr-2">
+              <table className="EquipmentTableContainer w-full text-left text-sm min-w-max">
+                <thead>
+                  <tr className="text-[#666666]">
+                    <th className="font-normal pr-4">Equipment_ID</th>
+                    <th className="font-normal pr-4">Equipment_Type</th>
+                    <th className="font-normal pr-4">Equipment_Model</th>
+                    <th className="font-normal pr-4">Conditions</th>
+                    <th className="font-normal pr-4">Operating Hours (hrs)</th>
+                    <th className="font-normal pr-4">Maintenance (hrs)</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {equipments.map((eq, i) => (
+                    <tr key={`${eq.id}-row-${i}`} className="align-top">
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.id}
+                      </td>
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.type}
+                      </td>
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.model}
+                      </td>
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.condition}
+                      </td>
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.operatingHours}
+                      </td>
+                      <td className="text-black font-semibold pr-4 pt-[17px]">
+                        {eq.maintenanceHours}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
+          )}
 
-            <div className="EquipmentTypeColumn w-[116px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">Equipment_Type</div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-type-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.type}
-                </div>
-              ))}
-            </div>
+          {equipments.length > 0 && (
+            <p className="text-[11px] text-[#888888]">
+              Showing {equipments.length} equipment records
+            </p>
+          )}
+        </section>
 
-            <div className="EquipmentModelColumn w-[124px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">Equipment_Model</div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-model-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.model}
-                </div>
-              ))}
-            </div>
-
-            <div className="ConditionColumn w-[126px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">Conditions</div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-cond-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.condition}
-                </div>
-              ))}
-            </div>
-
-            <div className="OperationHoursColumn w-[125px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">
-                Operating Hours (hrs)
-              </div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-op-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.operatingHours}
-                </div>
-              ))}
-            </div>
-
-            <div className="MaintenanceHoursColumn w-[138px] inline-flex flex-col gap-[17px]">
-              <div className="text-[#666666] text-sm">Maintenance (hrs)</div>
-              {equipments.map((eq, i) => (
-                <div
-                  key={`${eq.id}-mnt-${i}`}
-                  className="text-black text-sm font-semibold"
-                >
-                  {eq.maintenanceHours}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        <div
+        <hr
           data-layer="divider_bottom"
           className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
-        {/* FLEET OVERVIEW (tambahkan AnimatedNumber) */}
-        <div
+        <section
+          aria-label="Fleet overview"
           data-layer="fleet_overview_section"
           className="FleetOverviewSection self-stretch flex flex-col justify-start items-start gap-[20px]"
         >
-          <div className="FleetOverviewTitle text-black text-sm font-semibold">
+          <h3 className="FleetOverviewTitle text-black text-sm font-semibold">
             Fleet Overview
-          </div>
+          </h3>
 
-          <div className="FleetCardList inline-flex gap-[17px] flex-wrap">
+          <ul className="FleetCardList inline-flex gap-[17px] flex-wrap">
             {fleetOverview.map((fleet, i) => (
-              <div
-                key={`${fleet.equipmentType}-${i}`}
-                className="w-[140px] h-[111px] px-[17px] py-[13px] bg-white rounded-[10px] outline outline-1 outline-[#c1ccdd] flex flex-col gap-[7px]"
-              >
-                <div className="text-black text-sm font-semibold">
-                  {fleet.equipmentType}
-                </div>
-                <div className="text-black text-xs">
-                  <AnimatedNumber value={fleet.active ?? 0} decimals={0} />{" "}
-                  active
-                  <br />
-                  <AnimatedNumber
-                    value={fleet.maintenance ?? 0}
-                    decimals={0}
-                  />{" "}
-                  maintenance
-                  <br />
-                  <AnimatedNumber value={fleet.idle ?? 0} decimals={0} /> idle
-                </div>
-              </div>
+              <li key={`${fleet.equipmentType}-${i}`}>
+                <article className="w-[140px] h-[111px] px-[17px] py-[13px] bg-white rounded-[10px] outline outline-1 outline-[#c1ccdd] flex flex-col gap-[7px]">
+                  <h4 className="text-black text-sm font-semibold">
+                    {fleet.equipmentType}
+                  </h4>
+                  <p className="text-black text-xs">
+                    <AnimatedNumber value={fleet.active ?? 0} decimals={0} />{" "}
+                    active
+                    <br />
+                    <AnimatedNumber
+                      value={fleet.maintenance ?? 0}
+                      decimals={0}
+                    />{" "}
+                    maintenance
+                    <br />
+                    <AnimatedNumber value={fleet.idle ?? 0} decimals={0} /> idle
+                  </p>
+                </article>
+              </li>
             ))}
-          </div>
-        </div>
+          </ul>
+        </section>
       </div>
     </section>
   );
