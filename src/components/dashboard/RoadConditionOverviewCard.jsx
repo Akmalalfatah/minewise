@@ -27,10 +27,28 @@ function RoadConditionOverviewCard({ data }) {
       }))
     : [];
 
-  const score = data.route_efficiency_score || 0;
+  const score = data.route_efficiency_score ?? 0;
 
-  const riskLabel =
-    score >= 80 ? "Low Risk" : score >= 50 ? "Moderate Risk" : "High Risk";
+  function getRiskConfig(value) {
+    if (value >= 80) {
+      return {
+        label: "Low Risk",
+        color: "#22C55E",
+      };
+    }
+    if (value >= 50) {
+      return {
+        label: "Moderate Risk",
+        color: "#F97316",
+      };
+    }
+    return {
+      label: "High Risk",
+      color: "#EF4444",
+    };
+  }
+
+  const { label: riskLabel, color: riskColor } = getRiskConfig(score);
 
   const surfaceColors = {
     Asphalt: "#464646ff",
@@ -93,17 +111,23 @@ function RoadConditionOverviewCard({ data }) {
                 value={score}
                 maxValue={100}
                 styles={buildStyles({
-                  pathColor: "#F97316",
+                  pathColor: riskColor,
                   trailColor: "#E5E7EB",
                   strokeLinecap: "round",
                 })}
               />
 
               <div className="absolute flex flex-col items-center justify-center">
-                <div className="text-[42px] font-bold text-[#F97316]">
+                <div
+                  className="text-[42px] font-bold"
+                  style={{ color: riskColor }}
+                >
                   <AnimatedNumber value={score} decimals={0} />
                 </div>
-                <p className="text-sm font-medium text-[#F97316]">
+                <p
+                  className="text-sm font-medium"
+                  style={{ color: riskColor }}
+                >
                   {riskLabel}
                 </p>
               </div>
