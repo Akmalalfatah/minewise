@@ -145,6 +145,7 @@ export function buildMinewisePdf(payload = {}) {
   const dashboard = data.dashboard || {};
   const minePlanner = data.minePlanner || {};
   const shipping = data.shipping || {};
+  const simulationAnalysis = data.simulationAnalysis || {};
 
   const totalProd = dashboard.total_production || {};
   const weatherDash = dashboard.weather_condition || {};
@@ -183,6 +184,10 @@ export function buildMinewisePdf(payload = {}) {
   const equipSummary = equip.summary || {};
   const equipRows = equip.equipments || [];
   const fleetRows = equip.fleet_overview || [];
+
+  const scenarioAnalysisBlock =
+    simulationAnalysis.scenario_analysis || {};
+  const scenarioSimulations = scenarioAnalysisBlock.simulations || [];
 
   let totalProduction = formatNumber(totalProd.produce_ton);
   let productionTarget = formatNumber(totalProd.target_ton);
@@ -269,6 +274,7 @@ export function buildMinewisePdf(payload = {}) {
         minute: "2-digit",
       });
 
+      // ===== HEADER UTAMA =====
       doc
         .fillColor(BRAND_COLOR)
         .font("Helvetica-Bold")
@@ -319,6 +325,7 @@ export function buildMinewisePdf(payload = {}) {
           .fontSize(10);
       };
 
+      // ===== 1. EXECUTIVE SUMMARY =====
       if (sections.length === 0 || hasSection(sections, "Executive Summary")) {
         header("1. Executive Summary");
         doc.text(
@@ -366,6 +373,7 @@ export function buildMinewisePdf(payload = {}) {
         }
       }
 
+      // ===== KPI TABLE =====
       header("Key Performance Indicators (KPI)");
       drawKpi(doc, {
         totalProduction,
@@ -375,6 +383,7 @@ export function buildMinewisePdf(payload = {}) {
         activeDumpTrucks,
       });
 
+      // ===== 2. OPERATIONAL OVERVIEW =====
       if (hasSection(sections, "Operational Overview")) {
         header("2. Operational Overview");
         doc.text(
@@ -383,6 +392,7 @@ export function buildMinewisePdf(payload = {}) {
         );
       }
 
+      // ===== 3. WEATHER ANALYSIS =====
       if (hasSection(sections, "Weather Analysis")) {
         header("3. Weather Analysis");
 
@@ -434,6 +444,7 @@ export function buildMinewisePdf(payload = {}) {
         }
       }
 
+      // ===== 4. EQUIPMENT STATUS =====
       if (hasSection(sections, "Equipment Status")) {
         header("4. Equipment Status");
 
@@ -476,6 +487,7 @@ export function buildMinewisePdf(payload = {}) {
         }
       }
 
+      // ===== 5. ROAD CONDITIONS =====
       if (hasSection(sections, "Road Conditions")) {
         header("5. Road Conditions");
 
@@ -497,6 +509,7 @@ export function buildMinewisePdf(payload = {}) {
         }
       }
 
+      // ===== 6. AI RECOMMENDATIONS =====
       if (hasSection(sections, "AI Recommendations")) {
         header("6. AI Recommendations");
 
@@ -511,25 +524,92 @@ export function buildMinewisePdf(payload = {}) {
               .text(s.description || "—", { align: "justify" });
             doc.moveDown(0.3);
           });
-        }
-      }
-
-      if (hasSection(sections, "Scenario Analysis")) {
-        header("7. Scenario Analysis");
-
-        if (aiScenarios.length > 0) {
-          aiScenarios.slice(0, 3).forEach((s) => {
-            doc.font("Helvetica-Bold").text(s.title || "Scenario", {
-              align: "left",
-            });
-            doc
-              .font("Helvetica")
-              .text(s.description || "—", { align: "justify" });
-            doc.moveDown(0.3);
+        } else {
+          doc.text("No AI recommendations available for this period.", {
+            align: "left",
           });
         }
       }
 
+      // ===== 7. SCENARIO ANALYSIS =====
+        if (hasSection(sections, "Scenario Analysis")) {
+        header("7. Scenario Analysis");
+
+        const simsToUse =
+            scenarioSimulations.length > 0 ? scenarioSimulations : aiScenarios;
+
+        if (simsToUse.length > 0) {
+            simsToUse.slice(0, 3).forEach((s, index) => {
+            const title = s.title || `Scenario ${index + 1}`;
+            doc.font("Helvetica-Bold").text(title, {
+                align: "left",
+            });
+
+            if (s.description) {
+                doc.font("Helvetica").text(s.description, { align: "justify" });
+            }
+
+            const impact = s.impact || {};
+            const hasImpact =
+                impact.production_change_pct ||
+                impact.cost_efficiency_pct ||
+                impact.risk_level_pct;
+
+            if (hasImpact) {
+                doc.moveDown(0.2);
+                doc.font("Helvetica-Bold").text("Impact:", { align: "left" });
+                doc.font("Helvetica");
+                if (impact.production_change_pct) {
+                doc.text(
+                    `• Production Change: ${impact.production_change_pct}`,
+                    { align: "left" }
+                );
+                }
+                if (impact.cost_efficiency_pct) {
+                doc.text(
+                    `• Cost Efficiency: ${impact.cost_efficiency_pct}`,
+                    { align: "left" }
+                );
+                }
+                if (impact.risk_level_pct) {
+                doc.text(
+                    `• Risk Level: ${impact.risk_level_pct}`,
+                    { align: "left" }
+                );
+                }
+            }
+
+            if (Array.isArray(s.recommended_actions)) {
+                if (s.recommended_actions.length > 0) {
+                doc.moveDown(0.2);
+                doc
+                    .font("Helvetica-Bold")
+                    .text("Recommended Actions:", { align: "left" });
+                doc.font("Helvetica");
+                s.recommended_actions.forEach((a) =>
+                    doc.text(`• ${a}`, { align: "left" })
+                );
+                }
+            }
+
+            if (s.notes) {
+                doc.moveDown(0.2);
+                doc.font("Helvetica-Bold").text("Notes:", { align: "left" });
+                doc.font("Helvetica").text(s.notes, { align: "justify" });
+            }
+
+            doc.moveDown(0.5);
+            });
+        } else {
+            doc.text(
+            "No scenario simulations are available for this period.",
+            { align: "left" }
+            );
+        }
+        }
+
+
+      // ===== 8. RISK ASSESSMENT =====
       if (hasSection(sections, "Risk Assessment")) {
         header("8. Risk Assessment");
 
@@ -546,9 +626,14 @@ export function buildMinewisePdf(payload = {}) {
           ];
 
           drawTable(doc, h, r, [0.3, 0.7]);
+        } else {
+          doc.text("No consolidated risk assessment available.", {
+            align: "left",
+          });
         }
       }
 
+      // ===== OPERATOR NOTES =====
       if (notes && notes.trim() !== "") {
         doc.addPage();
 
@@ -558,6 +643,7 @@ export function buildMinewisePdf(payload = {}) {
         });
       }
 
+      // ===== FOOTER =====
       doc.moveDown(2);
       doc
         .font("Helvetica")

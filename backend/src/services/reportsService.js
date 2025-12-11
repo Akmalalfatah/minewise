@@ -16,11 +16,74 @@ export function getReportGeneratorForm() {
   return json.generator_form || null;
 }
 
+function pickDefaultLocationBlock(raw, preferredKey) {
+  if (!raw || typeof raw !== "object") return {};
+
+  if (!raw.locations) return raw;
+
+  if (preferredKey && raw.locations[preferredKey]) {
+    return raw.locations[preferredKey];
+  }
+
+  const keys = Object.keys(raw.locations);
+  if (keys.length === 0) return {};
+  return raw.locations[keys[0]] || {};
+}
+
 function loadRawDataForReport() {
-  const dashboard = loadJSON("dashboard.json");
-  const minePlanner = loadJSON("mine_planner.json");
-  const shipping = loadJSON("shipping_planner.json");
-  return { dashboard, minePlanner, shipping };
+  const rawDashboard = loadJSON("dashboard.json");
+  const rawMinePlanner = loadJSON("mine_planner.json");
+  const rawShipping = loadJSON("shipping_planner.json");
+
+  let simulationRaw = {};
+  try {
+    simulationRaw = loadJSON("simulation_analysis.json");
+  } catch {
+    simulationRaw = {};
+  }
+
+  let simulationAnalysis = {
+    scenario_analysis: {
+      simulations: [],
+    },
+  };
+
+  if (
+    simulationRaw.scenario_analysis &&
+    Array.isArray(simulationRaw.scenario_analysis.simulations)
+  ) {
+    simulationAnalysis = simulationRaw;
+  } else if (
+    simulationRaw.scenarios &&
+    typeof simulationRaw.scenarios === "object"
+  ) {
+    simulationAnalysis.scenario_analysis.simulations = Object.values(
+      simulationRaw.scenarios
+    ).map((s) => ({
+      title: s.title || "Scenario",
+      description: s.description || "",
+      impact: {
+        production_change_pct:
+          s.production_output_pct !== undefined
+            ? s.production_output_pct + "%"
+            : null,
+        cost_efficiency_pct:
+          s.cost_efficiency_pct !== undefined
+            ? s.cost_efficiency_pct + "%"
+            : null,
+        risk_level_pct:
+          s.risk_level_pct !== undefined ? s.risk_level_pct + "%" : null,
+      },
+      recommended_actions: [],
+      notes: "",
+    }));
+  }
+
+  const dashboard = pickDefaultLocationBlock(rawDashboard, "PIT A");
+  const minePlanner = pickDefaultLocationBlock(rawMinePlanner, "PIT A");
+  const shipping = pickDefaultLocationBlock(rawShipping, "Port A");
+
+  return { dashboard, minePlanner, shipping, simulationAnalysis };
 }
 
 async function ensureDir(dir) {
