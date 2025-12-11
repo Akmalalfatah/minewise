@@ -1,262 +1,1403 @@
 {
-    "locations": {
-      "PIT A": {
-        "environment_conditions": {
-          "area": "PIT A",
-          "location": "PIT A",
-          "rainfall": "45.8 mm (Heavy)",
-          "temperature": "24.1°C – 28.9°C",
-          "humidity": "82%",
-          "wind": "18 km/h",
-          "pressure": "1008 hPa",
-          "visibility": "1.2 km",
-          "lightning": true,
-          "updated": "July 8, 2025",
-          "risk": {
-            "score": 79,
-            "title": "High weather-related danger",
-            "subtitle": "High risk of weather-related delays detected."
+  "PIT_A": {
+    "environment_conditions": {
+      "area": "PIT_A",
+      "location": "PIT_A",
+      "rainfall": "1.4 mm (Light)",
+      "temperature": "22.8°C – 26.5°C",
+      "humidity": "80%",
+      "wind": "2 km/h",
+      "pressure": "1010 hPa",
+      "visibility": "8.1 km",
+      "lightning": false,
+      "updated": "2025-12-11",
+      "risk": {
+        "score": 43,
+        "title": "Medium risk",
+        "subtitle": "Monitor conditions; moderate risk."
+      }
+    },
+    "ai_recommendation": {
+      "scenarios": [
+        {
+          "title": "Scenario 1 - Most Recommended",
+          "description": "Reallocate assets based on current risk and equipment availability."
+        },
+        {
+          "title": "Scenario 2",
+          "description": "Reroute hauling to minimize friction/wet segments for the day."
+        },
+        {
+          "title": "Scenario 3",
+          "description": "Prepare contingency schedule for rainfall-related delays."
+        }
+      ],
+      "analysis_sources": "Excel dataset, heuristic engine"
+    },
+    "road_conditions": {
+      "segments": [
+        {
+          "segment_name": "SEG_PIT_A_01",
+          "road_condition_label": "Baik",
+          "travel_time": "8.3 min",
+          "friction_index": 0.5,
+          "water_depth": "0.0 cm",
+          "speed_limit": "30 km/h",
+          "actual_speed": "19 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
           },
-          "source_location": "PIT A"
+          "source": "fct_kondisi_jalan"
         },
-        "ai_recommendation": {
-          "scenarios": [
-            {
-              "title": "Scenario 1 - Most Recommended",
-              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its current workload and minimize potential delays."
-            },
-            {
-              "title": "Scenario 2",
-              "description": "Set hauling for Road B for one day to lessen friction index and increased slip risk. Rerouting through Road A will maintain safer hauling operations with minimal impact on travel time."
-            },
-            {
-              "title": "Scenario 3",
-              "description": "Scenario 3 is an “over-plan” to anticipate the upcoming rainfall. The excess rainy loading and hauling activities are compensated to achieve better material processing."
-            }
-          ],
-          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking",
-          "source_location": "PIT A"
+        {
+          "segment_name": "SEG_PIT_A_03",
+          "road_condition_label": "Baik",
+          "travel_time": "3.7 min",
+          "friction_index": 0.5,
+          "water_depth": "0.0 cm",
+          "speed_limit": "30 km/h",
+          "actual_speed": "19 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
         },
-        "road_conditions": {
-          "segment_name": "SEG_ROAD_PL01",
-          "road_condition_label": "Slippery",
-          "travel_time": "16.2 min",
-          "friction_index": 0.32,
-          "water_depth": "9.6 cm",
-          "speed_limit": "40 km/h",
+        {
+          "segment_name": "SEG_PIT_A_02",
+          "road_condition_label": "Baik",
+          "travel_time": "2.2 min",
+          "friction_index": 0.74,
+          "water_depth": "0.9 cm",
+          "speed_limit": "45 km/h",
+          "actual_speed": "35 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        }
+      ],
+      "summary": {
+        "count": 3,
+        "friction_median": 0.5,
+        "water_median": 0.4
+      },
+      "source": "fct_kondisi_jalan"
+    },
+    "equipment_status": {
+      "summary": {
+        "excellent": 4,
+        "good": 13,
+        "maintenanceRequired": 7,
+        "slightlyDamaged": 3,
+        "severelyDamaged": 1
+      },
+      "equipments": [
+        {
+          "id": "ALAT_006",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_009",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_020",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_027",
+          "type": "Grader",
+          "model": "John Deere 772G",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_031",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_032",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Rusak ringan",
+          "operatingHours": 14,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_035",
+          "type": "Excavator",
+          "model": "Komatsu PC200",
+          "condition": "Rusak ringan",
+          "operatingHours": 14,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_037",
+          "type": "Bulldozer",
+          "model": "Komatsu D85ESS",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_043",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Sangat baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_044",
+          "type": "Wheel Loader",
+          "model": "CAT 950GC",
+          "condition": "Baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_047",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_051",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_052",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_053",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_054",
+          "type": "Grader",
+          "model": "Komatsu GD655",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_056",
+          "type": "Bulldozer",
+          "model": "Shantui SD22",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_067",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_068",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_069",
+          "type": "Bulldozer",
+          "model": "Liebherr PR736",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_071",
+          "type": "Bulldozer",
+          "model": "Liebherr PR736",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_080",
+          "type": "Bulldozer",
+          "model": "CAT D6R",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_081",
+          "type": "Bulldozer",
+          "model": "Shantui SD22",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_087",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Rusak ringan",
+          "operatingHours": 12,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_089",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_090",
+          "type": "Wheel Loader",
+          "model": "Volvo L120H",
+          "condition": "Sangat baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_094",
+          "type": "Wheel Loader",
+          "model": "Volvo L120H",
+          "condition": "Baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_097",
+          "type": "Bulldozer",
+          "model": "Liebherr PR736",
+          "condition": "Rusak berat",
+          "operatingHours": 10,
+          "maintenanceHours": 5
+        },
+        {
+          "id": "ALAT_099",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Perlu servis",
+          "operatingHours": 12,
+          "maintenanceHours": 2
+        }
+      ],
+      "fleet_overview": [
+        {
+          "equipmentType": "Excavator",
+          "active": 12,
+          "maintenance": 6,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Grader",
+          "active": 2,
+          "maintenance": 0,
+          "idle": 0
+        },
+        {
+          "equipmentType": "Wheel Loader",
+          "active": 6,
+          "maintenance": 2,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Bulldozer",
+          "active": 7,
+          "maintenance": 3,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Dump Truck",
+          "active": 1,
+          "maintenance": 0,
+          "idle": 0
+        }
+      ]
+    }
+  },
+  "PIT_B": {
+    "environment_conditions": {
+      "area": "PIT_B",
+      "location": "PIT_B",
+      "rainfall": "1.4 mm (Light)",
+      "temperature": "23.1°C – 26.8°C",
+      "humidity": "80%",
+      "wind": "2 km/h",
+      "pressure": "1010 hPa",
+      "visibility": "8.1 km",
+      "lightning": false,
+      "updated": "2025-12-11",
+      "risk": {
+        "score": 41,
+        "title": "Medium risk",
+        "subtitle": "Monitor conditions; moderate risk."
+      }
+    },
+    "ai_recommendation": {
+      "scenarios": [
+        {
+          "title": "Scenario 1 - Most Recommended",
+          "description": "Reallocate assets based on current risk and equipment availability."
+        },
+        {
+          "title": "Scenario 2",
+          "description": "Reroute hauling to minimize friction/wet segments for the day."
+        },
+        {
+          "title": "Scenario 3",
+          "description": "Prepare contingency schedule for rainfall-related delays."
+        }
+      ],
+      "analysis_sources": "Excel dataset, heuristic engine"
+    },
+    "road_conditions": {
+      "segments": [
+        {
+          "segment_name": "SEG_PIT_B_01",
+          "road_condition_label": "Baik",
+          "travel_time": "7.0 min",
+          "friction_index": 0.55,
+          "water_depth": "0.0 cm",
+          "speed_limit": "25 km/h",
+          "actual_speed": "15 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_PIT_B_03",
+          "road_condition_label": "Baik",
+          "travel_time": "9.1 min",
+          "friction_index": 0.5,
+          "water_depth": "0.1 cm",
+          "speed_limit": "25 km/h",
+          "actual_speed": "16 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_PIT_B_02",
+          "road_condition_label": "Baik",
+          "travel_time": "4.2 min",
+          "friction_index": 0.55,
+          "water_depth": "0.1 cm",
+          "speed_limit": "35 km/h",
+          "actual_speed": "14 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        }
+      ],
+      "summary": {
+        "count": 3,
+        "friction_median": 0.54,
+        "water_median": 0.0
+      },
+      "source": "fct_kondisi_jalan"
+    },
+    "equipment_status": {
+      "summary": {
+        "excellent": 6,
+        "good": 15,
+        "maintenanceRequired": 4,
+        "slightlyDamaged": 3,
+        "severelyDamaged": 2
+      },
+      "equipments": [
+        {
+          "id": "ALAT_002",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_004",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Sangat baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_007",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Rusak berat",
+          "operatingHours": 16,
+          "maintenanceHours": 5
+        },
+        {
+          "id": "ALAT_015",
+          "type": "Bulldozer",
+          "model": "CAT D6R",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_018",
+          "type": "Excavator",
+          "model": "Komatsu PC200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_024",
+          "type": "Bulldozer",
+          "model": "Komatsu D85ESS",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_033",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_039",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Sangat baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_042",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_045",
+          "type": "Wheel Loader",
+          "model": "Volvo L120H",
+          "condition": "Baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_046",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_048",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_049",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_055",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_059",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Perlu servis",
+          "operatingHours": 12,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_061",
+          "type": "Bulldozer",
+          "model": "Komatsu D85ESS",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_062",
+          "type": "Bulldozer",
+          "model": "Shantui SD22",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_063",
+          "type": "Dump Truck",
+          "model": "Volvo A40G",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_072",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_073",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_074",
+          "type": "Bulldozer",
+          "model": "Komatsu D85ESS",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_075",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_076",
+          "type": "Bulldozer",
+          "model": "Liebherr PR736",
+          "condition": "Rusak berat",
+          "operatingHours": 10,
+          "maintenanceHours": 5
+        },
+        {
+          "id": "ALAT_077",
+          "type": "Grader",
+          "model": "John Deere 772G",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_082",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Rusak ringan",
+          "operatingHours": 16,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_083",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_084",
+          "type": "Bulldozer",
+          "model": "Komatsu D85ESS",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_091",
+          "type": "Excavator",
+          "model": "Volvo EC210",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_098",
+          "type": "Excavator",
+          "model": "Komatsu PC200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_100",
+          "type": "Grader",
+          "model": "Komatsu GD655",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        }
+      ],
+      "fleet_overview": [
+        {
+          "equipmentType": "Dump Truck",
+          "active": 7,
+          "maintenance": 2,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Excavator",
+          "active": 9,
+          "maintenance": 1,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Bulldozer",
+          "active": 7,
+          "maintenance": 4,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Grader",
+          "active": 4,
+          "maintenance": 1,
+          "idle": 0
+        },
+        {
+          "equipmentType": "Wheel Loader",
+          "active": 3,
+          "maintenance": 1,
+          "idle": 0
+        }
+      ]
+    }
+  },
+  "PORT": {
+    "environment_conditions": {
+      "area": "PORT",
+      "location": "PORT",
+      "rainfall": "1.4 mm (Light)",
+      "temperature": "23.0°C – 26.9°C",
+      "humidity": "80%",
+      "wind": "2 km/h",
+      "pressure": "1010 hPa",
+      "visibility": "8.0 km",
+      "lightning": false,
+      "updated": "2025-12-11",
+      "risk": {
+        "score": 35,
+        "title": "Low weather risk",
+        "subtitle": "Conditions nominal."
+      }
+    },
+    "ai_recommendation": {
+      "scenarios": [
+        {
+          "title": "Scenario 1 - Most Recommended",
+          "description": "Reallocate assets based on current risk and equipment availability."
+        },
+        {
+          "title": "Scenario 2",
+          "description": "Reroute hauling to minimize friction/wet segments for the day."
+        },
+        {
+          "title": "Scenario 3",
+          "description": "Prepare contingency schedule for rainfall-related delays."
+        }
+      ],
+      "analysis_sources": "Excel dataset, heuristic engine"
+    },
+    "road_conditions": {
+      "segments": [
+        {
+          "segment_name": "SEG_PORT_03",
+          "road_condition_label": "Baik",
+          "travel_time": "7.1 min",
+          "friction_index": 0.59,
+          "water_depth": "0.5 cm",
+          "speed_limit": "35 km/h",
+          "actual_speed": "19 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_PORT_01",
+          "road_condition_label": "Baik",
+          "travel_time": "3.4 min",
+          "friction_index": 0.75,
+          "water_depth": "0.0 cm",
+          "speed_limit": "45 km/h",
+          "actual_speed": "31 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_PORT_02",
+          "road_condition_label": "Baik",
+          "travel_time": "17.1 min",
+          "friction_index": 0.5,
+          "water_depth": "0.0 cm",
+          "speed_limit": "30 km/h",
+          "actual_speed": "10 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        }
+      ],
+      "summary": {
+        "count": 3,
+        "friction_median": 0.6,
+        "water_median": 0.2
+      },
+      "source": "fct_kondisi_jalan"
+    },
+    "equipment_status": {
+      "summary": {
+        "excellent": 4,
+        "good": 2,
+        "maintenanceRequired": 0,
+        "slightlyDamaged": 0,
+        "severelyDamaged": 1
+      },
+      "equipments": [
+        {
+          "id": "ALAT_001",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_012",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_014",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_016",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_017",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_036",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Rusak berat",
+          "operatingHours": 16,
+          "maintenanceHours": 5
+        },
+        {
+          "id": "ALAT_092",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        }
+      ],
+      "fleet_overview": [
+        {
+          "equipmentType": "Dump Truck",
+          "active": 7,
+          "maintenance": 1,
+          "idle": 1
+        }
+      ]
+    }
+  },
+  "ROAD_01": {
+    "environment_conditions": {
+      "area": "ROAD_01",
+      "location": "ROAD_01",
+      "rainfall": "1.4 mm (Light)",
+      "temperature": "23.0°C – 26.9°C",
+      "humidity": "80%",
+      "wind": "2 km/h",
+      "pressure": "1010 hPa",
+      "visibility": "7.9 km",
+      "lightning": false,
+      "updated": "2025-12-11",
+      "risk": {
+        "score": 43,
+        "title": "Medium risk",
+        "subtitle": "Monitor conditions; moderate risk."
+      }
+    },
+    "ai_recommendation": {
+      "scenarios": [
+        {
+          "title": "Scenario 1 - Most Recommended",
+          "description": "Reallocate assets based on current risk and equipment availability."
+        },
+        {
+          "title": "Scenario 2",
+          "description": "Reroute hauling to minimize friction/wet segments for the day."
+        },
+        {
+          "title": "Scenario 3",
+          "description": "Prepare contingency schedule for rainfall-related delays."
+        }
+      ],
+      "analysis_sources": "Excel dataset, heuristic engine"
+    },
+    "road_conditions": {
+      "segments": [
+        {
+          "segment_name": "SEG_ROAD_01_01",
+          "road_condition_label": "Baik",
+          "travel_time": "3.0 min",
+          "friction_index": 0.75,
+          "water_depth": "0.0 cm",
+          "speed_limit": "50 km/h",
+          "actual_speed": "39 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_ROAD_01_02",
+          "road_condition_label": "Baik",
+          "travel_time": "8.4 min",
+          "friction_index": 0.55,
+          "water_depth": "0.1 cm",
+          "speed_limit": "30 km/h",
+          "actual_speed": "15 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        },
+        {
+          "segment_name": "SEG_ROAD_01_03",
+          "road_condition_label": "Baik",
+          "travel_time": "1.8 min",
+          "friction_index": 0.75,
+          "water_depth": "0.0 cm",
+          "speed_limit": "50 km/h",
+          "actual_speed": "34 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
+          },
+          "source": "fct_kondisi_jalan"
+        }
+      ],
+      "summary": {
+        "count": 3,
+        "friction_median": 0.74,
+        "water_median": 0.5
+      },
+      "source": "fct_kondisi_jalan"
+    },
+    "equipment_status": {
+      "summary": {
+        "excellent": 12,
+        "good": 5,
+        "maintenanceRequired": 3,
+        "slightlyDamaged": 9,
+        "severelyDamaged": 0
+      },
+      "equipments": [
+        {
+          "id": "ALAT_005",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_008",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_011",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_013",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_019",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_022",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Rusak ringan",
+          "operatingHours": 16,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_023",
+          "type": "Grader",
+          "model": "John Deere 772G",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_025",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_026",
+          "type": "Bulldozer",
+          "model": "Liebherr PR736",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_028",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_029",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Perlu servis",
+          "operatingHours": 16,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_030",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Rusak ringan",
+          "operatingHours": 16,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_038",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_040",
+          "type": "Dump Truck",
+          "model": "Volvo A40G",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_041",
+          "type": "Grader",
+          "model": "Volvo G940B",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_050",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_057",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Rusak ringan",
+          "operatingHours": 16,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_058",
+          "type": "Grader",
+          "model": "John Deere 772G",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_060",
+          "type": "Dump Truck",
+          "model": "CAT 785C",
+          "condition": "Baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_064",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_066",
+          "type": "Grader",
+          "model": "Volvo G940B",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_070",
+          "type": "Bulldozer",
+          "model": "Shantui SD22",
+          "condition": "Perlu servis",
+          "operatingHours": 10,
+          "maintenanceHours": 2
+        },
+        {
+          "id": "ALAT_078",
+          "type": "Grader",
+          "model": "John Deere 772G",
+          "condition": "Rusak ringan",
+          "operatingHours": 10,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_079",
+          "type": "Dump Truck",
+          "model": "Volvo A40G",
+          "condition": "Rusak ringan",
+          "operatingHours": 16,
+          "maintenanceHours": 3
+        },
+        {
+          "id": "ALAT_085",
+          "type": "Dump Truck",
+          "model": "Komatsu HD785",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_086",
+          "type": "Dump Truck",
+          "model": "Belaz 7555",
+          "condition": "Sangat baik",
+          "operatingHours": 16,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_088",
+          "type": "Grader",
+          "model": "CAT 140K",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_093",
+          "type": "Grader",
+          "model": "Volvo G940B",
+          "condition": "Sangat baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_096",
+          "type": "Grader",
+          "model": "Komatsu GD655",
+          "condition": "Baik",
+          "operatingHours": 10,
+          "maintenanceHours": 0
+        }
+      ],
+      "fleet_overview": [
+        {
+          "equipmentType": "Dump Truck",
+          "active": 13,
+          "maintenance": 5,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Grader",
+          "active": 14,
+          "maintenance": 5,
+          "idle": 1
+        },
+        {
+          "equipmentType": "Bulldozer",
+          "active": 2,
+          "maintenance": 2,
+          "idle": 0
+        }
+      ]
+    }
+  },
+  "STOCKPILE": {
+    "environment_conditions": {
+      "area": "STOCKPILE",
+      "location": "STOCKPILE",
+      "rainfall": "1.4 mm (Light)",
+      "temperature": "22.9°C – 26.8°C",
+      "humidity": "80%",
+      "wind": "2 km/h",
+      "pressure": "1010 hPa",
+      "visibility": "8.1 km",
+      "lightning": false,
+      "updated": "2025-12-11",
+      "risk": {
+        "score": 39,
+        "title": "Low weather risk",
+        "subtitle": "Conditions nominal."
+      }
+    },
+    "ai_recommendation": {
+      "scenarios": [
+        {
+          "title": "Scenario 1 - Most Recommended",
+          "description": "Reallocate assets based on current risk and equipment availability."
+        },
+        {
+          "title": "Scenario 2",
+          "description": "Reroute hauling to minimize friction/wet segments for the day."
+        },
+        {
+          "title": "Scenario 3",
+          "description": "Prepare contingency schedule for rainfall-related delays."
+        }
+      ],
+      "analysis_sources": "Excel dataset, heuristic engine"
+    },
+    "road_conditions": {
+      "segments": [
+        {
+          "segment_name": "SEG_STOCKPILE_03",
+          "road_condition_label": "Baik",
+          "travel_time": "6.8 min",
+          "friction_index": 0.6,
+          "water_depth": "0.0 cm",
+          "speed_limit": "35 km/h",
           "actual_speed": "25 km/h",
           "alert": {
-            "title": "High Risk Alert",
-            "description": "Water depth detected on segment 01 (9.6cm). Slowdown and route reevaluation required."
+            "title": "No immediate alert",
+            "description": "No alerts detected."
           },
-          "source_location": "PIT A"
+          "source": "fct_kondisi_jalan"
         },
-        "equipment_status": {
-          "summary": {
-            "excellent": 31,
-            "good": 37,
-            "maintenanceRequired": 17,
-            "slightlyDamaged": 12,
-            "severelyDamaged": 8
-          },
-          "equipments": [
-            {
-              "id": "ALAT_01",
-              "type": "Excavator",
-              "model": "Hitachi ZX200",
-              "condition": "Good",
-              "operatingHours": 4,
-              "maintenanceHours": 0
-            },
-            {
-              "id": "ALAT_02",
-              "type": "Dozer",
-              "model": "Komatsu PC200",
-              "condition": "Excellent",
-              "operatingHours": 3,
-              "maintenanceHours": 0
-            },
-            {
-              "id": "ALAT_03",
-              "type": "Dump Truck",
-              "model": "CAT 777D",
-              "condition": "Slightly Damaged",
-              "operatingHours": 5,
-              "maintenanceHours": 1
-            },
-            {
-              "id": "ALAT_04",
-              "type": "Wheel Loader",
-              "model": "Komatsu PC300",
-              "condition": "Good",
-              "operatingHours": 2,
-              "maintenanceHours": 0
-            }
-          ],
-          "fleet_overview": [
-            {
-              "equipmentType": "Excavator",
-              "active": 9,
-              "maintenance": 2,
-              "idle": 3
-            },
-            {
-              "equipmentType": "Dozer",
-              "active": 5,
-              "maintenance": 1,
-              "idle": 1
-            },
-            {
-              "equipmentType": "Truck",
-              "active": 8,
-              "maintenance": 3,
-              "idle": 2
-            },
-            {
-              "equipmentType": "Wheel Loader",
-              "active": 10,
-              "maintenance": 2,
-              "idle": 5
-            },
-            {
-              "equipmentType": "Grader",
-              "active": 7,
-              "maintenance": 0,
-              "idle": 4
-            }
-          ],
-          "source_location": "PIT A"
-        }
-      },
-  
-      "PIT B": {
-        "environment_conditions": {
-          "area": "PIT B",
-          "location": "PIT B",
-          "rainfall": "18.3 mm (Moderate)",
-          "temperature": "25.2°C – 30.4°C",
-          "humidity": "74%",
-          "wind": "14 km/h",
-          "pressure": "1006 hPa",
-          "visibility": "2.8 km",
-          "lightning": false,
-          "updated": "July 8, 2025",
-          "risk": {
-            "score": 52,
-            "title": "Moderate weather-related risk",
-            "subtitle": "Rainfall present but visibility and wind are still within safe range."
-          },
-          "source_location": "PIT B"
-        },
-        "ai_recommendation": {
-          "scenarios": [
-            {
-              "title": "Scenario 1 - Balance Production",
-              "description": "Keep current fleet in PIT B and send only 1 dump truck to PIT A to keep production close to target while supporting PIT A backlog."
-            },
-            {
-              "title": "Scenario 2",
-              "description": "Prioritize hauling on Road D with better friction index and lower water depth to maintain consistent cycle time."
-            },
-            {
-              "title": "Scenario 3",
-              "description": "Schedule short preventive maintenance window for two excavators during low-rain period to avoid unplanned downtime."
-            }
-          ],
-          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Production History",
-          "source_location": "PIT B"
-        },
-        "road_conditions": {
-          "segment_name": "SEG_ROAD_PB01",
-          "road_condition_label": "Wet",
-          "travel_time": "13.5 min",
-          "friction_index": 0.4,
-          "water_depth": "3.2 cm",
-          "speed_limit": "45 km/h",
-          "actual_speed": "30 km/h",
+        {
+          "segment_name": "SEG_STOCKPILE_01",
+          "road_condition_label": "Baik",
+          "travel_time": "4.4 min",
+          "friction_index": 0.75,
+          "water_depth": "0.0 cm",
+          "speed_limit": "50 km/h",
+          "actual_speed": "39 km/h",
           "alert": {
-            "title": "Caution Recommended",
-            "description": "Road surface is wet but still operable. Maintain recommended speed and monitor water depth."
+            "title": "No immediate alert",
+            "description": "No alerts detected."
           },
-          "source_location": "PIT B"
+          "source": "fct_kondisi_jalan"
         },
-        "equipment_status": {
-          "summary": {
-            "excellent": 28,
-            "good": 40,
-            "maintenanceRequired": 10,
-            "slightlyDamaged": 9,
-            "severelyDamaged": 5
+        {
+          "segment_name": "SEG_STOCKPILE_02",
+          "road_condition_label": "Baik",
+          "travel_time": "6.2 min",
+          "friction_index": 0.5,
+          "water_depth": "0.3 cm",
+          "speed_limit": "30 km/h",
+          "actual_speed": "14 km/h",
+          "alert": {
+            "title": "No immediate alert",
+            "description": "No alerts detected."
           },
-          "equipments": [
-            {
-              "id": "PB_ALAT_01",
-              "type": "Excavator",
-              "model": "Hitachi ZX200",
-              "condition": "Excellent",
-              "operatingHours": 5,
-              "maintenanceHours": 0
-            },
-            {
-              "id": "PB_ALAT_02",
-              "type": "Dump Truck",
-              "model": "CAT 777D",
-              "condition": "Good",
-              "operatingHours": 4,
-              "maintenanceHours": 0
-            },
-            {
-              "id": "PB_ALAT_03",
-              "type": "Dozer",
-              "model": "Komatsu D85",
-              "condition": "Good",
-              "operatingHours": 3,
-              "maintenanceHours": 0
-            },
-            {
-              "id": "PB_ALAT_04",
-              "type": "Wheel Loader",
-              "model": "Komatsu WA380",
-              "condition": "Maintenance Required",
-              "operatingHours": 6,
-              "maintenanceHours": 1
-            }
-          ],
-          "fleet_overview": [
-            {
-              "equipmentType": "Excavator",
-              "active": 7,
-              "maintenance": 1,
-              "idle": 2
-            },
-            {
-              "equipmentType": "Dozer",
-              "active": 4,
-              "maintenance": 1,
-              "idle": 1
-            },
-            {
-              "equipmentType": "Truck",
-              "active": 10,
-              "maintenance": 1,
-              "idle": 2
-            },
-            {
-              "equipmentType": "Wheel Loader",
-              "active": 6,
-              "maintenance": 1,
-              "idle": 2
-            },
-            {
-              "equipmentType": "Grader",
-              "active": 5,
-              "maintenance": 0,
-              "idle": 2
-            }
-          ],
-          "source_location": "PIT B"
+          "source": "fct_kondisi_jalan"
         }
-      }
+      ],
+      "summary": {
+        "count": 3,
+        "friction_median": 0.6,
+        "water_median": 0.4
+      },
+      "source": "fct_kondisi_jalan"
+    },
+    "equipment_status": {
+      "summary": {
+        "excellent": 3,
+        "good": 2,
+        "maintenanceRequired": 1,
+        "slightlyDamaged": 0,
+        "severelyDamaged": 0
+      },
+      "equipments": [
+        {
+          "id": "ALAT_003",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Sangat baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_010",
+          "type": "Wheel Loader",
+          "model": "Doosan DL300",
+          "condition": "Sangat baik",
+          "operatingHours": 12,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_021",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_034",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Sangat baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_065",
+          "type": "Excavator",
+          "model": "Hitachi ZX200",
+          "condition": "Baik",
+          "operatingHours": 14,
+          "maintenanceHours": 0
+        },
+        {
+          "id": "ALAT_095",
+          "type": "Excavator",
+          "model": "CAT 320D",
+          "condition": "Perlu servis",
+          "operatingHours": 14,
+          "maintenanceHours": 2
+        }
+      ],
+      "fleet_overview": [
+        {
+          "equipmentType": "Wheel Loader",
+          "active": 2,
+          "maintenance": 0,
+          "idle": 0
+        },
+        {
+          "equipmentType": "Excavator",
+          "active": 4,
+          "maintenance": 1,
+          "idle": 0
+        }
+      ]
     }
   }
-  
+}
