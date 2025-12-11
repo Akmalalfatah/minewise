@@ -51,7 +51,6 @@ function RecentReportCard({ report, onDownload, onView, index }) {
           />
         </div>
         <div className="flex flex-col">
-          {/* FIX: judul sekarang selalu pakai teks ini, gak ikut title backend */}
           <span className="text-sm font-semibold text-[#111827]">
             MineWise Operational Report
           </span>
