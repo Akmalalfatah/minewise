@@ -1,4 +1,4 @@
-import { useEffect, Suspense } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import authService from "./services/authService";
 import { userStore } from "./store/userStore";
 import {
@@ -9,32 +9,35 @@ import {
   useLocation,
 } from "react-router-dom";
 
-import { AnimatePresence } from "framer-motion"; // ⬅️ baru
+import { AnimatePresence } from "framer-motion";
 
-import LoginPage from "./pages/Auth/LoginPage";
-import RegisterPage from "./pages/Auth/RegisterPage";
-import DashboardPage from "./pages/DashboardPage";
-import MinePlannerPage from "./pages/MinePlannerPage";
-import ShippingPlannerPage from "./pages/ShippingPlannerPage";
-import AIChatboxPage from "./pages/AIChatboxPage";
-import OverviewPage from "./pages/OverviewPage";
-import ReportPage from "./pages/ReportPage";
-import SimulationPage from "./pages/SimulationPage";
+// Lazy load pages
+const LoginPage = lazy(() => import("./pages/Auth/LoginPage"));
+const RegisterPage = lazy(() => import("./pages/Auth/RegisterPage"));
+const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const MinePlannerPage = lazy(() => import("./pages/MinePlannerPage"));
+const ShippingPlannerPage = lazy(() => import("./pages/ShippingPlannerPage"));
+const AIChatboxPage = lazy(() => import("./pages/AIChatboxPage"));
+const OverviewPage = lazy(() => import("./pages/OverviewPage"));
+const ReportPage = lazy(() => import("./pages/ReportPage"));
+const SimulationPage = lazy(() => import("./pages/SimulationPage"));
 
 import ProtectedRoute from "./components/layout/ProtectedRoute";
 import { GlobalFilterProvider } from "./context/GlobalFilterContext";
 import NavbarWrapper from "./components/layout/NavbarWrapper";
 import ErrorBoundary from "./components/ui/ErrorBoundary";
 import LoadingSpinner from "./components/ui/LoadingSpinner";
-
-// ⬇️ animasi wrapper
 import PageTransition from "./components/animation/PageTransition";
 
 function App() {
   const isAuthenticated = userStore((state) => state.isAuthenticated);
 
   useEffect(() => {
-    if (isAuthenticated) authService.getProfile();
+    if (isAuthenticated) {
+      authService.getProfile().catch(err => {
+        console.error("Failed to get profile:", err);
+      });
+    }
   }, [isAuthenticated]);
 
   return (
@@ -42,7 +45,6 @@ function App() {
       <ErrorBoundary>
         <BrowserRouter>
           <NavbarWrapper />
-          {/* Routes dipisah ke komponen tersendiri supaya bisa pakai useLocation */}
           <AppRoutes isAuthenticated={isAuthenticated} />
         </BrowserRouter>
       </ErrorBoundary>
