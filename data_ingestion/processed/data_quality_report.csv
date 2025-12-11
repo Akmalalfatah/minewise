@@ -1,0 +1,8 @@
+Category,Sheet,Rows,Columns,Missing%,Duplicates,Memory_MB
+Infrastructure (ML Eng A),fct_kondisi_jalan,12000,19,0.0,0,8.348369598388672
+Infrastructure (ML Eng A),dim_cuaca_harian (relatif),615,19,0.0,0,0.22987937927246094
+Infrastructure (ML Eng A),fct_operasional_alat_relatif_2,6985,13,2.281812675513463,0,3.8368663787841797
+Fleet (ML Eng B),fct_operasional_alat_relatif_2,6985,13,2.281812675513463,0,3.8368663787841797
+Fleet (ML Eng B),dim_alat_berat_relatif_2,100,9,0.0,0,0.04034233093261719
+Fleet (ML Eng B),fct_pemuatan_kapal,44,9,8.585858585858585,0,0.011659622192382812
+Fleet (ML Eng B),dim_kapal,70,7,0.0,0,0.02500629425048828

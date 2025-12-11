@@ -1,0 +1,99 @@
+{
+  "total_production": {
+    "produce_ton": 13128,
+    "target_ton": 15000,
+    "avg_production_per_day": 1875,
+    "deviation_pct": -12.5,
+    "source_location": "PIT A"
+  },
+  "weather_condition": {
+    "rain_probability_pct": 37,
+    "wind_speed_kmh": 35,
+    "visibility_km": 2.6,
+    "extreme_weather_flag": true,
+    "source_location": "PIT A"
+  },
+  "production_efficiency": {
+    "effective_hours": 18.0,
+    "maintenance_hours": 4.3,
+    "efficiency_rate": 80.7,
+    "source_location": "PIT A"
+  },
+  "equipment_status": {
+    "active": 12,
+    "standby": 6,
+    "under_repair": 3,
+    "maintenance": 3,
+    "source_location": "PIT A"
+  },
+  "vessel_status": {
+    "loading": 3,
+    "waiting": 2,
+    "non_delay_risk": false,
+    "vessel_name": "MV Ocean Spirit"
+  },
+  "production_weather_overview": {
+    "production": [
+      1412,
+      1421,
+      1175,
+      1467
+    ],
+    "target": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "ai_flag": [
+      "Produksi sedikit di bawah target (-8.8%).",
+      "Cuaca ekstrem berpotensi menghambat hauling."
+    ]
+  },
+  "road_condition_overview": {
+    "segments": [
+      {
+        "road": "Road A",
+        "status": "Normal",
+        "speed": 30,
+        "friction": 0.4,
+        "water": 0
+      },
+      {
+        "road": "Road B",
+        "status": "Bahaya",
+        "speed": 12,
+        "friction": 0.28,
+        "water": 10
+      }
+    ],
+    "route_efficiency_score": 50,
+    "ai_flag": "Friction rendah pada Road B."
+  },
+  "causes_of_downtime": {
+    "total_downtime_hours": 8.7,
+    "lost_output_ton": 1226,
+    "top_causes": {
+      "Maintenance": 36,
+      "Weather": 21,
+      "Road_conditions": 43
+    },
+    "ai_breakdown": [
+      "Road conditions causing delays."
+    ]
+  },
+  "decision_impact": {
+    "correlation": {
+      "rain_vs_production": -0.72,
+      "visibility_vs_loading": -0.35
+    }
+  },
+  "ai_summary": {
+    "summary_points": [
+      "Produksi menurun 14.3% dari target.",
+      "Cuaca ekstrem berpotensi menghambat hauling.",
+      "Road B menyebabkan bottleneck pada haul fleet.",
+      "AI menyarankan maintenance shift penyesuaian."
+    ]
+  }
+}

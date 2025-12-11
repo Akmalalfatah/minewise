@@ -1,0 +1,62 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+*.ipynb
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Logs
+*.log
+logs/
+
+# Data files (optional - uncomment if you want to exclude)
+# data/
+# !data/.gitkeep
+
+# Model files (optional - uncomment if models are too large)
+# models/*.pkl
+# !models/.gitkeep
+
+# Reports
+reports/*.png
+reports/*.html
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Build artifacts
+dist/
+build/
+*.egg-info/
+
+# MLflow
+mlruns/
+mlflow_artifacts/
+
+# Docker
+.dockerignore
