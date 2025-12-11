@@ -1,259 +1,148 @@
 {
-    "ports": {
-      "Port A": {
-        "port_weather_conditions": {
-          "area": "Port A",
-          "location": "Port A",
-          "rainfall": "41.0 mm",
-          "temperature": "25.8°C – 32.3°C",
-          "humidity": "82%",
-          "wind": "10.87 km/h",
-          "pressure": "1007.87 hPa",
-          "visibility": "1.4 km",
-          "lightning": true,
-          "updated": "July 9, 2025",
-          "riskScore": 79,
-          "riskTitle": "High risk of weather-related delays",
-          "riskSubtitle": "Heavy rainfall and visibility issues detected.",
-          "source_location": "Port A"
-        },
-        "ai_recommendation": {
-          "scenarios": [
-            {
-              "title": "Scenario 1 - Most Recommended",
-              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its workload."
-            },
-            {
-              "title": "Scenario 2",
-              "description": "Set hauling via Road C due to low friction index. Rerouting through Road B reduces operational risk."
-            },
-            {
-              "title": "Scenario 3",
-              "description": "Advance shift by 2 hours to avoid incoming rainfall and maintain productivity."
-            }
-          ],
-          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking",
-          "source_location": "Port A"
-        },
-        "vessel_schedules": [
-          {
-            "vessel_name": "MV Sunrise",
-            "eta": "2025-01-10T08:00:00Z",
-            "etb": "2025-01-10T12:00:00Z",
-            "etd": "2025-01-11T20:00:00Z",
-            "laycan_start": "2025-01-09",
-            "laycan_end": "2025-01-11",
-            "destination": "China",
-            "status": "On Route",
-            "planned_load": "50,000 ton",
-            "loaded": null,
-            "source_location": "Port A"
-          },
-          {
-            "vessel_name": "MV Ocean Spirit",
-            "eta": "2025-01-15T09:00:00Z",
-            "etb": "2025-01-15T13:00:00Z",
-            "etd": "2025-01-16T22:00:00Z",
-            "laycan_start": "2025-01-14",
-            "laycan_end": "2025-01-16",
-            "destination": "India",
-            "status": "Scheduled",
-            "planned_load": "55,000 ton",
-            "loaded": null,
-            "source_location": "Port A"
-          }
-        ],
-        "coal_volume_ready": [
-          {
-            "stockpile": "SP-01",
-            "volume": 52000,
-            "grade": "GAR 4200",
-            "updated_at": "2025-01-08T10:00:00Z",
-            "moisture": "Standby",
-            "status": "Standby",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port A"
-          },
-          {
-            "stockpile": "SP-02",
-            "volume": 38000,
-            "grade": "GAR 5000",
-            "updated_at": "2025-01-08T10:00:00Z",
-            "moisture": "Standby",
-            "status": "Standby",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port A"
-          }
-        ],
-        "loading_progress": [
-          {
-            "vessel_name": "MV Sunrise",
-            "progress": 65,
-            "tonnage_loaded": 32500,
-            "tonnage_target": 50000,
-            "last_update": "2025-01-09T14:00:00Z",
-            "status": "Loading",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port A"
-          },
-          {
-            "vessel_name": "MV Ocean Spirit",
-            "progress": 0,
-            "tonnage_loaded": 0,
-            "tonnage_target": 55000,
-            "last_update": "2025-01-09T14:00:00Z",
-            "status": "Not started",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port A"
-          }
-        ],
-        "port_congestion": {
-          "updatedText": "Updated: Jul 9, 2025 - 07:00 AM (Asia/Makassar)",
-          "shipsLoading": [
-            { "name": "MV Mahakan Queen (Panamax)" },
-            { "name": "MV Kalimantan Pride (Ultramax)" }
-          ],
-          "shipsWaiting": [
-            { "name": "MV Baruna", "eta": "Jul 29" },
-            { "name": "MV Atrantis", "eta": "Aug 01" },
-            { "name": "MV Arwana", "eta": "Aug 04" }
-          ],
-          "shipsCompletedText": "(No recent departure)",
-          "congestionLevel": "High",
-          "operationalNote": "Increased queue length indicates port congestion. Expect 2–4 hours additional delay for incoming vessels.",
-          "source_location": "Port A"
-        }
+  "ports": {
+    "PORT": {
+      "port_weather_conditions": {
+        "area": "PORT",
+        "location": "PORT",
+        "rainfall": "4.3 mm",
+        "temperature": "28.1°C",
+        "humidity": "75.6%",
+        "wind": "3.3 m/s",
+        "pressure": "1009.8 hPa",
+        "visibility": "7.2 km",
+        "lightning": false,
+        "updated": "October 31, 2025",
+        "riskScore": 12,
+        "riskTitle": "Low Weather Risk",
+        "riskSubtitle": "Conditions acceptable.",
+        "source_location": "PORT"
       },
-  
-      "Port B": {
-        "port_weather_conditions": {
-          "area": "Port B",
-          "location": "Port B",
-          "rainfall": "18.0 mm",
-          "temperature": "27.0°C – 30.5°C",
-          "humidity": "68%",
-          "wind": "7.5 km/h",
-          "pressure": "1009.40 hPa",
-          "visibility": "2.8 km",
-          "lightning": false,
-          "updated": "July 9, 2025",
-          "riskScore": 42,
-          "riskTitle": "Moderate weather-related risk",
-          "riskSubtitle": "Light rainfall, visibility mostly acceptable for loading operations.",
-          "source_location": "Port B"
+      "ai_recommendation": {
+        "scenarios": [
+          {
+            "title": "Scenario 1 - Most Recommended",
+            "description": "Ensure continuous feed to conveyor for active vessel."
+          },
+          {
+            "title": "Scenario 2 - Queue Prep",
+            "description": "Prepare berthing plan for incoming waiting vessel."
+          }
+        ],
+        "analysis_sources": "Integrated Port Data System",
+        "source_location": "PORT"
+      },
+      "vessel_schedules": [
+        {
+          "vessel_name": "Vessel KPL_014",
+          "eta": "2025-10-29T09:00:00Z",
+          "etb": "2025-10-29T09:00:00Z",
+          "etd": "2025-10-31T12:00:00Z",
+          "destination": "Export Market",
+          "status": "Loading",
+          "planned_load": "26,715 ton",
+          "loaded": "14,693 ton",
+          "source_location": "PORT"
         },
-        "ai_recommendation": {
-          "scenarios": [
-            {
-              "title": "Scenario 1 - Smooth Turnaround",
-              "description": "Maintain current loading sequence and allocate one additional crane for high-priority vessel to shorten port stay."
-            },
-            {
-              "title": "Scenario 2",
-              "description": "Use Port B as relief port when Port A congestion index is high to avoid demurrage on incoming vessels."
-            },
-            {
-              "title": "Scenario 3",
-              "description": "Coordinate with tug and pilot schedule to avoid idle time during vessel berthing and unberthing."
-            }
-          ],
-          "analysis_sources": "Weather API, Port Operations Log, Vessel Tracking",
-          "source_location": "Port B"
+        {
+          "vessel_name": "Vessel KPL_013",
+          "eta": "2025-11-02T00:00:00Z",
+          "etb": "2025-11-02T00:00:00Z",
+          "etd": "2025-11-03T00:00:00Z",
+          "destination": "Export Market",
+          "status": "Waiting",
+          "planned_load": "19,253 ton",
+          "loaded": "0 ton",
+          "source_location": "PORT"
         },
-        "vessel_schedules": [
-          {
-            "vessel_name": "MV Samarinda Star",
-            "eta": "2025-01-18T06:00:00Z",
-            "etb": "2025-01-18T10:00:00Z",
-            "etd": "2025-01-19T18:00:00Z",
-            "laycan_start": "2025-01-17",
-            "laycan_end": "2025-01-19",
-            "destination": "Japan",
-            "status": "On Route",
-            "planned_load": "60,000 ton",
-            "loaded": null,
-            "source_location": "Port B"
-          },
-          {
-            "vessel_name": "MV Borneo Pride",
-            "eta": "2025-01-22T07:00:00Z",
-            "etb": "2025-01-22T11:00:00Z",
-            "etd": "2025-01-23T20:00:00Z",
-            "laycan_start": "2025-01-21",
-            "laycan_end": "2025-01-23",
-            "destination": "South Korea",
-            "status": "Scheduled",
-            "planned_load": "58,000 ton",
-            "loaded": null,
-            "source_location": "Port B"
-          }
-        ],
-        "coal_volume_ready": [
-          {
-            "stockpile": "SP-B1",
-            "volume": 46000,
-            "grade": "GAR 4200",
-            "updated_at": "2025-01-09T09:00:00Z",
-            "moisture": "Standby",
-            "status": "Standby",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port B"
-          },
-          {
-            "stockpile": "SP-B2",
-            "volume": 41000,
-            "grade": "GAR 5000",
-            "updated_at": "2025-01-09T09:00:00Z",
-            "moisture": "Standby",
-            "status": "Standby",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port B"
-          }
-        ],
-        "loading_progress": [
-          {
-            "vessel_name": "MV Samarinda Star",
-            "progress": 72,
-            "tonnage_loaded": 43200,
-            "tonnage_target": 60000,
-            "last_update": "2025-01-18T15:00:00Z",
-            "status": "Loading",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port B"
-          },
-          {
-            "vessel_name": "MV Borneo Pride",
-            "progress": 0,
-            "tonnage_loaded": 0,
-            "tonnage_target": 58000,
-            "last_update": "2025-01-18T15:00:00Z",
-            "status": "Not started",
-            "eta": "-",
-            "etd": "-",
-            "source_location": "Port B"
-          }
-        ],
-        "port_congestion": {
-          "updatedText": "Updated: Jul 9, 2025 - 09:30 AM (Asia/Makassar)",
-          "shipsLoading": [
-            { "name": "MV Samarinda Star" }
-          ],
-          "shipsWaiting": [
-            { "name": "MV Borneo Pride", "eta": "Jan 22" }
-          ],
-          "shipsCompletedText": "Last departure: MV Nusantara Coal – Jan 15",
-          "congestionLevel": "Medium",
-          "operationalNote": "Berthing queue is under control. Monitor rain cells and adjust pilot assignment if visibility drops below 1.5 km.",
-          "source_location": "Port B"
+        {
+          "vessel_name": "MV Java Venture",
+          "eta": "2025-10-23T04:00:00Z",
+          "etb": "2025-10-23T04:00:00Z",
+          "etd": "2025-10-23T11:49:00Z",
+          "destination": "Export Market",
+          "status": "Completed",
+          "planned_load": "12,933 ton",
+          "loaded": "12,933 ton",
+          "source_location": "PORT"
+        },
+        {
+          "vessel_name": "MV Makassar Breeze",
+          "eta": "2025-10-20T11:45:00Z",
+          "etb": "2025-10-20T11:45:00Z",
+          "etd": "2025-10-21T00:17:00Z",
+          "destination": "Export Market",
+          "status": "Completed",
+          "planned_load": "22,022 ton",
+          "loaded": "22,022 ton",
+          "source_location": "PORT"
+        },
+        {
+          "vessel_name": "MV Celebes Trader",
+          "eta": "2025-10-17T08:00:00Z",
+          "etb": "2025-10-17T08:00:00Z",
+          "etd": "2025-10-18T01:58:00Z",
+          "destination": "Export Market",
+          "status": "Completed",
+          "planned_load": "28,094 ton",
+          "loaded": "28,094 ton",
+          "source_location": "PORT"
         }
+      ],
+      "coal_volume_ready": [
+        {
+          "stockpile": "SP_SOUTH",
+          "volume": 6066,
+          "grade": "CV 5046",
+          "updated_at": "2025-10-31T00:00:00Z",
+          "moisture": "21.6%",
+          "status": "Ready",
+          "eta": "Available Now",
+          "etd": "Indefinite",
+          "source_location": "PORT"
+        },
+        {
+          "stockpile": "SP_NORTH",
+          "volume": 500,
+          "grade": "CV 5079",
+          "updated_at": "2025-10-31T00:00:00Z",
+          "moisture": "22.1%",
+          "status": "Ready",
+          "eta": "Available Now",
+          "etd": "Indefinite",
+          "source_location": "PORT"
+        }
+      ],
+      "loading_progress": [
+        {
+          "vessel_name": "Vessel KPL_014",
+          "progress": 55,
+          "tonnage_loaded": 14693.25,
+          "tonnage_target": 26715.0,
+          "last_update": "2025-10-31T00:00:00Z",
+          "status": "Loading",
+          "eta": "2025-10-29T09:00:00Z",
+          "etd": "2025-10-31T12:00:00Z",
+          "source_location": "PORT"
+        }
+      ],
+      "port_congestion": {
+        "updatedText": "Updated: October 31, 2025",
+        "shipsLoading": [
+          {
+            "name": "Vessel KPL_014"
+          }
+        ],
+        "shipsWaiting": [
+          {
+            "name": "Vessel KPL_013",
+            "eta": "November 02, 2025"
+          }
+        ],
+        "shipsCompletedText": "Recently Departed: 3",
+        "congestionLevel": "Medium",
+        "operationalNote": "Active loading in progress.",
+        "source_location": "PORT"
       }
     }
   }
-  
+}

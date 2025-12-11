@@ -1,3 +1,4 @@
+// src/components/shipping-planner/AIShippingRecommendationCard.jsx
 import React, { useEffect, useState } from "react";
 import { getAIShippingRecommendation } from "../../services/shippingPlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
@@ -14,6 +15,7 @@ function AIShippingRecommendationCard() {
         setData(result);
       } catch (error) {
         console.error("Failed to load AI shipping recommendation:", error);
+        setData(null);
       }
     }
     load();
@@ -21,19 +23,20 @@ function AIShippingRecommendationCard() {
 
   if (!data) return null;
 
-  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+  const rawScenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
 
-  const makeSafeScenario = (index) => {
-    const item = scenarios[index];
-    return {
-      title: item?.title || "-",
-      description: item?.description || "-",
-    };
-  };
-
-  const scenario1 = makeSafeScenario(0);
-  const scenario2 = makeSafeScenario(1);
-  const scenario3 = makeSafeScenario(2);
+  // Biar fleksibel: kalau datanya cuma 2 skenario, yang ditampilkan 2;
+  // kalau 3, tampil 3; kalau kosong, kasih fallback 1 kartu info.
+  const scenariosToRender =
+    rawScenarios.length > 0
+      ? rawScenarios.slice(0, 3)
+      : [
+          {
+            title: "No AI scenarios available",
+            description:
+              "AI has not generated any shipping scenarios for the selected filters.",
+          },
+        ];
 
   const analysisSources = data.analysis_sources || "-";
 
@@ -89,71 +92,28 @@ function AIShippingRecommendationCard() {
             aria-label="AI recommendation scenarios"
             className="ScenarioListContainer self-stretch flex flex-col justify-start items-start gap-[22px]"
           >
-            {/* Scenario 1 */}
-            <article
-              data-layer="scenario1_wrapper"
-              className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
-              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
-              flex flex-col justify-center items-start gap-2.5
-              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div
-                data-layer="scenario1_block"
-                className="Scenario1Block w-full flex flex-col justify-start items-start gap-1"
+            {scenariosToRender.map((scenario, index) => (
+              <article
+                key={index}
+                data-layer={`scenario${index + 1}_wrapper`}
+                className="ScenarioWrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px]
+                  outline outline-1 outline-offset-[-1px] outline-[#c1ccdd]
+                  flex flex-col justify-center items-start gap-2.5
+                  transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
               >
-                <h3
-                  data-layer="scenario1_title"
-                  className="Scenario1Title self-stretch text-black text-sm font-semibold"
+                <div
+                  data-layer={`scenario${index + 1}_block`}
+                  className="ScenarioBlock w-full flex flex-col justify-start items-start gap-1"
                 >
-                  {scenario1.title}
-                </h3>
-                <p
-                  data-layer="scenario1_description"
-                  className="Scenario1Description self-stretch text-black text-sm font-normal"
-                >
-                  {scenario1.description}
-                </p>
-              </div>
-            </article>
-
-            {/* Scenario 2 */}
-            <article
-              data-layer="scenario2_wrapper"
-              className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
-              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
-              flex flex-col justify-start items-start gap-2.5
-              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div
-                data-layer="scenario2_block"
-                className="Scenario2Block w-full flex flex-col justify-start items-start gap-1"
-              >
-                <h3 className="Scenario2Title text-black text-sm font-semibold">
-                  {scenario2.title}
-                </h3>
-                <p className="Scenario2Description text-black text-sm font-normal">
-                  {scenario2.description}
-                </p>
-              </div>
-            </article>
-
-            {/* Scenario 3 */}
-            <article
-              data-layer="scenario3_wrapper"
-              className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] 
-              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
-              flex flex-col justify-start items-start gap-2.5
-              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
-            >
-              <div className="Scenario3Block w-full flex flex-col gap-1">
-                <h3 className="Scenario3Title text-black text-sm font-semibold">
-                  {scenario3.title}
-                </h3>
-                <p className="Scenario3Description text-black text-sm font-normal">
-                  {scenario3.description}
-                </p>
-              </div>
-            </article>
+                  <h3 className="ScenarioTitle self-stretch text-black text-sm font-semibold">
+                    {scenario.title || "-"}
+                  </h3>
+                  <p className="ScenarioDescription self-stretch text-black text-sm font-normal">
+                    {scenario.description || "-"}
+                  </p>
+                </div>
+              </article>
+            ))}
           </section>
 
           {/* Analysis section */}
