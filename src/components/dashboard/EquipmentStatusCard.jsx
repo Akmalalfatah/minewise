@@ -1,9 +1,12 @@
 import React from "react";
 import AnimatedNumber from "../animation/AnimatedNumber";
 import KpiCardWrapper from "../animation/KpiCardWrapper";
+import { useGlobalFilter } from "../../context/GlobalFilterContext";
 
 function EquipmentStatusCard({ data }) {
   if (!data) return null;
+
+  const { location } = useGlobalFilter();
 
   const active = Number(data.active) || 0;
   const standby = Number(data.standby) || 0;
@@ -11,9 +14,7 @@ function EquipmentStatusCard({ data }) {
   const maintenance = Number(data.maintenance) || 0;
 
   return (
-    <KpiCardWrapper
-      className="EquipmentStatusCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
-    >
+    <KpiCardWrapper className="EquipmentStatusCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
       <section
         data-layer="equipment_status_card"
         aria-label="Equipment status summary"
@@ -59,9 +60,9 @@ function EquipmentStatusCard({ data }) {
             <div className="Divider self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]" />
 
             <footer className="FooterContainer self-stretch inline-flex justify-between items-center">
-              <span className="text-black/60 text-sm">Lokasi Source</span>
+              <span className="text-black/60 text-sm">Lokasi</span>
               <span className="text-black/60 text-sm font-semibold">
-                {data.source_location || "-"}
+                {location}
               </span>
             </footer>
           </section>

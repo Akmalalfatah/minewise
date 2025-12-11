@@ -1,9 +1,12 @@
 import React from "react";
 import AnimatedNumber from "../animation/AnimatedNumber";
 import KpiCardWrapper from "../animation/KpiCardWrapper";
+import { useGlobalFilter } from "../../context/GlobalFilterContext";
 
 function WeatherConditionCard({ data }) {
   if (!data) return null;
+
+  const { location } = useGlobalFilter();
 
   const rainProb = Number(data.rain_probability_pct) || 0;
   const windSpeed = Number(data.wind_speed_kmh) || 0;
@@ -11,28 +14,16 @@ function WeatherConditionCard({ data }) {
   const isExtreme = Boolean(data.extreme_weather_flag);
 
   return (
-    <KpiCardWrapper
-      className="WeatherConditionCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
-    >
+    <KpiCardWrapper className="WeatherConditionCard w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
       <section
         data-layer="weather_condition_card"
         aria-label="Weather condition summary"
         className="w-full h-full"
       >
-        <div
-          data-layer="header_container"
-          className="HeaderContainer w-[205px] h-[197px] flex flex-col justify-center items-start gap-3"
-        >
-          <header
-            data-layer="header_left_group"
-            className="HeaderLeftGroup inline-flex justify-center items-center gap-3"
-          >
-            <div
-              data-layer="icon_wrapper"
-              className="IconWrapper size-8 px-[7px] py-2 bg-[#1c2534] rounded-2xl flex justify-center items-center"
-            >
+        <div className="HeaderContainer w-[205px] h-[197px] flex flex-col justify-center items-start gap-3">
+          <header className="HeaderLeftGroup inline-flex justify-center items-center gap-3">
+            <div className="IconWrapper size-8 px-[7px] py-2 bg-[#1c2534] rounded-2xl flex justify-center items-center">
               <img
-                data-layer="icon_rain"
                 className="IconRain size-[18px]"
                 src="/icons/icon_rain.png"
                 alt="Weather icon"
@@ -44,10 +35,7 @@ function WeatherConditionCard({ data }) {
             </h2>
           </header>
 
-          <section
-            data-layer="content_container"
-            className="ContentContainer self-stretch flex flex-col justify-start items-start gap-[15px]"
-          >
+          <section className="ContentContainer self-stretch flex flex-col justify-start items-start gap-[15px]">
             <div className="InfoRows self-stretch inline-flex justify-between items-start">
               <div className="LabelContainer w-[133px] inline-flex flex-col justify-start items-start gap-3">
                 <span className="text-black text-sm font-normal">
@@ -83,11 +71,9 @@ function WeatherConditionCard({ data }) {
             <div className="Divider self-stretch h-0 outline outline-[0.50px] outline-[#bdbdbd]" />
 
             <footer className="FooterContainter self-stretch inline-flex justify-between items-center">
-              <span className="text-black/60 text-sm font-normal">
-                Lokasi Source
-              </span>
+              <span className="text-black/60 text-sm font-normal">Lokasi</span>
               <span className="text-right text-black/60 text-sm font-semibold">
-                {data.source_location}
+                {location}
               </span>
             </footer>
           </section>

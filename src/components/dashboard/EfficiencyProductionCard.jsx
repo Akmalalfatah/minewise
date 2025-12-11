@@ -1,9 +1,12 @@
 import React from "react";
 import AnimatedNumber from "../animation/AnimatedNumber";
 import KpiCardWrapper from "../animation/KpiCardWrapper";
+import { useGlobalFilter } from "../../context/GlobalFilterContext";
 
 function EfficiencyProductionCard({ data }) {
   if (!data) return null;
+
+  const { location } = useGlobalFilter();
 
   const getDecimals = (val) => {
     if (val === null || val === undefined) return 0;
@@ -22,9 +25,7 @@ function EfficiencyProductionCard({ data }) {
   const efficiencyDecimals = getDecimals(data.efficiency_rate);
 
   return (
-    <KpiCardWrapper
-      className="EfficiencyProductionCardJsx w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5"
-    >
+    <KpiCardWrapper className="EfficiencyProductionCardJsx w-[253px] h-[248px] p-[18px] bg-white rounded-3xl inline-flex flex-col justify-center items-center gap-2.5">
       <section
         data-layer="efficiency_production_card"
         aria-label="Efficiency production information"
@@ -79,9 +80,9 @@ function EfficiencyProductionCard({ data }) {
             <div className="Divider w-[205px] h-0 outline outline-[0.50px] outline-[#bdbdbd]" />
 
             <footer className="FooterContainer w-[205px] inline-flex justify-between items-center ">
-              <span className="text-black/60 text-sm">Lokasi Source</span>
+              <span className="text-black/60 text-sm">Lokasi</span>
               <span className="text-[#666] text-sm font-semibold">
-                {data.source_location}
+                {location}
               </span>
             </footer>
           </section>
