@@ -8,6 +8,8 @@ Date: December 5, 2025
 
 from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel, Field
 from typing import Optional, List, Dict, Any
 import joblib
@@ -17,6 +19,10 @@ from pathlib import Path
 import logging
 from datetime import datetime
 import warnings
+
+# Import frontend endpoints router
+from .frontend_endpoints import router as frontend_router
+from .feature_engineering import create_feature_engineer
 
 # Suppress non-critical warnings for cleaner output
 warnings.filterwarnings('ignore', category=UserWarning, module='xgboost')
@@ -34,6 +40,23 @@ app = FastAPI(
     version="1.0.0",
     docs_url="/docs",
     redoc_url="/redoc"
+)
+
+# Add CORS middleware (if needed for frontend)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Configure appropriately in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Add GZip compression middleware
+# Compresses responses >1KB automatically
+app.add_middleware(
+    GZipMiddleware,
+    minimum_size=1024,  # Only compress responses larger than 1KB
+    compresslevel=6  # Balance between speed (1) and compression (9)
 )
 
 # Define project root and model paths
@@ -105,8 +128,11 @@ class ModelRegistry:
         """
         model = self.models[model_name]
         
-        # Get expected features
-        if hasattr(model, 'feature_names_in_'):
+        # Get expected features - prioritize metadata over model attribute
+        if model_name in self.model_wrappers and self.model_wrappers[model_name].get('features'):
+            expected_features = self.model_wrappers[model_name]['features']
+            logger.info(f"✓ Using {len(expected_features)} features from metadata for {model_name}")
+        elif hasattr(model, 'feature_names_in_'):
             expected_features = list(model.feature_names_in_)
         else:
             return X  # Cannot complete without knowing expected features
@@ -123,10 +149,76 @@ class ModelRegistry:
         
         for feat in missing:
             # Feature-specific defaults based on naming patterns
-            if 'kapasitas_default' in feat or 'default_ton' in feat:
+            if feat == 'umur_tahun':
+                # Copy from equipment_age_years if available
+                if 'equipment_age_years' in X.columns:
+                    X_complete[feat] = X['equipment_age_years']
+                else:
+                    X_complete[feat] = 5.0  # Default age
+                    
+            elif feat == 'durasi_jam':
+                # Copy from jam_operasi if available
+                if 'jam_operasi' in X.columns:
+                    X_complete[feat] = X['jam_operasi']
+                else:
+                    X_complete[feat] = 10000.0  # Default hours
+                    
+            elif feat == 'daily_usage_hours':
+                # Calculate from jam_operasi or durasi_jam
+                if 'jam_operasi' in X.columns:
+                    X_complete[feat] = X['jam_operasi'] / 365  # Assume 365 days
+                elif 'durasi_jam' in X.columns:
+                    X_complete[feat] = X['durasi_jam'] / 365
+                else:
+                    X_complete[feat] = 8.0  # Default 8 hours/day
+                    
+            elif feat == 'total_muatan_ton':
+                # Calculate from beban_rata_rata_ton if available
+                if 'beban_rata_rata_ton' in X.columns:
+                    # Assume 25 ritase (trips) per period
+                    X_complete[feat] = X['beban_rata_rata_ton'] * 25
+                else:
+                    X_complete[feat] = 2000.0  # Default tonnage
+                    
+            elif feat == 'cumulative_hours_30d':
+                # Estimate from daily usage
+                if 'daily_usage_hours' in X_complete.columns:
+                    X_complete[feat] = X_complete['daily_usage_hours'] * 30
+                else:
+                    X_complete[feat] = 240.0  # Default (8h/day * 30 days)
+                    
+            elif feat == 'jumlah_ritase':
+                # Default to reasonable trip count
+                X_complete[feat] = 25
+                
+            elif feat == 'high_age_risk':
+                # Binary flag based on equipment age
+                if 'equipment_age_years' in X.columns:
+                    X_complete[feat] = (X['equipment_age_years'] > 7).astype(int)
+                elif 'umur_tahun' in X_complete.columns:
+                    X_complete[feat] = (X_complete['umur_tahun'] > 7).astype(int)
+                else:
+                    X_complete[feat] = 0
+                    
+            elif feat == 'high_usage_flag':
+                # Binary flag based on utilization
+                if 'utilization_rate' in X.columns:
+                    X_complete[feat] = (X['utilization_rate'] > 0.7).astype(int)
+                else:
+                    X_complete[feat] = 0
+                    
+            elif feat == 'age_usage_interaction':
+                # Interaction term
+                age = X['equipment_age_years'] if 'equipment_age_years' in X.columns else X_complete.get('umur_tahun', pd.Series([5.0]))
+                util = X['utilization_rate'] if 'utilization_rate' in X.columns else pd.Series([0.75])
+                X_complete[feat] = age * util
+                
+            elif 'kapasitas_default' in feat or 'default_ton' in feat:
                 # Capacity: use average or infer from load
-                if 'total_muatan_ton' in X.columns:
-                    X_complete[feat] = X['total_muatan_ton'].mean() * 1.2  # 20% buffer
+                if 'beban_rata_rata_ton' in X.columns:
+                    X_complete[feat] = X['beban_rata_rata_ton'] * 1.2  # 20% buffer
+                elif 'total_muatan_ton' in X_complete.columns:
+                    X_complete[feat] = X_complete['total_muatan_ton'] / 25 * 1.2
                 else:
                     X_complete[feat] = 100.0  # Default capacity
                     
@@ -135,9 +227,11 @@ class ModelRegistry:
                 X_complete[feat] = 1.0
                 
             elif 'breakdown_history_count' in feat or 'history_count' in feat:
-                # Breakdown count: derive from age if available
-                if 'umur_tahun' in X.columns:
-                    X_complete[feat] = X['umur_tahun'] * 0.5  # 0.5 breakdowns/year avg
+                # Breakdown count: use from API input if available
+                if 'jumlah_breakdown' in X.columns:
+                    X_complete[feat] = X['jumlah_breakdown']
+                elif 'umur_tahun' in X_complete.columns:
+                    X_complete[feat] = X_complete['umur_tahun'] * 0.5  # 0.5 breakdowns/year avg
                 elif 'equipment_age_years' in X.columns:
                     X_complete[feat] = X['equipment_age_years'] * 0.5
                 else:
@@ -224,22 +318,10 @@ class ModelRegistry:
             self.models['equipment_failure'] = self._extract_model_from_dict(
                 joblib.load(MODELS_DIR / 'equipment_failure_optimized.pkl'), 'equipment_failure')
             
-            # Port Operability - try loading with fallback
-            try:
-                self.models['port_operability'] = self._extract_model_from_dict(
-                    joblib.load(MODELS_DIR / 'port_operability_optimized.pkl'), 'port_operability')
-            except Exception as e:
-                logger.warning(f"port_operability_optimized.pkl failed: {e}")
-                logger.warning("Creating dummy model - port_operability will return mock predictions")
-                # Create a simple mock that returns basic predictions
-                class MockPortModel:
-                    def predict(self, X):
-                        import numpy as np
-                        return np.array(['MODERATE'] * len(X))
-                    def predict_proba(self, X):
-                        import numpy as np
-                        return np.array([[0.3, 0.7]] * len(X))  # LOW, MODERATE
-                self.models['port_operability'] = MockPortModel()
+            # Port Operability - LGBMClassifier model
+            self.models['port_operability'] = self._extract_model_from_dict(
+                joblib.load(MODELS_DIR / 'port_operability_optimized.pkl'), 'port_operability')
+            
             self.models['performance_degradation'] = self._extract_model_from_dict(
                 joblib.load(MODELS_DIR / 'performance_degradation_optimized.pkl'), 'performance_degradation')
             self.models['fleet_risk'] = self._extract_model_from_dict(
@@ -252,8 +334,10 @@ class ModelRegistry:
             logger.error(f"Error loading models: {e}")
             raise
 
-# Initialize registry
+# Initialize registry and feature engineer
 registry = ModelRegistry()
+feature_engineer = create_feature_engineer()
+logger.info(f"✓ Feature engineer initialized")
 
 # ============================================================================
 # Pydantic Models for Request/Response
@@ -309,72 +393,52 @@ class CycleTimeRequest(BaseModel):
 
 class RoadRiskRequest(BaseModel):
     """Request model for road risk classification"""
+    jenis_jalan: str = Field(..., description="Road type (UTAMA/PENGHUBUNG/CABANG)")
+    kondisi_permukaan: str = Field(..., description="Surface condition (KERING/BASAH/BERLUMPUR)")
     curah_hujan_mm: float = Field(..., ge=0, description="Rainfall in mm")
-    intensitas_hujan: str = Field(..., description="Rain intensity (RINGAN/SEDANG/LEBAT)")
-    kecepatan_angin_ms: float = Field(..., ge=0, description="Wind speed in m/s")
-    kondisi_permukaan: str = Field(..., description="Surface condition")
-    kedalaman_air_cm: float = Field(..., ge=0, description="Water depth in cm")
-    indeks_friksi: float = Field(..., ge=0, le=1, description="Friction index (0-1)")
-    visibilitas_m: float = Field(..., ge=0, description="Visibility in meters")
     kemiringan_persen: float = Field(..., ge=0, le=100, description="Slope percentage")
     
     class Config:
         schema_extra = {
             "example": {
-                "curah_hujan_mm": 15.5,
-                "intensitas_hujan": "SEDANG",
-                "kecepatan_angin_ms": 8.5,
+                "jenis_jalan": "UTAMA",
                 "kondisi_permukaan": "BASAH",
-                "kedalaman_air_cm": 3.5,
-                "indeks_friksi": 0.65,
-                "visibilitas_m": 150.0,
+                "curah_hujan_mm": 15.5,
                 "kemiringan_persen": 8.0
             }
         }
 
 class EquipmentFailureRequest(BaseModel):
     """Request model for equipment failure prediction"""
-    tipe_alat: str = Field(..., description="Equipment type")
-    umur_tahun: int = Field(..., ge=0, description="Equipment age in years")
-    jam_operasi: float = Field(..., ge=0, description="Operating hours")
-    jarak_tempuh_km: float = Field(..., ge=0, description="Distance traveled in km")
-    jumlah_maintenance: int = Field(..., ge=0, description="Number of maintenances")
-    jumlah_breakdown: int = Field(..., ge=0, description="Number of breakdowns")
-    days_since_last_maintenance: int = Field(..., ge=0, description="Days since last maintenance")
-    utilization_rate: float = Field(..., ge=0, le=1, description="Utilization rate (0-1)")
+    jenis_equipment: str = Field(..., description="Equipment type (Excavator/Dump Truck/Loader/Dozer/Grader)")
+    umur_tahun: float = Field(..., ge=0, description="Equipment age in years (can be decimal)")
+    jam_operasional_harian: float = Field(..., ge=0, le=24, description="Daily operating hours")
+    ritase_harian: float = Field(..., ge=0, description="Daily trips/cycles")
     
     class Config:
         schema_extra = {
             "example": {
-                "tipe_alat": "EXCAVATOR",
-                "umur_tahun": 5,
-                "jam_operasi": 12500.5,
-                "jarak_tempuh_km": 45000.0,
-                "jumlah_maintenance": 25,
-                "jumlah_breakdown": 3,
-                "days_since_last_maintenance": 45,
-                "utilization_rate": 0.75
+                "jenis_equipment": "Excavator",
+                "umur_tahun": 5.5,
+                "jam_operasional_harian": 12.0,
+                "ritase_harian": 55.0
             }
         }
 
 class PortOperabilityRequest(BaseModel):
     """Request model for port operability forecast"""
-    curah_hujan_mm: float = Field(..., ge=0, description="Rainfall in mm")
-    kecepatan_angin_ms: float = Field(..., ge=0, description="Wind speed in m/s")
     tinggi_gelombang_m: float = Field(..., ge=0, description="Wave height in meters")
-    visibilitas_km: float = Field(..., ge=0, description="Visibility in km")
-    suhu_celcius: float = Field(..., description="Temperature in Celsius")
-    equipment_readiness: float = Field(..., ge=0, le=1, description="Equipment readiness (0-1)")
+    kecepatan_angin_kmh: float = Field(..., ge=0, description="Wind speed in km/h")
+    tipe_kapal: str = Field(..., description="Vessel type (Bulk Carrier/Container Ship/Tanker/Barge)")
+    kapasitas_muatan_ton: float = Field(..., ge=0, description="Vessel capacity in tons")
     
     class Config:
         schema_extra = {
             "example": {
-                "curah_hujan_mm": 5.5,
-                "kecepatan_angin_ms": 12.5,
                 "tinggi_gelombang_m": 1.8,
-                "visibilitas_km": 3.5,
-                "suhu_celcius": 27.0,
-                "equipment_readiness": 0.85
+                "kecepatan_angin_kmh": 25.0,
+                "tipe_kapal": "Bulk Carrier",
+                "kapasitas_muatan_ton": 65000
             }
         }
 
@@ -445,25 +509,39 @@ async def root():
         "version": "1.0.0",
         "status": "operational",
         "available_endpoints": {
-            "infrastructure": [
-                "/predict/road-speed",
-                "/predict/cycle-time",
-                "/predict/road-risk"
-            ],
-            "fleet": [
-                "/predict/equipment-failure",
-                "/predict/port-operability",
-                "/predict/performance-degradation",
-                "/predict/fleet-risk"
-            ],
-            "utility": [
-                "/health",
-                "/models/info"
-            ]
+            "ml_predictions": {
+                "infrastructure": [
+                    "/predict/road-speed",
+                    "/predict/cycle-time",
+                    "/predict/road-risk"
+                ],
+                "fleet": [
+                    "/predict/equipment-failure",
+                    "/predict/port-operability",
+                    "/predict/performance-degradation",
+                    "/predict/fleet-risk"
+                ],
+                "batch": [
+                    "/predict/batch/infrastructure",
+                    "/predict/batch/fleet"
+                ]
+            },
+            "frontend_integration": {
+                "dashboard": "/api/dashboard",
+                "mine_planner": "/api/mine-planner",
+                "shipping_planner": "/api/shipping-planner",
+                "chatbox": "/api/chatbox",
+                "reports": "/api/reports"
+            }
         },
-        "docs": "/docs",
-        "redoc": "/redoc"
+        "documentation": {
+            "swagger": "/docs",
+            "redoc": "/redoc"
+        }
     }
+
+# Include frontend router
+app.include_router(frontend_router)
 
 @app.get("/health")
 async def health_check():
@@ -501,11 +579,12 @@ async def predict_road_speed(request: RoadSpeedRequest):
     Model: XGBoost Regressor
     """
     try:
-        # Prepare features
-        features = pd.DataFrame([request.dict()])
+        # Engineer features dari input API
+        features = feature_engineer.engineer_road_speed_features(request.dict())
+        logger.info(f"Road speed features engineered: {features.shape}")
         
         # Make prediction using registry wrapper
-        prediction = registry.predict('cycle_time', features)[0]
+        prediction = registry.predict('road_speed', features)[0]
         
         # Generate recommendations
         recommendations = []
@@ -537,7 +616,9 @@ async def predict_cycle_time(request: CycleTimeRequest):
     Model: LightGBM Regressor
     """
     try:
-        features = pd.DataFrame([request.dict()])
+        # Engineer features dari input API  
+        features = feature_engineer.engineer_cycle_time_features(request.dict())
+        logger.info(f"Cycle time features engineered: {features.shape}")
         prediction = registry.predict('cycle_time', features)[0]
         
         recommendations = []
@@ -568,7 +649,10 @@ async def predict_road_risk(request: RoadRiskRequest):
     Classes: BAIK (safe), WASPADA (caution), TERBATAS (restricted)
     """
     try:
-        features = pd.DataFrame([request.dict()])
+        # Feature engineering: transform API inputs to 38 infra features
+        features = feature_engineer.engineer_road_risk_features(request.dict())
+        logger.info(f"Road risk features engineered: {features.shape}")
+        
         prediction = registry.predict('road_risk', features)[0]
         probabilities = registry.predict_proba('road_risk', features)[0]
         
@@ -615,7 +699,10 @@ async def predict_equipment_failure(request: EquipmentFailureRequest):
     Classes: Operational, Breakdown
     """
     try:
-        features = pd.DataFrame([request.dict()])
+        # Feature engineering: transform API inputs to 44 fleet features
+        features = feature_engineer.engineer_equipment_failure_features(request.dict())
+        logger.info(f"Equipment failure features engineered: {features.shape}")
+        
         prediction = registry.predict('equipment_failure', features)[0]
         probabilities = registry.predict_proba('equipment_failure', features)[0]
         
@@ -630,8 +717,13 @@ async def predict_equipment_failure(request: EquipmentFailureRequest):
         else:
             recommendations.append("✅ LOW breakdown risk - continue monitoring")
         
-        if request.days_since_last_maintenance > 60:
-            recommendations.append("📅 Overdue maintenance - schedule service")
+        # Equipment age-based recommendations
+        if request.umur_tahun > 7:
+            recommendations.append("📅 Old equipment - increase monitoring frequency")
+        
+        # High usage recommendations
+        if request.jam_operasional_harian > 16:
+            recommendations.append("⏰ High usage - ensure regular maintenance")
         
         risk_level = 'HIGH' if breakdown_prob > 0.7 else 'MEDIUM' if breakdown_prob > 0.4 else 'LOW'
         
@@ -658,7 +750,10 @@ async def predict_port_operability(request: PortOperabilityRequest):
     Classes: Beroperasi, Maintenance, Breakdown
     """
     try:
-        features = pd.DataFrame([request.dict()])
+        # Feature engineering: transform API inputs to 44 weather/operational features
+        features = feature_engineer.engineer_port_operability_features(request.dict())
+        logger.info(f"Port operability features engineered: {features.shape}")
+        
         prediction = registry.predict('port_operability', features)[0]
         probabilities = registry.predict_proba('port_operability', features)[0]
         
@@ -671,7 +766,8 @@ async def predict_port_operability(request: PortOperabilityRequest):
         else:
             recommendations.append("✅ Port operational - proceed with loading")
         
-        if request.kecepatan_angin_ms > 15:
+        # Weather-based recommendations
+        if request.kecepatan_angin_kmh > 40:
             recommendations.append("💨 High wind speed - monitor safety")
         if request.tinggi_gelombang_m > 2:
             recommendations.append("🌊 High waves - consider delaying operations")
@@ -679,14 +775,15 @@ async def predict_port_operability(request: PortOperabilityRequest):
         risk_mapping = {
             'Beroperasi': 'LOW',
             'Maintenance': 'MEDIUM',
-            'Breakdown': 'HIGH'
+            'Breakdown': 'HIGH',
+            'MODERATE': 'MEDIUM'
         }
         
         return PredictionResponse(
             success=True,
             prediction=prediction,
             confidence=round(float(max(probabilities)), 3),
-            risk_level=risk_mapping.get(prediction, 'UNKNOWN'),
+            risk_level=risk_mapping.get(prediction, 'MEDIUM'),
             recommendations=recommendations,
             timestamp=datetime.now().isoformat()
         )
@@ -698,39 +795,60 @@ async def predict_port_operability(request: PortOperabilityRequest):
 @app.post("/predict/performance-degradation", response_model=PredictionResponse)
 async def predict_performance_degradation(request: PerformanceDegradationRequest):
     """
-    Predict equipment performance degradation hours
+    Predict equipment performance efficiency ratio
     
-    Target: MAE < 50 hours
+    Target: MAE < 10 percentage points
     Model: XGBoost Regressor (Dict-Wrapper)
-    Output: Predicted degradation in operating hours
+    Output: Predicted efficiency ratio (0-120%)
+           - 100% = optimal performance
+           - <80% = degrading performance
+           - <50% = severe degradation
     """
     try:
         features = pd.DataFrame([request.dict()])
+        logger.info(f"DEBUG: Input features columns: {list(features.columns)}")
+        logger.info(f"DEBUG: Input features shape: {features.shape}")
         prediction = registry.predict('performance_degradation', features)[0]
+        logger.info(f"DEBUG: Raw prediction value: {prediction}")
+        
+        # Prediction is efficiency ratio (percentage)
+        efficiency = float(prediction)
         
         recommendations = []
-        if prediction > 1000:
-            recommendations.append("🚨 CRITICAL degradation - immediate replacement recommended")
-            recommendations.append("🔧 Schedule major overhaul or decommission")
-        elif prediction > 500:
-            recommendations.append("⚠️ HIGH degradation - plan replacement within 6 months")
-            recommendations.append("📊 Increase monitoring frequency")
-        elif prediction > 200:
-            recommendations.append("⚠️ MODERATE degradation - plan replacement within 1 year")
+        if efficiency < 20:
+            recommendations.append("🚨 CRITICAL degradation - efficiency below 20%")
+            recommendations.append("🔧 Immediate maintenance or replacement required")
+            recommendations.append("⚠️ Equipment may fail soon - prioritize action")
+            risk_level = 'CRITICAL'
+        elif efficiency < 50:
+            recommendations.append("⚠️ HIGH degradation - efficiency below 50%")
+            recommendations.append("📊 Schedule major maintenance within 1 month")
+            recommendations.append("🔍 Investigate root cause of performance drop")
+            risk_level = 'HIGH'
+        elif efficiency < 80:
+            recommendations.append("⚠️ MODERATE degradation - efficiency 50-80%")
+            recommendations.append("📅 Plan preventive maintenance within 3 months")
+            recommendations.append("📊 Monitor performance trends closely")
+            risk_level = 'MEDIUM'
         else:
-            recommendations.append("✅ LOW degradation - equipment in good condition")
+            recommendations.append("✅ Good efficiency - equipment performing well")
+            recommendations.append("📊 Continue routine maintenance schedule")
+            risk_level = 'LOW'
         
         if request.equipment_age_years > 10:
             recommendations.append("📅 Equipment age > 10 years - consider lifecycle review")
         
-        # Estimate confidence based on variance (simplified)
-        confidence = 0.85 if prediction < 500 else 0.75 if prediction < 1000 else 0.65
+        if request.jumlah_breakdown > 5:
+            recommendations.append(f"⚠️ High breakdown count ({request.jumlah_breakdown}) - investigate reliability issues")
+        
+        # Estimate confidence based on efficiency range
+        confidence = 0.88 if efficiency > 50 else 0.82 if efficiency > 20 else 0.75
         
         return PredictionResponse(
             success=True,
-            prediction=round(float(prediction), 2),
+            prediction=round(efficiency, 2),
             confidence=confidence,
-            risk_level='HIGH' if prediction > 500 else 'MEDIUM' if prediction > 200 else 'LOW',
+            risk_level=risk_level,
             recommendations=recommendations,
             timestamp=datetime.now().isoformat()
         )

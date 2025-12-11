@@ -192,10 +192,29 @@ plt.tight_layout()
 plt.savefig('reports/optimization/road_speed_feature_importance.png', dpi=300, bbox_inches='tight')
 print("\n✅ Feature importance plot saved to reports/optimization/")
 
-# Save optimized model
+# Save optimized model WITH METADATA
 model_path = 'models/road_speed_optimized.pkl'
-joblib.dump(final_model, model_path)
-print(f"✅ Optimized model saved to {model_path}")
+model_package = {
+    'model': final_model,
+    'feature_cols': feature_cols,  # CRITICAL: Save feature columns
+    'categorical_cols': [],  # Road speed has no categorical features
+    'label_encoders': {},
+    'metrics': {
+        'train_rmse': train_rmse,
+        'test_rmse': test_rmse,
+        'train_mae': train_mae,
+        'test_mae': test_mae,
+        'train_r2': train_r2,
+        'test_r2': test_r2
+    },
+    'training_date': pd.Timestamp.now().isoformat(),
+    'version': '2.0.0'
+}
+joblib.dump(model_package, model_path)
+print(f"✅ Optimized model WITH METADATA saved to {model_path}")
+print(f"   - Features: {len(feature_cols)}")
+print(f"   - Test RMSE: {test_rmse:.4f}")
+print(f"   - Test R²: {test_r2:.4f}")
 
 # Log to MLflow
 with mlflow.start_run(run_name="road_speed_final_optimized"):

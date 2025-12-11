@@ -130,10 +130,26 @@ test_r2 = r2_score(y_test, y_pred_test)
 print(f"\nTest RMSE: {test_rmse:.4f} min {'✅ TARGET MET' if test_rmse < 8 else '❌ NEEDS IMPROVEMENT'}")
 print(f"Test R²: {test_r2:.4f} {'✅ TARGET MET' if test_r2 > 0.82 else '❌ NEEDS IMPROVEMENT'}")
 
-# Save model
+# Save model WITH METADATA
 model_path = 'models/cycle_time_optimized.pkl'
-joblib.dump(final_model, model_path)
-print(f"\n✅ Model saved to {model_path}")
+model_package = {
+    'model': final_model,
+    'feature_cols': feature_cols,  # CRITICAL: Save feature columns
+    'categorical_cols': [],
+    'label_encoders': {},
+    'metrics': {
+        'train_rmse': train_rmse,
+        'test_rmse': test_rmse,
+        'train_r2': train_r2,
+        'test_r2': test_r2
+    },
+    'training_date': pd.Timestamp.now().isoformat(),
+    'version': '2.0.0'
+}
+joblib.dump(model_package, model_path)
+print(f"\n✅ Model WITH METADATA saved to {model_path}")
+print(f"   - Features: {len(feature_cols)}")
+print(f"   - Test RMSE: {test_rmse:.4f}")
 
 # Log to MLflow
 with mlflow.start_run(run_name="cycle_time_final_optimized"):

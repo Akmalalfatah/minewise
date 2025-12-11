@@ -170,10 +170,25 @@ cm = confusion_matrix(y_test, y_pred_test, labels=['BAIK', 'WASPADA', 'TERBATAS'
 print(f"\nConfusion Matrix:")
 print(cm)
 
-# Save model
+# Save model WITH METADATA
 model_path = 'models/road_risk_optimized.pkl'
-joblib.dump(final_model, model_path)
-print(f"\n✅ Model saved to {model_path}")
+model_package = {
+    'model': final_model,
+    'feature_cols': feature_cols,  # CRITICAL: Save feature columns
+    'categorical_cols': [],
+    'label_encoders': {},
+    'metrics': {
+        'accuracy': accuracy,
+        'recall_terbatas': recall_terbatas,
+        'f1_weighted': f1
+    },
+    'training_date': pd.Timestamp.now().isoformat(),
+    'version': '2.0.0'
+}
+joblib.dump(model_package, model_path)
+print(f"\n✅ Model WITH METADATA saved to {model_path}")
+print(f"   - Features: {len(feature_cols)}")
+print(f"   - Accuracy: {accuracy:.4f}")
 
 # Log to MLflow
 with mlflow.start_run(run_name="road_risk_final_optimized"):

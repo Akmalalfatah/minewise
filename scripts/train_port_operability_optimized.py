@@ -157,10 +157,25 @@ print(f"Accuracy: {accuracy:.4f} {'✅ TARGET MET' if accuracy > 0.80 else '❌ 
 print(f"Macro F1: {f1_macro:.4f} {'✅ TARGET MET' if f1_macro > 0.78 else '❌ NEEDS IMPROVEMENT'}")
 print(f"Weighted F1: {f1_weighted:.4f}")
 
-# Save model
+# Save model WITH METADATA
 model_path = 'models/port_operability_optimized.pkl'
-joblib.dump(final_model, model_path)
-print(f"\n✅ Model saved to {model_path}")
+model_package = {
+    'model': final_model,
+    'feature_cols': feature_cols,  # CRITICAL: Save feature columns
+    'categorical_cols': [],
+    'label_encoders': {},
+    'metrics': {
+        'accuracy': accuracy,
+        'f1_macro': f1_macro,
+        'f1_weighted': f1_weighted
+    },
+    'training_date': pd.Timestamp.now().isoformat(),
+    'version': '2.0.0'
+}
+joblib.dump(model_package, model_path)
+print(f"\n✅ Model WITH METADATA saved to {model_path}")
+print(f"   - Features: {len(feature_cols)}")
+print(f"   - Accuracy: {accuracy:.4f}")
 
 # Log to MLflow
 with mlflow.start_run(run_name="port_operability_final_optimized"):

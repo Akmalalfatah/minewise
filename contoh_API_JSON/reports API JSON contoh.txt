@@ -1,96 +1,25 @@
-reports API JSON contoh:
-
-generate custom report:
 {
-  "report_type": "Operational Report",
-  "time_period": "Last 7 Days",
-  "format": "PDF",
-  "detail_level": "Full",
-
-  "sections": [
-    { "title": "Executive Summary", "description": "High-level overview and key insights", "selected": false },
-    { "title": "Operational Overview", "description": "Current status of all operations", "selected": false },
-    { "title": "Weather Analysis", "description": "Forecast and impact assessment", "selected": false },
-    { "title": "Equipment Status", "description": "Equipment conditions and utilization", "selected": false },
-    { "title": "Road Conditions", "description": "Haul road performance and risks", "selected": false },
-    { "title": "AI Recommendations", "description": "AI-based operational recommendations", "selected": false },
-    { "title": "Scenario Analysis", "description": "Simulations and comparisons", "selected": false },
-    { "title": "Cost Analysis", "description": "Financial impact and savings", "selected": false },
-    { "title": "Risk Assessment", "description": "Risk factors and mitigation strategies", "selected": false }
-  ]
-}
-
-
-recent reports card:
-{
-  "reports": [
-    {
-      "title": "Weekly Operational Summary",
-      "date": "2025-11-27",
-      "frequency": "Weekly",
-      "status": "Completed",
-      "download_url": "/downloads/weekly_operational_summary.pdf"
+    "generator_form": {
+        "report_types": [
+            "Operational",
+            "Weather Impact",
+            "Equipment Status"
+        ],
+        "time_periods": [
+            "Daily",
+            "Weekly",
+            "Monthly"
+        ],
+        "formats": [
+            "PDF",
+            "CSV"
+        ]
     },
-    {
-      "title": "Haul Road Condition Report",
-      "date": "2025-11-25",
-      "frequency": "Ad-hoc",
-      "status": "Completed",
-      "download_url": "/downloads/haul_road_condition_report.pdf"
-    },
-    {
-      "title": "Production Performance Dashboard",
-      "date": "2025-11-24",
-      "frequency": "Daily",
-      "status": "Completed",
-      "download_url": "/downloads/production_performance_dashboard.pdf"
-    }
-  ]
-}
-
-
-scheduled reports card:
-{
-  "daily_operations_time": "Everyday at 06:00",
-  "weekly_summary_time": "Every Monday at 09:00",
-  "schedules": [
-    {
-      "name": "Daily Operations",
-      "time": "Everyday at 06:00",
-      "active": true
-    },
-    {
-      "name": "Weekly Summary",
-      "time": "Every Monday at 09:00",
-      "active": true
-    }
-  ]
-}
-
-
-export templates card:
-{
-  "templates": [
-    {
-      "name": "Weekly Summary Template",
-      "file": "weekly_summary_template.pdf"
-    },
-    {
-      "name": "Operational Overview Template",
-      "file": "operational_overview_template.pdf"
-    },
-    {
-      "name": "AI Insight Template",
-      "file": "ai_insight_template.pdf"
-    }
-  ]
-}
-
-
-report review card:
-{
-  "executive_summary": "Production increased by 12% mainly due to improved cycle time and reduced idle hours. Excavator utilization remained stable with slight upward trend across pits.",
-  "ai_recommendations": "AI recommends reallocating 2 trucks from Pit C to Pit A due to significant road friction spike detected in C. Suggest increasing night shift allocation to stabilize production curve.",
-  "operational_overview": "Most fleets operating within normal thresholds. No major deviations except slight fuel consumption increase on Dump Truck Group 3.",
-  "cost_analysis": "Overall operational cost decreased by 4.7%. Fuel efficiency improvements contributed 2.1% savings. Maintenance cost normal with minor anomalies."
+    "recent_reports": [
+        {
+            "title": "Weekly Summary Report",
+            "date": "2025-02-15",
+            "frequency": "Weekly"
+        }
+    ]
 }

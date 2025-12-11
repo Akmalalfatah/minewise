@@ -162,10 +162,26 @@ print(f"Precision (Failure): {precision_failure:.4f} {'✅ TARGET MET' if precis
 print(f"Overall Accuracy: {accuracy:.4f}")
 print(f"F1-Score: {f1:.4f}")
 
-# Save model
+# Save model WITH METADATA
 model_path = 'models/equipment_failure_optimized.pkl'
-joblib.dump(final_model, model_path)
-print(f"\n✅ Model saved to {model_path}")
+model_package = {
+    'model': final_model,
+    'feature_cols': feature_cols,  # CRITICAL: Save feature columns
+    'categorical_cols': [],
+    'label_encoders': {},
+    'metrics': {
+        'recall_failure': recall_failure,
+        'precision_failure': precision_failure,
+        'accuracy': accuracy,
+        'f1': f1
+    },
+    'training_date': pd.Timestamp.now().isoformat(),
+    'version': '2.0.0'
+}
+joblib.dump(model_package, model_path)
+print(f"\n✅ Model WITH METADATA saved to {model_path}")
+print(f"   - Features: {len(feature_cols)}")
+print(f"   - Recall: {recall_failure:.4f}")
 
 # Log to MLflow
 with mlflow.start_run(run_name="equipment_failure_final_optimized"):

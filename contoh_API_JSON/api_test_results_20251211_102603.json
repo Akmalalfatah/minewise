@@ -1,0 +1,662 @@
+{
+  "timestamp": "2025-12-11T10:26:03.441055",
+  "summary": {
+    "total_tests": 13,
+    "passed": 13,
+    "partial": 0,
+    "failed": 0,
+    "success_rate": 100.0,
+    "avg_response_time": 2.4099489542154164
+  },
+  "ml_models": [
+    {
+      "test_name": "Road Speed Model",
+      "endpoint": "/predict/road-speed",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.095153331756592,
+      "missing_fields": [],
+      "response_size": 202,
+      "result": {
+        "success": true,
+        "prediction": 12.18,
+        "confidence": 0.92,
+        "risk_level": null,
+        "recommendations": [
+          "⚠️ Low speed predicted - check road conditions"
+        ],
+        "timestamp": "2025-12-11T10:25:34.191510"
+      }
+    },
+    {
+      "test_name": "Cycle Time Model",
+      "endpoint": "/predict/cycle-time",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.0630500316619873,
+      "missing_fields": [],
+      "response_size": 144,
+      "result": {
+        "success": true,
+        "prediction": 11.27,
+        "confidence": 0.88,
+        "risk_level": null,
+        "recommendations": [],
+        "timestamp": "2025-12-11T10:25:36.255562"
+      }
+    },
+    {
+      "test_name": "Road Risk Model",
+      "endpoint": "/predict/road-risk",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 4.221401214599609,
+      "missing_fields": [],
+      "response_size": 183,
+      "result": {
+        "success": true,
+        "prediction": "BAIK",
+        "confidence": 0.81,
+        "risk_level": "LOW",
+        "recommendations": [
+          "✅ Low risk - normal operations"
+        ],
+        "timestamp": "2025-12-11T10:25:40.477460"
+      }
+    },
+    {
+      "test_name": "Equipment Failure Model",
+      "endpoint": "/predict/equipment-failure",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.3116438388824463,
+      "missing_fields": [],
+      "response_size": 269,
+      "result": {
+        "success": true,
+        "prediction": "Breakdown Risk",
+        "confidence": 0.995,
+        "risk_level": "HIGH",
+        "recommendations": [
+          "🚨 HIGH breakdown risk - schedule immediate maintenance",
+          "🔧 Inspect critical components"
+        ],
+        "timestamp": "2025-12-11T10:25:42.775096"
+      }
+    },
+    {
+      "test_name": "Port Operability Model",
+      "endpoint": "/predict/port-operability",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.0645737648010254,
+      "missing_fields": [],
+      "response_size": 260,
+      "result": {
+        "success": true,
+        "prediction": "MODERATE",
+        "confidence": 0.995,
+        "risk_level": "MEDIUM",
+        "recommendations": [
+          "✅ Port operational - proceed with loading",
+          "🌊 High waves - consider delaying operations"
+        ],
+        "timestamp": "2025-12-11T10:25:44.855987"
+      }
+    },
+    {
+      "test_name": "Performance Degradation Model",
+      "endpoint": "/predict/performance-degradation",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.0679726600646973,
+      "missing_fields": [],
+      "response_size": 330,
+      "result": {
+        "success": true,
+        "prediction": 11.96,
+        "confidence": 0.75,
+        "risk_level": "CRITICAL",
+        "recommendations": [
+          "🚨 CRITICAL degradation - efficiency below 20%",
+          "🔧 Immediate maintenance or replacement required",
+          "⚠️ Equipment may fail soon - prioritize action"
+        ],
+        "timestamp": "2025-12-11T10:25:46.924461"
+      }
+    },
+    {
+      "test_name": "Fleet Risk Model",
+      "endpoint": "/predict/fleet-risk",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.0853865146636963,
+      "missing_fields": [],
+      "response_size": 237,
+      "result": {
+        "success": true,
+        "prediction": 27.01,
+        "confidence": 0.9,
+        "risk_level": "LOW",
+        "recommendations": [
+          "✅ LOW fleet risk - fleet in good condition",
+          "📊 Continue routine monitoring"
+        ],
+        "timestamp": "2025-12-11T10:25:49.010346"
+      }
+    }
+  ],
+  "frontend_endpoints": [
+    {
+      "test_name": "Dashboard Endpoint",
+      "endpoint": "/api/dashboard",
+      "method": "GET",
+      "status": "PASS",
+      "response_time": 4.120496511459351,
+      "missing_fields": [],
+      "response_size": 1728,
+      "result": {
+        "total_production": {
+          "produce_ton": 13421,
+          "target_ton": 15000,
+          "avg_production_per_day": 1917,
+          "deviation_pct": -10.5,
+          "source_location": "PIT A"
+        },
+        "weather_condition": {
+          "rain_probability_pct": 75,
+          "wind_speed_kmh": 13,
+          "visibility_km": 2.5,
+          "extreme_weather_flag": true,
+          "source_location": "PIT A"
+        },
+        "production_efficiency": {
+          "effective_hours": 15.4,
+          "maintenance_hours": 1.7,
+          "efficiency_rate": 90.1,
+          "source_location": "PIT A"
+        },
+        "equipment_status": {
+          "active": 7,
+          "standby": 4,
+          "under_repair": 4,
+          "maintenance": 3,
+          "source_location": "PIT A"
+        },
+        "vessel_status": {
+          "loading": 3,
+          "waiting": 0,
+          "non_delay_risk": true,
+          "vessel_name": "MV Sunrise"
+        },
+        "production_weather_overview": {
+          "production": [
+            1460,
+            1387,
+            1327,
+            1475
+          ],
+          "target": [
+            1500,
+            1500,
+            1500,
+            1500
+          ],
+          "ai_flag": [
+            "Produksi sedikit di bawah target (-5.9%).",
+            "Cuaca ekstrem berpotensi menghambat hauling."
+          ]
+        },
+        "road_condition_overview": {
+          "segments": [
+            {
+              "road": "Road A",
+              "status": "Normal",
+              "speed": 30,
+              "friction": 0.41,
+              "water": 0
+            },
+            {
+              "road": "Road B",
+              "status": "Waspada",
+              "speed": 15,
+              "friction": 0.34,
+              "water": 10
+            }
+          ],
+          "route_efficiency_score": 65,
+          "ai_flag": "Friction rendah pada Road B."
+        },
+        "causes_of_downtime": {
+          "total_downtime_hours": 9.5,
+          "lost_output_ton": 1026,
+          "top_causes": {
+            "Maintenance": 49,
+            "Weather": 23,
+            "Road_conditions": 28
+          },
+          "ai_breakdown": [
+            "Maintenance spike detected due to component failures.",
+            "Road conditions causing delays."
+          ]
+        },
+        "decision_impact": {
+          "correlation": {
+            "rain_vs_production": -0.72,
+            "visibility_vs_loading": -0.35
+          }
+        },
+        "ai_summary": {
+          "summary_points": [
+            "Produksi menurun 14.3% dari target.",
+            "Cuaca ekstrem berpotensi menghambat hauling.",
+            "Road B menyebabkan bottleneck pada haul fleet.",
+            "AI menyarankan maintenance shift penyesuaian."
+          ]
+        }
+      }
+    },
+    {
+      "test_name": "Mine Planner Endpoint",
+      "endpoint": "/api/mine-planner",
+      "method": "GET",
+      "status": "PASS",
+      "response_time": 2.0630533695220947,
+      "missing_fields": [],
+      "response_size": 2656,
+      "result": {
+        "environment_conditions": {
+          "area": "PIT A",
+          "location": "PIT A",
+          "rainfall": "45.8 mm (Heavy)",
+          "temperature": "24.1°C – 28.9°C",
+          "humidity": "82%",
+          "wind": "18 km/h",
+          "pressure": "1008 hPa",
+          "visibility": "1.2 km",
+          "lightning": true,
+          "updated": "December 11, 2025",
+          "risk": {
+            "score": 79,
+            "title": "High weather-related danger",
+            "subtitle": "High risk of weather-related delays detected."
+          }
+        },
+        "ai_recommendation": {
+          "scenarios": [
+            {
+              "title": "Scenario 1 - Most Recommended",
+              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its current workload and minimize potential delays."
+            },
+            {
+              "title": "Scenario 2",
+              "description": "Set hauling for Road B for one day to lessen friction index and increased slip risk. Rerouting through Road A will maintain safer hauling operations with minimal impact on travel time."
+            },
+            {
+              "title": "Scenario 3",
+              "description": "Scenario 3 is an 'over-plan' to anticipate the upcoming rainfall. The excess rainy loading and hauling activities are compensated to achieve better material processing."
+            }
+          ],
+          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking"
+        },
+        "road_conditions": {
+          "segment_name": "SEG_ROAD_PL01",
+          "road_condition_label": "Slippery",
+          "travel_time": "16.2 min",
+          "friction_index": 0.32,
+          "water_depth": "9.6 cm",
+          "speed_limit": "40 km/h",
+          "actual_speed": "25 km/h",
+          "alert": {
+            "title": "High Risk Alert",
+            "description": "Water depth detected on segment 01 (9.6cm). Slowdown and route reevaluation required."
+          }
+        },
+        "equipment_status": {
+          "summary": {
+            "excellent": 31,
+            "good": 37,
+            "maintenanceRequired": 17,
+            "slightlyDamaged": 12,
+            "severelyDamaged": 8
+          },
+          "equipments": [
+            {
+              "id": "ALAT_01",
+              "type": "Excavator",
+              "model": "Hitachi ZX200",
+              "condition": "Good",
+              "operatingHours": 4,
+              "maintenanceHours": 0
+            },
+            {
+              "id": "ALAT_02",
+              "type": "Dozer",
+              "model": "Komatsu PC200",
+              "condition": "Excellent",
+              "operatingHours": 3,
+              "maintenanceHours": 0
+            },
+            {
+              "id": "ALAT_03",
+              "type": "Dump Truck",
+              "model": "CAT 777D",
+              "condition": "Slightly Damaged",
+              "operatingHours": 5,
+              "maintenanceHours": 1
+            },
+            {
+              "id": "ALAT_04",
+              "type": "Wheel Loader",
+              "model": "Komatsu PC300",
+              "condition": "Good",
+              "operatingHours": 2,
+              "maintenanceHours": 0
+            }
+          ],
+          "fleet_overview": [
+            {
+              "equipmentType": "Excavator",
+              "active": 9,
+              "maintenance": 2,
+              "idle": 3
+            },
+            {
+              "equipmentType": "Dozer",
+              "active": 5,
+              "maintenance": 1,
+              "idle": 1
+            },
+            {
+              "equipmentType": "Truck",
+              "active": 8,
+              "maintenance": 3,
+              "idle": 2
+            },
+            {
+              "equipmentType": "Wheel Loader",
+              "active": 10,
+              "maintenance": 2,
+              "idle": 5
+            },
+            {
+              "equipmentType": "Grader",
+              "active": 7,
+              "maintenance": 0,
+              "idle": 4
+            }
+          ]
+        }
+      }
+    },
+    {
+      "test_name": "Shipping Planner Endpoint",
+      "endpoint": "/api/shipping-planner",
+      "method": "GET",
+      "status": "PASS",
+      "response_time": 2.0636448860168457,
+      "missing_fields": [],
+      "response_size": 2771,
+      "result": {
+        "port_weather_conditions": {
+          "area": "PIT A",
+          "location": "PIT A",
+          "rainfall": "41.0 mm",
+          "temperature": "25.8°C – 32.3°C",
+          "humidity": "82%",
+          "wind": "10.87 km/h",
+          "pressure": "1007.87 hPa",
+          "visibility": "1.4 km",
+          "lightning": true,
+          "updated": "December 11, 2025",
+          "riskScore": 79,
+          "riskTitle": "High risk of weather-related delays",
+          "riskSubtitle": "Heavy rainfall and visibility issues detected."
+        },
+        "ai_recommendation": {
+          "scenarios": [
+            {
+              "title": "Scenario 1 - Most Recommended",
+              "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its current workload and minimize potential delays."
+            },
+            {
+              "title": "Scenario 2",
+              "description": "Set hauling for Road B for one day to lessen friction index and increased slip risk. Rerouting through Road A will maintain safer hauling operations with minimal impact on travel time."
+            },
+            {
+              "title": "Scenario 3",
+              "description": "Scenario 3 is an 'over-plan' to anticipate the upcoming rainfall. The excess rainy loading and hauling activities are compensated to achieve better material processing."
+            }
+          ],
+          "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking"
+        },
+        "vessel_schedules": [
+          {
+            "vessel_name": "MV Sunrise",
+            "eta": "2025-01-10T08:00:00Z",
+            "etb": "2025-01-10T12:00:00Z",
+            "etd": "2025-01-11T20:00:00Z",
+            "laycan_start": "2025-01-09",
+            "laycan_end": "2025-01-11",
+            "destination": "China",
+            "status": "On Route"
+          },
+          {
+            "vessel_name": "MV Ocean Spirit",
+            "eta": "2025-01-15T09:00:00Z",
+            "etb": "2025-01-15T13:00:00Z",
+            "etd": "2025-01-16T22:00:00Z",
+            "laycan_start": "2025-01-14",
+            "laycan_end": "2025-01-16",
+            "destination": "India",
+            "status": "Scheduled"
+          }
+        ],
+        "coal_volume_ready": [
+          {
+            "stockpile": "SP-01",
+            "volume": 52000,
+            "grade": "GAR 4200",
+            "updated_at": "2025-01-08T10:00:00Z"
+          },
+          {
+            "stockpile": "SP-02",
+            "volume": 38000,
+            "grade": "GAR 5000",
+            "updated_at": "2025-01-08T10:00:00Z"
+          }
+        ],
+        "loading_progress": [
+          {
+            "vessel_name": "MV Sunrise",
+            "progress": 65,
+            "tonnage_loaded": 32500,
+            "tonnage_target": 50000,
+            "last_update": "2025-01-09T14:00:00Z"
+          },
+          {
+            "vessel_name": "MV Ocean Spirit",
+            "progress": 0,
+            "tonnage_loaded": 0,
+            "tonnage_target": 55000,
+            "last_update": "2025-01-09T14:00:00Z"
+          }
+        ],
+        "port_congestion": {
+          "updatedText": "Updated: Dec 11, 2025 - 10:25 AM (Asia/Makassar)",
+          "shipsLoading": [
+            {
+              "name": "MV Mahakan Queen (Panamax)"
+            },
+            {
+              "name": "MV Kalimantan Pride (Ultramax)"
+            }
+          ],
+          "shipsWaiting": [
+            {
+              "name": "MV Baruna",
+              "eta": "Jul 29"
+            },
+            {
+              "name": "MV Atrantis",
+              "eta": "Aug 01"
+            },
+            {
+              "name": "MV Arwana",
+              "eta": "Aug 04"
+            }
+          ],
+          "shipsCompletedText": "(No recent departure)",
+          "congestionLevel": "High",
+          "operationalNote": "Increased queue length indicates port congestion. Expect 2–4 hours additional delay for incoming vessels."
+        }
+      }
+    },
+    {
+      "test_name": "Simulation Analysis Endpoint",
+      "endpoint": "/api/simulation-analysis",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.054241180419922,
+      "missing_fields": [],
+      "response_size": 1611,
+      "result": {
+        "input_parameters": {
+          "expected_rainfall_mm": 50.0,
+          "equipment_health_pct": 80.0,
+          "vessel_delay_hours": 5.0,
+          "impact_notes": {
+            "rainfall": "Impact: Road conditions & mining operations",
+            "equipment_health": "Impact: Load efficiency & operating hours",
+            "vessel_delay": "Impact: Port queue & hauling coordination"
+          }
+        },
+        "scenarios": {
+          "baseline": {
+            "title": "Baseline Scenario",
+            "production_output_pct": 55,
+            "cost_efficiency_pct": 76,
+            "risk_level_pct": 70
+          },
+          "optimized": {
+            "title": "Optimized Scenario",
+            "production_output_pct": 67,
+            "cost_efficiency_pct": 92,
+            "risk_level_pct": 52
+          },
+          "conservative": {
+            "title": "Conservative Scenario",
+            "production_output_pct": 48,
+            "cost_efficiency_pct": 82,
+            "risk_level_pct": 42
+          }
+        },
+        "ai_recommendations": {
+          "description": "Rekomendasi AI ini diasumsikan berdasarkan skenario Optimized.",
+          "production_strategy": {
+            "title": "Production Strategy",
+            "detail": "Pindahkan 2 unit dump truck dari PIT A ke PIT B untuk mempercepat proses hauling. Estimasi peningkatan efisiensi produksi: +21.8%."
+          },
+          "equipment_allocation": {
+            "title": "Equipment Allocation",
+            "detail": "Jadwalkan maintenance alat dengan health <80% sebelum 7 Nov untuk mencegah downtime tak terencana ±6 jam/minggu."
+          },
+          "logistics_optimization": {
+            "title": "Logistics Optimization",
+            "detail": "Sinkronkan jadwal hauling dan loading kapal (delay 5.0h) agar idle time berkurang 12%. Potensi penghematan biaya operasional ±Rp110 juta/minggu."
+          },
+          "risk_mitigation": {
+            "title": "Risk Mitigation",
+            "detail": "Tunda aktivitas malam di area PIT C saat curah hujan >50mm (current: 50.0mm) untuk menurunkan risiko kecelakaan hingga 15%."
+          }
+        }
+      }
+    },
+    {
+      "test_name": "Chatbox Endpoint",
+      "endpoint": "/api/chatbox",
+      "method": "POST",
+      "status": "PASS",
+      "response_time": 2.05792498588562,
+      "missing_fields": [],
+      "response_size": 685,
+      "result": {
+        "ai_answer": "Based on current operational data and weather conditions, what caused the slowdown today?",
+        "ai_time": "10:26",
+        "human_answer": "What caused the slowdown today?",
+        "human_time": "10:26",
+        "quick_questions": [
+          "Optimal truck allocation?",
+          "Which road has highest risk today?",
+          "How does rain impact production?",
+          "Any delay risk for vessels?"
+        ],
+        "steps": [
+          "Collected weather data from dim_cuaca_harian",
+          "Compared historical pattern vs real-time",
+          "Evaluated operational impact factors",
+          "Generated operational recommendation"
+        ],
+        "data_sources": {
+          "weather": "dim_cuaca_harian",
+          "equipment": "fct_operasional_alat",
+          "road": "fct_kondisi_jalan",
+          "vessel": "fct_pemuatan_kapal"
+        }
+      }
+    },
+    {
+      "test_name": "Reports Endpoint",
+      "endpoint": "/api/reports",
+      "method": "GET",
+      "status": "PASS",
+      "response_time": 2.0607941150665283,
+      "missing_fields": [],
+      "response_size": 603,
+      "result": {
+        "generator_form": {
+          "report_types": [
+            "Operational",
+            "Weather Impact",
+            "Equipment Status",
+            "Production Summary",
+            "Port Operations",
+            "Cost Analysis"
+          ],
+          "time_periods": [
+            "Daily",
+            "Weekly",
+            "Monthly",
+            "Quarterly"
+          ],
+          "formats": [
+            "PDF",
+            "CSV",
+            "Excel",
+            "JSON"
+          ]
+        },
+        "recent_reports": [
+          {
+            "title": "Weekly Production Summary",
+            "date": "2025-12-08",
+            "frequency": "Weekly",
+            "type": "Operational"
+          },
+          {
+            "title": "Monthly Equipment Status",
+            "date": "2025-12-01",
+            "frequency": "Monthly",
+            "type": "Equipment Status"
+          },
+          {
+            "title": "Weather Impact Analysis",
+            "date": "2025-12-07",
+            "frequency": "Daily",
+            "type": "Weather Impact"
+          }
+        ]
+      }
+    }
+  ]
+}
