@@ -9,11 +9,13 @@ function CoalVolumeCard() {
   useEffect(() => {
     async function load() {
       try {
-        const filters = { location, timePeriod, shift };
-        const result = await getCoalVolumeReady(filters);
+        const result = await getCoalVolumeReady({
+          location,
+          timePeriod,
+          shift,
+        });
         setData(result);
-      } catch (err) {
-        console.error("Failed to load coal volume:", err);
+      } catch {
         setData(null);
       }
     }
@@ -28,28 +30,12 @@ function CoalVolumeCard() {
       aria-labelledby="coal-volume-title"
       className="CoalVolumeCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
     >
-      <div
-        data-layer="coal_volume_container"
-        className="CoalVolumeContainer self-stretch flex flex-col justify-start items-start gap-6"
-      >
-        <header
-          data-layer="header_container"
-          className="HeaderContainer self-stretch inline-flex justify-between items-center"
-        >
-          <div
-            data-layer="header_left_group"
-            className="HeaderLeftGroup w-[252px] flex justify-start items-center gap-3"
-          >
-            <div
-              data-layer="icon_wrapper"
-              className="IconWrapper size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center"
-            >
-              <div
-                data-layer="icon_coal_wagon"
-                className="IconCoalWagon size-5 relative overflow-hidden"
-              >
+      <div className="CoalVolumeContainer self-stretch flex flex-col justify-start items-start gap-6">
+        <header className="HeaderContainer self-stretch inline-flex justify-between items-center">
+          <div className="HeaderLeftGroup flex items-center gap-3 w-full whitespace-nowrap">
+            <div className="IconWrapper size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center">
+              <div className="IconCoalWagon size-5 relative overflow-hidden">
                 <img
-                  data-layer="icon_vector"
                   className="IconVector w-[18.05px] h-[16.52px] left-[0.98px] top-[2.50px] absolute"
                   src="/icons/icon_coal_wagon.png"
                   alt="Coal wagon icon"
@@ -59,7 +45,6 @@ function CoalVolumeCard() {
 
             <h2
               id="coal-volume-title"
-              data-layer="header_title"
               className="HeaderTitle text-black text-base font-semibold"
             >
               Coal Volume Ready to Ship
@@ -67,36 +52,19 @@ function CoalVolumeCard() {
           </div>
         </header>
 
-        <div
-          data-layer="coal_cards_container"
-          className="CoalCardsContainer w-full flex flex-wrap justify-start items-center gap-3"
-        >
+        <div className="CoalCardsContainer w-full flex flex-wrap justify-start items-center gap-3">
           {(stockpiles.length > 0 ? stockpiles.slice(0, 2) : [1, 2]).map(
             (sp, idx) => (
               <article
                 key={sp?.id || idx}
                 aria-label={`Coal stockpile ${sp?.name || "Loading..."}`}
-                data-layer="coal_card_container"
-                className="CoalCardContainer flex-1 min-w-[280px] h-[260px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5"
+                className="CoalCardContainer flex-1 min-w-[280px] h-[260px] px-[18px] py-5 bg-[#efefef] rounded-[20px] inline-flex flex-col justify-center items-center gap-2.5 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
               >
-                <div
-                  data-layer="coal_card_header_wrapper"
-                  className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-7"
-                >
-                  <header
-                    data-layer="coal_card_header_container"
-                    className="CoalCardHeaderContainer self-stretch inline-flex justify-start items-center gap-3"
-                  >
-                    <div
-                      data-layer="coal_card_icon_wrapper"
-                      className="CoalCardIconWrapper size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center"
-                    >
-                      <div
-                        data-layer="coal_card_icon"
-                        className="CoalCardIcon size-5 relative overflow-hidden"
-                      >
+                <div className="CoalCardHeaderWrapper self-stretch h-[196px] flex flex-col justify-center items-start gap-7">
+                  <header className="CoalCardHeaderContainer self-stretch inline-flex justify-start items-center gap-3">
+                    <div className="CoalCardIconWrapper size-8 p-1.5 bg-[#1c2534] rounded-2xl flex justify-center items-center">
+                      <div className="CoalCardIcon size-5 relative overflow-hidden">
                         <img
-                          data-layer="coal_card_icon_vector"
                           className="CoalCardIconVector w-[18.05px] h-[16.52px] left-[0.98px] top-[2.50px] absolute"
                           src="/icons/icon_coal_wagon.png"
                           alt="Coal icon"
@@ -104,18 +72,12 @@ function CoalVolumeCard() {
                       </div>
                     </div>
 
-                    <h3
-                      data-layer="coal_card_title"
-                      className="CoalCardTitle text-black text-sm font-semibold"
-                    >
+                    <h3 className="CoalCardTitle text-black text-sm font-semibold">
                       {sp?.name || "Loading..."}
                     </h3>
                   </header>
 
-                  <section
-                    data-layer="coal_card_content_container"
-                    className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3"
-                  >
+                  <section className="CoalCardContentContainer self-stretch h-[152px] flex flex-col justify-center items-start gap-3">
                     <dl className="w-full grid grid-cols-2 gap-y-3">
                       <dt className="text-black text-sm">Volume</dt>
                       <dd className="text-right text-black text-sm font-semibold">

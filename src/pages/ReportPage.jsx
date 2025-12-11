@@ -8,8 +8,9 @@ import {
 } from "../services/reportService";
 import { userStore } from "../store/userStore";
 import { notificationStore } from "../store/notificationStore";
+import { motion } from "framer-motion";
 
-function RecentReportCard({ report, onDownload, onView }) {
+function RecentReportCard({ report, onDownload, onView, index }) {
   const dateLabel = report.generated_at
     ? new Date(report.generated_at).toLocaleString("id-ID", {
         day: "2-digit",
@@ -31,19 +32,28 @@ function RecentReportCard({ report, onDownload, onView }) {
     }
   })();
 
+  const delay = typeof index === "number" ? index * 0.05 : 0;
+
   return (
-    <div className="w-full p-4 bg-[#f3f4f6] rounded-xl shadow-sm flex items-center justify-between border border-[#e0e3e8]">
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.3, ease: "easeOut", delay }}
+      whileHover={{ scale: 1.02, y: -2 }}
+      className="w-full p-4 bg-[#f3f4f6] rounded-xl shadow-sm flex items-center justify-between border border-[#e0e3e8]"
+    >
       <div className="flex items-center gap-3">
         <div className="w-9 h-9 rounded-lg bg-[#1C2534] flex items-center justify-center">
           <img
-            src="/icons/icon_pdf.png"
-            alt="PDF"
+            src="/icons/icon_overview.png"
+            alt="Report overview"
             className="w-5 h-5 object-contain"
           />
         </div>
         <div className="flex flex-col">
+          {/* FIX: judul sekarang selalu pakai teks ini, gak ikut title backend */}
           <span className="text-sm font-semibold text-[#111827]">
-            {report.title || "MineWise Report"}
+            MineWise Operational Report
           </span>
           <span className="text-xs text-[#6b7280]">{dateLabel}</span>
           <span className="text-xs text-[#9ca3af] mt-0.5">
@@ -68,7 +78,7 @@ function RecentReportCard({ report, onDownload, onView }) {
           Download
         </button>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
@@ -214,7 +224,12 @@ function ReportPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#f5f5f7] px-8 py-8">
+    <motion.main
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
+      className="min-h-screen bg-[#f5f5f7] px-8 py-8"
+    >
       <div className="max-w-[1440px] mx-auto flex flex-col gap-8">
         <section aria-label="Report generator form" className="mt-2">
           <ReportGeneratorForm
@@ -246,15 +261,30 @@ function ReportPage() {
           </div>
 
           {recentReports.length === 0 ? (
-            <div className="w-full p-6 bg-white rounded-2xl border border-[#e5e7eb] text-sm text-[#6b7280]">
-              No reports generated yet. Generate a report to see it listed here.
+            <div className="w-full p-6 bg-white rounded-2xl border border-[#e5e7eb] flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#1C2534] flex items-center justify-center">
+                <img
+                  src="/icons/icon_overview.png"
+                  alt="Report overview"
+                  className="w-7 h-7 object-contain"
+                />
+              </div>
+              <div className="flex flex-col">
+                <span className="text-sm font-semibold text-[#111827]">
+                  No reports yet
+                </span>
+                <span className="text-xs text-[#6b7280]">
+                  Generate your first insight to see it appear here.
+                </span>
+              </div>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {recentReports.map((r) => (
+              {recentReports.map((r, index) => (
                 <RecentReportCard
                   key={r.id}
                   report={r}
+                  index={index}
                   onDownload={() => handleDownloadRecent(r.id)}
                   onView={() => handleViewRecent(r.id)}
                 />
@@ -263,7 +293,7 @@ function ReportPage() {
           )}
         </section>
       </div>
-    </main>
+    </motion.main>
   );
 }
 

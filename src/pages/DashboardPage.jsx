@@ -1,4 +1,3 @@
-// src/pages/DashboardPage.jsx
 import React, { useEffect, useState } from "react";
 import { useGlobalFilter } from "../context/GlobalFilterContext";
 import GlobalFilterBar from "../components/layout/GlobalFilterBar";
@@ -79,7 +78,8 @@ function DashboardPage() {
             />
           </div>
 
-          <div className="w-[604px]">
+          {/* disamakan dengan 530px biar sejajar dengan RoadConditionOverviewCard */}
+          <div className="w-[530px]">
             <AISummaryInformationCard data={dashboardData?.ai_summary} />
           </div>
         </section>

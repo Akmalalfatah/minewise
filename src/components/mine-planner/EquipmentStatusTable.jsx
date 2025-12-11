@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getEquipmentStatusMine } from "../../services/minePlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
+import AnimatedNumber from "../animation/AnimatedNumber";
+import KpiCardWrapper from "../animation/KpiCardWrapper";
 
 function EquipmentStatusTable() {
   const [data, setData] = useState(null);
@@ -79,7 +81,7 @@ function EquipmentStatusTable() {
           className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
-        {/* SUMMARY STATUS PILLS */}
+        {/* SUMMARY STATUS PILLS (animated) */}
         <div
           data-layer="status_summary_section"
           className="StatusSummarySection self-stretch flex flex-col justify-start items-start gap-3"
@@ -88,46 +90,64 @@ function EquipmentStatusTable() {
             data-layer="status_summary_container"
             className="StatusSummaryContainer self-stretch inline-flex justify-center items-center gap-[18px] flex-wrap"
           >
-            <div className="ExcellentStatusCardContainer w-[110px] h-14 px-[13px] py-1 bg-[#4caf50] rounded-[10px] inline-flex flex-col justify-center items-center">
+            {/* Excellent */}
+            <KpiCardWrapper className="ExcellentStatusCardContainer w-[110px] h-14 px-[13px] py-1 bg-[#4caf50] rounded-[10px] inline-flex flex-col justify-center items-center">
               <div className="text-white text-[10px] font-bold">Excellent</div>
-              <div className="text-white text-2xl font-semibold">
-                {summaryExcellent}
-              </div>
-            </div>
+              <AnimatedNumber
+                value={summaryExcellent}
+                decimals={0}
+                className="text-white text-2xl font-semibold"
+              />
+            </KpiCardWrapper>
 
-            <div className="GoodStatusCardContainer w-[115px] h-14 px-[22px] py-1.5 bg-[#8fa90e] rounded-[10px] flex flex-col justify-center items-center">
+            {/* Good */}
+            <KpiCardWrapper className="GoodStatusCardContainer w-[115px] h-14 px-[22px] py-1.5 bg-[#8fa90e] rounded-[10px] flex flex-col justify-center items-center">
               <div className="text-white text-[10px] font-bold">Good</div>
-              <div className="text-white text-2xl font-semibold">
-                {summaryGood}
-              </div>
-            </div>
+              <AnimatedNumber
+                value={summaryGood}
+                decimals={0}
+                className="text-white text-2xl font-semibold"
+              />
+            </KpiCardWrapper>
 
-            <div className="MaintenanceStatusCardContainer w-48 h-14 p-[7px] bg-[#e6bb30] rounded-[10px] flex flex-col justify-center items-center">
+            {/* Maintenance Required */}
+            <KpiCardWrapper className="MaintenanceStatusCardContainer w-48 h-14 p-[7px] bg-[#e6bb30] rounded-[10px] flex flex-col justify-center items-center">
               <div className="text-white text-[10px] font-bold">
                 Maintenance Required
               </div>
-              <div className="text-white text-2xl font-semibold">
-                {summaryMaintenanceRequired}
-              </div>
-            </div>
+              <AnimatedNumber
+                value={summaryMaintenanceRequired}
+                decimals={0}
+                className="text-white text-2xl font-semibold"
+              />
+            </KpiCardWrapper>
 
-            <div className="SlightlyDamagedStatusCardContainer w-[153px] h-14 px-1.5 py-[7px] bg-[#ff7b54] rounded-[10px] flex flex-col justify-center items-center">
+            {/* Slightly Damaged */}
+            <KpiCardWrapper className="SlightlyDamagedStatusCardContainer w-[153px] h-14 px-1.5 py-[7px] bg-[#ff7b54] rounded-[10px] flex flex-col justify-center items-center">
               <div className="text-white text-[10px] font-bold">
                 Slightly Damaged
               </div>
-              <div className="text-white text-2xl font-semibold">
-                {summarySlightlyDamaged}
-              </div>
-            </div>
+              <AnimatedNumber
+                value={summarySlightlyDamaged}
+                decimals={0}
+                className="text-white text-2xl font-semibold"
+              />
+            </KpiCardWrapper>
 
-            <div className="SeverelyDamagedStatusCardContainer w-[150px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center">
+            {/* Severely Damaged (pulse if > 0) */}
+            <KpiCardWrapper
+              isAlert={summarySeverelyDamaged > 0}
+              className="SeverelyDamagedStatusCardContainer w-[150px] h-14 px-1.5 py-[7px] bg-[#c30012] rounded-[10px] flex flex-col justify-center items-center"
+            >
               <div className="text-white text-[10px] font-bold">
                 Severely Damaged
               </div>
-              <div className="text-white text-2xl font-semibold">
-                {summarySeverelyDamaged}
-              </div>
-            </div>
+              <AnimatedNumber
+                value={summarySeverelyDamaged}
+                decimals={0}
+                className="text-white text-2xl font-semibold"
+              />
+            </KpiCardWrapper>
           </div>
         </div>
 
@@ -221,7 +241,7 @@ function EquipmentStatusTable() {
           className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
-        {/* FLEET OVERVIEW */}
+        {/* FLEET OVERVIEW (tambahkan AnimatedNumber) */}
         <div
           data-layer="fleet_overview_section"
           className="FleetOverviewSection self-stretch flex flex-col justify-start items-start gap-[20px]"
@@ -240,11 +260,16 @@ function EquipmentStatusTable() {
                   {fleet.equipmentType}
                 </div>
                 <div className="text-black text-xs">
-                  {fleet.active} active
+                  <AnimatedNumber value={fleet.active ?? 0} decimals={0} />{" "}
+                  active
                   <br />
-                  {fleet.maintenance} maintenance
+                  <AnimatedNumber
+                    value={fleet.maintenance ?? 0}
+                    decimals={0}
+                  />{" "}
+                  maintenance
                   <br />
-                  {fleet.idle} idle
+                  <AnimatedNumber value={fleet.idle ?? 0} decimals={0} /> idle
                 </div>
               </div>
             ))}

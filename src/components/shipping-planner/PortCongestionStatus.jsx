@@ -34,7 +34,6 @@ function PortCongestionStatus() {
         data-layer="card_container"
         className="CardContainer self-stretch flex flex-col justify-start items-start gap-6"
       >
-        {/* Header */}
         <header
           data-layer="header_left_group"
           className="HeaderLeftGroup flex flex-col justify-start items-start gap-2.5"
@@ -67,16 +66,14 @@ function PortCongestionStatus() {
           {updatedText}
         </p>
 
-        {/* Main Content */}
         <article
           data-layer="content_container"
-          className="ContentContainer self-stretch px-[19px] py-5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5"
+          className="ContentContainer self-stretch px-[19px] py-5 bg-[#efefef] rounded-[20px] flex flex-col justify-center items-center gap-2.5 transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
         >
           <div
             data-layer="activity_card_container"
             className="ActivityCardContainer w-full flex flex-col justify-start items-start gap-[17px]"
           >
-            {/* Section Title */}
             <header
               data-layer="activity_header_container"
               className="ActivityHeaderContainer self-stretch flex flex-col justify-start items-start gap-3"
@@ -87,14 +84,11 @@ function PortCongestionStatus() {
               <hr className="ActivityHeaderDivider self-stretch h-0 outline outline-[0.50px] outline-black/25" />
             </header>
 
-            {/* Activity Content */}
             <div
               data-layer="activity_content_container"
               className="ActivityContentContainer self-stretch flex flex-col justify-start items-start gap-6"
             >
-              {/* Ships Loading + Waiting */}
               <section className="ShipsLoadingWaitingGroup self-stretch flex justify-between items-start">
-                {/* Ships Loading */}
                 <div className="ShipsLoadingGroup w-[233px] flex flex-col gap-1.5">
                   <h4 className="ShipsLoadingLabel text-black text-sm font-semibold">
                     Ships Loading:
@@ -111,7 +105,6 @@ function PortCongestionStatus() {
                   </ul>
                 </div>
 
-                {/* Ships Waiting */}
                 <div className="ShipsWaitingGroup w-[234px] flex flex-col gap-1.5">
                   <h4 className="ShipsWaitingLabel text-black text-sm font-semibold">
                     Ships Waiting:
@@ -131,7 +124,6 @@ function PortCongestionStatus() {
                 </div>
               </section>
 
-              {/* Ships Completed */}
               <section className="ShipsCompletedGroup flex flex-col gap-1.5">
                 <dl className="flex gap-2 items-center">
                   <dt className="ShipsCompletedLabel text-black text-sm font-semibold">
@@ -143,7 +135,6 @@ function PortCongestionStatus() {
                 </dl>
               </section>
 
-              {/* Congestion Level */}
               <section className="CongestionLevelGroup flex gap-2">
                 <dt className="CongestionLevelLabel text-black text-sm font-semibold">
                   Congestion Level:
@@ -153,7 +144,6 @@ function PortCongestionStatus() {
                 </dd>
               </section>
 
-              {/* Operational Note */}
               <section className="OperationalNoteGroup flex flex-col gap-1">
                 <dt className="OperationalNoteLabel text-black text-sm font-semibold">
                   Operational Note:

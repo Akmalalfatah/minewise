@@ -92,7 +92,10 @@ function AIShippingRecommendationCard() {
             {/* Scenario 1 */}
             <article
               data-layer="scenario1_wrapper"
-              className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-center items-start gap-2.5"
+              className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-center items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
             >
               <div
                 data-layer="scenario1_block"
@@ -116,7 +119,10 @@ function AIShippingRecommendationCard() {
             {/* Scenario 2 */}
             <article
               data-layer="scenario2_wrapper"
-              className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
+              className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-start items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
             >
               <div
                 data-layer="scenario2_block"
@@ -134,7 +140,10 @@ function AIShippingRecommendationCard() {
             {/* Scenario 3 */}
             <article
               data-layer="scenario3_wrapper"
-              className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] flex flex-col justify-start items-start gap-2.5"
+              className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-start items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
             >
               <div className="Scenario3Block w-full flex flex-col gap-1">
                 <h3 className="Scenario3Title text-black text-sm font-semibold">

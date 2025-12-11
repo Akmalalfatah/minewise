@@ -1,4 +1,5 @@
 import React from "react";
+import { motion } from "framer-motion";
 
 function ReportGeneratorForm({
   reportTypeValue,
@@ -16,10 +17,13 @@ function ReportGeneratorForm({
   onDownloadReport,
 }) {
   return (
-    <section
+    <motion.section
       data-layer="report_generator_form"
       aria-labelledby="report-generator-title"
       className="w-full max-w-[1365px] p-6 bg-white/70 rounded-3xl"
+      initial={{ opacity: 0, y: 8 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.35, ease: "easeOut" }}
     >
       <div className="w-full flex flex-col gap-8">
         <header className="flex items-center gap-3">
@@ -117,12 +121,27 @@ function ReportGeneratorForm({
               </div>
 
               <div className="flex flex-col gap-3">
-                {sectionsList.map((section) => {
+                {sectionsList.map((section, index) => {
                   const checked = selectedSections.includes(section);
+
+                  const articleBase =
+                    "h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] flex items-center transition-all duration-200";
+                  const articleState = checked
+                    ? " outline-[#1C2534] shadow-[0_0_0_1px_#1C2534]"
+                    : " outline-slate-300";
+
                   return (
-                    <article
+                    <motion.article
                       key={section}
-                      className="h-14 px-4 py-3 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300 flex items-center"
+                      className={`${articleBase} ${articleState}`}
+                      initial={{ opacity: 0, y: 6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{
+                        duration: 0.25,
+                        ease: "easeOut",
+                        delay: index * 0.03,
+                      }}
+                      whileHover={{ scale: 1.01, y: -1 }}
                     >
                       <label className="flex items-center gap-3 w-full cursor-pointer">
                         <input
@@ -131,7 +150,7 @@ function ReportGeneratorForm({
                           onChange={() =>
                             onToggleSection && onToggleSection(section)
                           }
-                          className="w-4 h-4 accent-gray-800"
+                          className="w-4 h-4 accent-[#1C2534]"
                           aria-label={section}
                         />
                         <div className="flex flex-col gap-px">
@@ -158,7 +177,7 @@ function ReportGeneratorForm({
                           </span>
                         </div>
                       </label>
-                    </article>
+                    </motion.article>
                   );
                 })}
               </div>
@@ -168,7 +187,12 @@ function ReportGeneratorForm({
               <h2 className="text-black text-sm font-semibold font-['Inter']">
                 Additional Notes
               </h2>
-              <div className="w-full px-3 py-2 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300">
+              <motion.div
+                className="w-full px-3 py-2 bg-white/70 rounded-[10px] outline outline-1 outline-offset-[-1px] outline-slate-300"
+                initial={{ opacity: 0, y: 6 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.25, ease: "easeOut", delay: 0.15 }}
+              >
                 <textarea
                   value={notesValue || ""}
                   onChange={(e) =>
@@ -179,7 +203,7 @@ function ReportGeneratorForm({
                   placeholder="Add context for this report, e.g. weather anomaly, unexpected downtime, or operational decisions by planner."
                   aria-label="Additional notes for the report"
                 />
-              </div>
+              </motion.div>
               <p className="text-xs text-black/50 font-['Inter']">
                 Optional: these notes will be added as an “Operator Notes” section
                 in the generated PDF.
@@ -188,29 +212,33 @@ function ReportGeneratorForm({
           </div>
 
           <footer className="flex flex-wrap items-center gap-3">
-            <button
+            <motion.button
               type="button"
               onClick={onGenerateReport}
               className="w-40 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Generate Report
               </span>
-            </button>
+            </motion.button>
 
-            <button
+            <motion.button
               type="button"
               onClick={onDownloadReport}
               className="w-30 h-12 px-4 py-3.5 bg-gray-800 rounded-[10px] flex justify-center items-center"
+              whileHover={{ scale: 1.02, y: -1 }}
+              whileTap={{ scale: 0.98 }}
             >
               <span className="text-white text-sm font-semibold font-['Inter']">
                 Download
               </span>
-            </button>
+            </motion.button>
           </footer>
         </section>
       </div>
-    </section>
+    </motion.section>
   );
 }
 

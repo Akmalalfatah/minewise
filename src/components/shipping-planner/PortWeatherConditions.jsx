@@ -4,6 +4,7 @@ import { useFilterQuery } from "../../hooks/useGlobalFilter";
 
 function PortWeatherConditions() {
   const [data, setData] = useState(null);
+  const [animatedRiskScore, setAnimatedRiskScore] = useState(0);
   const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
@@ -30,9 +31,39 @@ function PortWeatherConditions() {
   const visibility = data?.visibility || "-";
   const lightning = data?.lightning || "-";
   const updated = data?.updated || "-";
-  const riskScore = data?.riskScore || "-";
   const riskTitle = data?.riskTitle || "-";
   const riskSubtitle = data?.riskSubtitle || "-";
+
+  const rawRiskScore = data?.riskScore;
+
+  useEffect(() => {
+    if (rawRiskScore === undefined || rawRiskScore === null) return;
+
+    const target =
+      rawRiskScore === "-" ? 0 : Number(rawRiskScore) || 0;
+
+    const duration = 800; // ms
+    const startTime = performance.now();
+
+    let frameId;
+
+    const animate = (now) => {
+      const elapsed = now - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      const current = Math.round(progress * target);
+      setAnimatedRiskScore(current);
+
+      if (progress < 1) {
+        frameId = requestAnimationFrame(animate);
+      }
+    };
+
+    frameId = requestAnimationFrame(animate);
+
+    return () => {
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [rawRiskScore]);
 
   return (
     <section
@@ -122,7 +153,8 @@ function PortWeatherConditions() {
           <div className="RiskContentContainer self-stretch inline-flex justify-start items-center gap-[18px]">
             <div className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-1 outline-offset-[-1px] outline-[#ffd4c7] flex justify-center items-center">
               <p className="RiskScoreValue text-center text-[#8f0b09] text-2xl font-semibold">
-                {riskScore}<span>/100</span>
+                {animatedRiskScore}
+                <span>/100</span>
               </p>
             </div>
 

@@ -18,13 +18,18 @@ function ChatMessage({ role = "assistant", message, time, isTyping = false }) {
         isAssistant ? "justify-start" : "justify-end"
       }`}
     >
-
+      {/* ==== AI Avatar (ANTI GEPENG) ==== */}
       {isAssistant && (
-        <div className="w-10 h-10 rounded-full bg-[#1c2534] flex items-center justify-center shrink-0">
-          <div className="text-lg">🤖</div>
+        <div className="w-11 h-11 rounded-full bg-[#1c2534] overflow-hidden flex items-center justify-center shrink-0">
+          <img
+            src="/icons/icon_chatbox.png"
+            alt="AI Icon"
+            className="w-full h-full object-cover" 
+          />
         </div>
       )}
 
+      {/* ==== Chat Bubble ==== */}
       <div
         className={`max-w-[70%] flex flex-col gap-1 ${
           isAssistant ? "items-start" : "items-end"
@@ -53,8 +58,9 @@ function ChatMessage({ role = "assistant", message, time, isTyping = false }) {
         )}
       </div>
 
+      {/* ==== User Avatar ==== */}
       {!isAssistant && (
-        <div className="w-9 h-9 rounded-full overflow-hidden shrink-0">
+        <div className="w-11 h-11 rounded-full overflow-hidden shrink-0">
           <img
             src={userAvatar}
             alt="User avatar"

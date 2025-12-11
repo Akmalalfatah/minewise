@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getEnvironmentConditions } from "../../services/minePlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
+import AnimatedNumber from "../animation/AnimatedNumber";
 
 function EnvironmentConditionTable() {
   const [data, setData] = useState(null);
@@ -23,8 +24,6 @@ function EnvironmentConditionTable() {
 
     load();
   }, [location, timePeriod, shift]);
-
-  // Fallback values supaya card tetap muncul meski data null
   const area = data?.area ?? "-";
   const loc = data?.location ?? "-";
   const rainfall = data?.rainfall ?? "-";
@@ -46,6 +45,8 @@ function EnvironmentConditionTable() {
     title: "No risk data available",
     subtitle: "AI risk analysis is not available for the current filter.",
   };
+
+  const hasNumericRiskScore = typeof risk.score === "number";
 
   return (
     <section
@@ -182,7 +183,14 @@ function EnvironmentConditionTable() {
             className="RiskScoreContainer w-[105px] h-14 px-2.5 py-[13px] bg-[#ffedef] rounded-[10px] outline outline-[#ffd4c7]"
           >
             <p className="RiskScoreValue text-[#8f0b09] text-2xl font-semibold">
-              {risk.score}<span>/100</span>
+              {hasNumericRiskScore ? (
+                <>
+                  <AnimatedNumber value={risk.score} decimals={0} />
+                  <span>/100</span>
+                </>
+              ) : (
+                <>{risk.score}</>
+              )}
             </p>
           </div>
 

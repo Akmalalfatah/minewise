@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getMineRoadConditions } from "../../services/minePlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
+import AnimatedNumber from "../animation/AnimatedNumber";
 
 function MineRoadSegmentTable() {
   const [data, setData] = useState(null);
@@ -24,13 +25,41 @@ function MineRoadSegmentTable() {
     load();
   }, [location, timePeriod, shift]);
 
+  const parseValueWithUnit = (raw, fallback = "-") => {
+    if (raw === undefined || raw === null || raw === "") {
+      return { num: null, unit: "", raw: fallback };
+    }
+
+    if (typeof raw === "number") {
+      return { num: raw, unit: "", raw: String(raw) };
+    }
+
+    if (typeof raw === "string") {
+      const trimmed = raw.trim();
+      if (!trimmed) return { num: null, unit: "", raw: fallback };
+
+      const match = trimmed.match(/^([0-9]+(?:[.,][0-9]+)?)\s*(.*)$/);
+      if (match) {
+        const num = parseFloat(match[1].replace(",", "."));
+        const unit = match[2]; 
+        if (!isNaN(num)) {
+          return { num, unit, raw: trimmed };
+        }
+      }
+      return { num: null, unit: "", raw: trimmed };
+    }
+
+    return { num: null, unit: "", raw: String(raw) };
+  };
+
   const segmentName = data?.segment_name ?? "Segment A";
   const roadConditionLabel = data?.road_condition_label ?? "Unknown";
-  const travelTime = data?.travel_time ?? "-";
-  const frictionIndex = data?.friction_index ?? "-";
-  const waterDepth = data?.water_depth ?? "-";
-  const speedLimit = data?.speed_limit ?? "-";
-  const actualSpeed = data?.actual_speed ?? "-";
+
+  const travel = parseValueWithUnit(data?.travel_time, "-");
+  const frictionIndexRaw = data?.friction_index ?? "-";
+  const waterDepth = parseValueWithUnit(data?.water_depth, "-");
+  const speedLimit = parseValueWithUnit(data?.speed_limit, "-");
+  const actualSpeed = parseValueWithUnit(data?.actual_speed, "-");
 
   const alert = data?.alert || {
     title: "No active alert",
@@ -39,6 +68,8 @@ function MineRoadSegmentTable() {
 
   const alertTitle = alert.title;
   const alertDescription = alert.description;
+
+  const isNumber = (v) => typeof v === "number";
 
   return (
     <section
@@ -132,9 +163,23 @@ function MineRoadSegmentTable() {
                   </div>
                   <div
                     data-layer="travel_time_value"
-                    className="TravelTimeValue self-stretch text-black text-2xl font-semibold"
+                    className="TravelTimeValue self-stretch text-black text-2xl font-semibold text-center flex justify-center items-baseline gap-1"
                   >
-                    {travelTime}
+                    {travel.num !== null ? (
+                      <>
+                        <AnimatedNumber
+                          value={travel.num}
+                          decimals={travel.num % 1 === 0 ? 0 : 1}
+                        />
+                        {travel.unit && (
+                          <span className="text-sm font-semibold">
+                            {travel.unit}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      travel.raw
+                    )}
                   </div>
                 </div>
               </div>
@@ -158,7 +203,14 @@ function MineRoadSegmentTable() {
                     data-layer="friction_index_value"
                     className="FrictionIndexValue self-stretch text-center text-black text-2xl font-semibold"
                   >
-                    {frictionIndex}
+                    {isNumber(data?.friction_index) ? (
+                      <AnimatedNumber
+                        value={data.friction_index}
+                        decimals={2}
+                      />
+                    ) : (
+                      frictionIndexRaw
+                    )}
                   </div>
                 </div>
               </div>
@@ -174,15 +226,29 @@ function MineRoadSegmentTable() {
                 >
                   <div
                     data-layer="water_depth_label"
-                    className="WaterDepthLabel self-stretch text-black text-sm font-semibold"
+                    className="WaterDepthLabel self-stretch text-black text-sm font-semibold text-center"
                   >
                     Water Depth
                   </div>
                   <div
                     data-layer="water_depth_value"
-                    className="WaterDepthValue self-stretch text-black text-2xl font-semibold"
+                    className="WaterDepthValue self-stretch text-black text-2xl font-semibold text-center flex justify-center items-baseline gap-1"
                   >
-                    {waterDepth}
+                    {waterDepth.num !== null ? (
+                      <>
+                        <AnimatedNumber
+                          value={waterDepth.num}
+                          decimals={waterDepth.num % 1 === 0 ? 0 : 2}
+                        />
+                        {waterDepth.unit && (
+                          <span className="text-sm font-semibold">
+                            {waterDepth.unit}
+                          </span>
+                        )}
+                      </>
+                    ) : (
+                      waterDepth.raw
+                    )}
                   </div>
                 </div>
               </div>
@@ -211,20 +277,51 @@ function MineRoadSegmentTable() {
             data-layer="speed_limit_container"
             className="SpeedLimitContainer self-stretch inline-flex justify-between items-center"
           >
+            {/* Speed Limit */}
             <div className="SpeedLimitBlock w-[97px] inline-flex flex-col justify-start items-start gap-[11px]">
               <div className="SpeedLimitLabel text-[#666666] text-xs font-semibold">
                 Speed Limit
               </div>
-              <div className="SpeedLimitValue text-black text-2xl font-semibold">
-                {speedLimit}
+              <div className="SpeedLimitValue text-black text-2xl font-semibold flex items-baseline gap-1">
+                {speedLimit.num !== null ? (
+                  <>
+                    <AnimatedNumber
+                      value={speedLimit.num}
+                      decimals={speedLimit.num % 1 === 0 ? 0 : 1}
+                    />
+                    {speedLimit.unit && (
+                      <span className="text-sm font-semibold">
+                        {speedLimit.unit}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  speedLimit.raw
+                )}
               </div>
             </div>
+
+            {/* Actual Speed */}
             <div className="ActualSpeedBlock w-24 inline-flex flex-col justify-start items-end gap-[11px]">
               <div className="ActualSpeedLabel text-[#666666] text-xs font-semibold text-right">
                 Actual Speed
               </div>
-              <div className="ActualSpeedValue text-black text-2xl font-semibold text-right">
-                {actualSpeed}
+              <div className="ActualSpeedValue text-black text-2xl font-semibold text-right flex items-baseline justify-end gap-1">
+                {actualSpeed.num !== null ? (
+                  <>
+                    <AnimatedNumber
+                      value={actualSpeed.num}
+                      decimals={actualSpeed.num % 1 === 0 ? 0 : 1}
+                    />
+                    {actualSpeed.unit && (
+                      <span className="text-sm font-semibold">
+                        {actualSpeed.unit}
+                      </span>
+                    )}
+                  </>
+                ) : (
+                  actualSpeed.raw
+                )}
               </div>
             </div>
           </div>

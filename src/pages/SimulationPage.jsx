@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getSimulationOverview } from "../services/simulationService";
+import AnimatedNumber from "../components/animation/AnimatedNumber";
 
 function SimulationPage() {
   const [expectedRainfall, setExpectedRainfall] = useState(0);
@@ -225,7 +226,8 @@ function SimulationPage() {
                 AI Optimization Recommendations
               </h2>
               <p className="text-xs text-gray-300">
-                {description || "Rekomendasi di bawah ini diasumsikan berdasarkan skenario terpilih."}{" "}
+                {description ||
+                  "Rekomendasi di bawah ini diasumsikan berdasarkan skenario terpilih."}{" "}
                 Saat ini berdasarkan skenario{" "}
                 <span className="font-semibold">{getScenarioLabel()}</span>.
               </p>
@@ -257,7 +259,7 @@ function ScenarioControlCard({
   onChange,
 }) {
   return (
-    <div className="bg-[#efefef] rounded-[20px] p-4 flex flex-col gap-3">
+    <div className="bg-[#efefef] rounded-[20px] p-4 flex flex-col gap-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
       <div className="flex justify-between items-center">
         <p className="text-sm font-semibold text-gray-900">{label}</p>
         <p className="text-xs font-medium text-gray-700">{valueLabel}</p>
@@ -284,7 +286,7 @@ function ScenarioResultCard({
   riskLevel,
 }) {
   return (
-    <div className="rounded-3xl px-5 py-6 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4">
+    <div className="rounded-3xl px-5 py-6 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
       <div className="flex justify-between items-center">
         <h3 className="text-sm font-semibold">{title}</h3>
         <button
@@ -308,17 +310,28 @@ function ScenarioResultCard({
 
 function ScenarioMetric({ label, value }) {
   const numericValue =
-    typeof value === "number" ? value : parseFloat(String(value).replace("%", ""));
+    typeof value === "number"
+      ? value
+      : parseFloat(String(value).replace("%", ""));
   const displayValue =
     typeof value === "number" ? `${value}%` : String(value);
 
   const width = Number.isFinite(numericValue) ? `${numericValue}%` : "0%";
+  const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
 
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <span>{label}</span>
-        <span className="font-semibold">{displayValue}</span>
+        <span className="font-semibold">
+          {Number.isFinite(numericValue) ? (
+            <>
+              <AnimatedNumber value={safeValue} decimals={0} />%
+            </>
+          ) : (
+            displayValue
+          )}
+        </span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-white/20 overflow-hidden">
         <div
@@ -332,7 +345,7 @@ function ScenarioMetric({ label, value }) {
 
 function RecommendationCard({ title, description }) {
   return (
-    <div className="bg-white/5 rounded-2xl p-4 flex flex-col gap-2">
+    <div className="bg-white/5 rounded-2xl p-4 flex flex-col gap-2 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
       <h4 className="text-sm font-semibold">{title}</h4>
       <p className="text-xs text-gray-200 leading-relaxed">{description}</p>
     </div>
