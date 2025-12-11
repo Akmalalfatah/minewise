@@ -1,0 +1,25 @@
+{
+    "generator_form": {
+        "report_types": [
+            "Operational",
+            "Weather Impact",
+            "Equipment Status"
+        ],
+        "time_periods": [
+            "Daily",
+            "Weekly",
+            "Monthly"
+        ],
+        "formats": [
+            "PDF",
+            "CSV"
+        ]
+    },
+    "recent_reports": [
+        {
+            "title": "Weekly Summary Report",
+            "date": "2025-02-15",
+            "frequency": "Weekly"
+        }
+    ]
+}

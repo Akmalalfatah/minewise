@@ -1,0 +1,314 @@
+# Model Configuration - Infrastructure & Operations (ML Engineer A)
+
+# Road Speed Prediction Model
+road_speed:
+  model_name: "road_speed_prediction"
+  model_type: "regression"
+
+  # Algorithm selection
+  algorithms:
+    - xgboost
+    - lightgbm
+    - random_forest
+
+  # XGBoost hyperparameters
+  xgboost:
+    n_estimators: 500
+    max_depth: 7
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "reg:squarederror"
+    eval_metric: "rmse"
+    random_state: 42
+
+  # LightGBM hyperparameters
+  lightgbm:
+    n_estimators: 500
+    max_depth: 7
+    learning_rate: 0.05
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "regression"
+    metric: "rmse"
+    random_state: 42
+
+  # Random Forest hyperparameters
+  random_forest:
+    n_estimators: 300
+    max_depth: 15
+    min_samples_split: 5
+    min_samples_leaf: 2
+    max_features: "sqrt"
+    random_state: 42
+
+  # Feature selection
+  features:
+    weather:
+      - hujan_mm
+      - intensitas_hujan
+      - kelembaban_rh_avg
+      - angin_kecepatan_avg_ms
+      - suhu_max_c
+    road:
+      - status_jalan
+      - kedalaman_air_cm
+      - indeks_friksi
+      - tipe_permukaan
+      - kemiringan_pct
+      - tikungan_kelas
+      - panjang_segmen_km
+    temporal:
+      - hour
+      - shift
+      - day_of_week
+      - is_weekend
+    lag_features:
+      - hujan_mm_3h_lag
+      - hujan_mm_6h_lag
+
+  # Target variable
+  target: "kecepatan_aktual_km_jam"
+
+  # Evaluation metrics
+  metrics:
+    primary: "rmse"
+    secondary:
+      - mae
+      - r2
+      - mape
+
+  # Performance targets
+  targets:
+    rmse: 3.0 # km/h
+    mae: 2.5
+    r2: 0.80
+    mape: 0.15
+
+# Cycle Time Prediction Model
+cycle_time:
+  model_name: "cycle_time_prediction"
+  model_type: "regression"
+
+  # Algorithm selection
+  algorithms:
+    - xgboost
+    - lightgbm
+
+  # XGBoost hyperparameters
+  xgboost:
+    n_estimators: 400
+    max_depth: 6
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "reg:squarederror"
+    eval_metric: "rmse"
+    random_state: 42
+
+  # LightGBM hyperparameters
+  lightgbm:
+    n_estimators: 400
+    max_depth: 6
+    learning_rate: 0.05
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "regression"
+    metric: "rmse"
+    random_state: 42
+
+  # Feature selection
+  features:
+    road:
+      - panjang_segmen_km
+      - kemiringan_pct
+      - tikungan_kelas
+      - predicted_speed # from road_speed model
+    equipment:
+      - tipe_alat
+      - kapasitas_default_ton
+      - total_muatan_ton
+      - umur_tahun
+    weather:
+      - hujan_mm
+      - intensitas_hujan
+    operational:
+      - shift
+      - day_of_week
+
+  # Target variable
+  target: "waktu_tempuh_menit"
+
+  # Evaluation metrics
+  metrics:
+    primary: "mape"
+    secondary:
+      - rmse
+      - mae
+      - r2
+
+  # Performance targets
+  targets:
+    mape: 0.15 # 15%
+    rmse: 5.0 # minutes
+    mae: 4.0
+    r2: 0.75
+
+# Road Risk Scoring Model
+road_risk:
+  model_name: "road_risk_scoring"
+  model_type: "classification"
+
+  # Algorithm selection
+  algorithms:
+    - xgboost
+    - lightgbm
+    - logistic_regression
+
+  # XGBoost hyperparameters
+  xgboost:
+    n_estimators: 300
+    max_depth: 5
+    learning_rate: 0.05
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "multi:softprob"
+    eval_metric: "mlogloss"
+    random_state: 42
+
+  # LightGBM hyperparameters
+  lightgbm:
+    n_estimators: 300
+    max_depth: 5
+    learning_rate: 0.05
+    num_leaves: 31
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: "multiclass"
+    num_class: 3
+    metric: "multi_logloss"
+    random_state: 42
+
+  # Logistic Regression hyperparameters
+  logistic_regression:
+    penalty: "l2"
+    C: 1.0
+    solver: "lbfgs"
+    multi_class: "multinomial"
+    max_iter: 1000
+    random_state: 42
+
+  # Feature selection
+  features:
+    weather_forecast:
+      - hujan_mm_forecast_3h
+      - hujan_mm_forecast_6h
+      - intensitas_hujan_forecast
+      - angin_kecepatan_forecast
+    historical:
+      - hujan_mm_rolling_24h
+      - status_jalan_frequency_7d
+    seasonal:
+      - month
+      - week_of_year
+    location:
+      - lokasi_kode
+      - tipe_permukaan
+      - kemiringan_pct
+
+  # Target variable
+  target: "Risk Indicator" # Hijau / Kuning / Merah
+
+  # Class mapping
+  class_labels:
+    0: "Hijau"
+    1: "Kuning"
+    2: "Merah"
+
+  # Class weights (to handle imbalance)
+  class_weights:
+    Hijau: 1.0
+    Kuning: 2.0
+    Merah: 3.0 # prioritize catching high-risk cases
+
+  # Evaluation metrics
+  metrics:
+    primary: "f1_weighted"
+    secondary:
+      - precision_weighted
+      - recall_weighted
+      - accuracy
+      - roc_auc_ovr
+
+  # Performance targets
+  targets:
+    f1_weighted: 0.85
+    precision_weighted: 0.83
+    recall_weighted: 0.82
+    accuracy: 0.85
+
+# Hyperparameter Tuning
+hyperparameter_tuning:
+  method: "optuna" # optuna | grid_search | random_search
+  n_trials: 100
+  timeout_seconds: 7200 # 2 hours
+
+  # Optuna specific
+  optuna:
+    sampler: "TPE" # Tree-structured Parzen Estimator
+    pruner: "MedianPruner"
+    n_jobs: -1 # use all cores
+
+# Feature Engineering
+feature_engineering:
+  # Missing value handling
+  missing_values:
+    strategy: "forward_fill" # forward_fill | backward_fill | interpolate | drop
+    max_consecutive_missing: 3
+
+  # Outlier detection
+  outliers:
+    method: "iqr" # iqr | zscore | isolation_forest
+    threshold: 1.5 # IQR multiplier
+    action: "clip" # clip | remove
+
+  # Scaling
+  scaling:
+    numerical: "standard" # standard | minmax | robust
+    categorical: "onehot" # onehot | label | target
+
+# Model Interpretability
+interpretability:
+  # SHAP analysis
+  shap:
+    enabled: true
+    n_samples: 1000 # number of samples for SHAP
+    plot_types:
+      - summary_plot
+      - dependence_plot
+      - force_plot
+
+  # Feature importance
+  feature_importance:
+    enabled: true
+    top_n: 20 # show top 20 features
+
+# Model Validation
+validation:
+  # Cross-validation strategy
+  cv_strategy: "time_series_split" # time_series_split | kfold | stratified_kfold
+  n_splits: 5
+
+  # Validation metrics thresholds
+  acceptance_criteria:
+    road_speed:
+      min_r2: 0.75
+      max_rmse: 4.0
+    cycle_time:
+      max_mape: 0.18
+      min_r2: 0.70
+    road_risk:
+      min_f1_weighted: 0.80
+      min_recall_high_risk: 0.75 # prioritize catching "Merah" class

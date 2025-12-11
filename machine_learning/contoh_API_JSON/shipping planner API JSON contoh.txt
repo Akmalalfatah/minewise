@@ -1,0 +1,114 @@
+{
+    "port_weather_conditions": {
+        "area": "PIT A",
+        "location": "PIT A",
+        "rainfall": "41.0 mm",
+        "temperature": "25.8°C – 32.3°C",
+        "humidity": "82%",
+        "wind": "10.87 km/h",
+        "pressure": "1007.87 hPa",
+        "visibility": "1.4 km",
+        "lightning": true,
+        "updated": "July 9, 2025",
+        "riskScore": 79,
+        "riskTitle": "High risk of weather-related delays",
+        "riskSubtitle": "Heavy rainfall and visibility issues detected."
+    },
+    "ai_recommendation": {
+        "scenarios": [
+            {
+                "title": "Scenario 1 - Most Recommended",
+                "description": "Reallocate 3 excavators and 3 dump trucks from PIT B to PIT A to improve production balance. This additional fleet helps PIT A accelerate its workload."
+            },
+            {
+                "title": "Scenario 2",
+                "description": "Set hauling via Road C due to low friction index. Rerouting through Road B reduces operational risk."
+            },
+            {
+                "title": "Scenario 3",
+                "description": "Advance shift by 2 hours to avoid incoming rainfall and maintain productivity."
+            }
+        ],
+        "analysis_sources": "Weather API, Equipment Store, Road Monitoring, Vessel Tracking"
+    },
+    "vessel_schedules": [
+        {
+            "vessel_name": "MV Sunrise",
+            "eta": "2025-01-10T08:00:00Z",
+            "etb": "2025-01-10T12:00:00Z",
+            "etd": "2025-01-11T20:00:00Z",
+            "laycan_start": "2025-01-09",
+            "laycan_end": "2025-01-11",
+            "destination": "China",
+            "status": "On Route"
+        },
+        {
+            "vessel_name": "MV Ocean Spirit",
+            "eta": "2025-01-15T09:00:00Z",
+            "etb": "2025-01-15T13:00:00Z",
+            "etd": "2025-01-16T22:00:00Z",
+            "laycan_start": "2025-01-14",
+            "laycan_end": "2025-01-16",
+            "destination": "India",
+            "status": "Scheduled"
+        }
+    ],
+    "coal_volume_ready": [
+        {
+            "stockpile": "SP-01",
+            "volume": 52000,
+            "grade": "GAR 4200",
+            "updated_at": "2025-01-08T10:00:00Z"
+        },
+        {
+            "stockpile": "SP-02",
+            "volume": 38000,
+            "grade": "GAR 5000",
+            "updated_at": "2025-01-08T10:00:00Z"
+        }
+    ],
+    "loading_progress": [
+        {
+            "vessel_name": "MV Sunrise",
+            "progress": 65,
+            "tonnage_loaded": 32500,
+            "tonnage_target": 50000,
+            "last_update": "2025-01-09T14:00:00Z"
+        },
+        {
+            "vessel_name": "MV Ocean Spirit",
+            "progress": 0,
+            "tonnage_loaded": 0,
+            "tonnage_target": 55000,
+            "last_update": "2025-01-09T14:00:00Z"
+        }
+    ],
+    "port_congestion": {
+        "updatedText": "Updated: Jul 9, 2025 - 07:00 AM (Asia/Makassar)",
+        "shipsLoading": [
+            {
+                "name": "MV Mahakan Queen (Panamax)"
+            },
+            {
+                "name": "MV Kalimantan Pride (Ultramax)"
+            }
+        ],
+        "shipsWaiting": [
+            {
+                "name": "MV Baruna",
+                "eta": "Jul 29"
+            },
+            {
+                "name": "MV Atrantis",
+                "eta": "Aug 01"
+            },
+            {
+                "name": "MV Arwana",
+                "eta": "Aug 04"
+            }
+        ],
+        "shipsCompletedText": "(No recent departure)",
+        "congestionLevel": "High",
+        "operationalNote": "Increased queue length indicates port congestion. Expect 2–4 hours additional delay for incoming vessels."
+    }
+}

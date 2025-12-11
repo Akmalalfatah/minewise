@@ -1,0 +1,101 @@
+{
+  "total_production": {
+    "produce_ton": 11970,
+    "target_ton": 15000,
+    "avg_production_per_day": 1710,
+    "deviation_pct": -20.2,
+    "source_location": "PIT A"
+  },
+  "weather_condition": {
+    "rain_probability_pct": 26,
+    "wind_speed_kmh": 29,
+    "visibility_km": 1.8,
+    "extreme_weather_flag": true,
+    "source_location": "PIT A"
+  },
+  "production_efficiency": {
+    "effective_hours": 17.5,
+    "maintenance_hours": 4.3,
+    "efficiency_rate": 80.3,
+    "source_location": "PIT A"
+  },
+  "equipment_status": {
+    "active": 13,
+    "standby": 4,
+    "under_repair": 0,
+    "maintenance": 3,
+    "source_location": "PIT A"
+  },
+  "vessel_status": {
+    "loading": 2,
+    "waiting": 0,
+    "non_delay_risk": true,
+    "vessel_name": "MV Makassar"
+  },
+  "production_weather_overview": {
+    "production": [
+      1253,
+      1419,
+      1178,
+      1223
+    ],
+    "target": [
+      1500,
+      1500,
+      1500,
+      1500
+    ],
+    "ai_flag": [
+      "Produksi menurun 15.4% dari target.",
+      "Cuaca ekstrem berpotensi menghambat hauling."
+    ]
+  },
+  "road_condition_overview": {
+    "segments": [
+      {
+        "road": "Road A",
+        "status": "Normal",
+        "speed": 40,
+        "friction": 0.4,
+        "water": 0
+      },
+      {
+        "road": "Road B",
+        "status": "Normal",
+        "speed": 40,
+        "friction": 0.34,
+        "water": 2
+      }
+    ],
+    "route_efficiency_score": 100,
+    "ai_flag": "Friction rendah pada Road B."
+  },
+  "causes_of_downtime": {
+    "total_downtime_hours": 8.3,
+    "lost_output_ton": 1170,
+    "top_causes": {
+      "Maintenance": 42,
+      "Weather": 32,
+      "Road_conditions": 26
+    },
+    "ai_breakdown": [
+      "Maintenance spike detected due to component failures.",
+      "Weather significantly impacting operations.",
+      "Road conditions causing delays."
+    ]
+  },
+  "decision_impact": {
+    "correlation": {
+      "rain_vs_production": -0.72,
+      "visibility_vs_loading": -0.35
+    }
+  },
+  "ai_summary": {
+    "summary_points": [
+      "Produksi menurun 14.3% dari target.",
+      "Cuaca ekstrem berpotensi menghambat hauling.",
+      "Road B menyebabkan bottleneck pada haul fleet.",
+      "AI menyarankan maintenance shift penyesuaian."
+    ]
+  }
+}

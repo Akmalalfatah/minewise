@@ -1,0 +1,24 @@
+{
+  "ai_answer": "Based on current operational data and weather conditions, what is the current production status and main risks?",
+  "ai_time": "10:26",
+  "human_answer": "What is the current production status and main risks?",
+  "human_time": "10:26",
+  "quick_questions": [
+    "Optimal truck allocation?",
+    "Which road has highest risk today?",
+    "How does rain impact production?",
+    "Any delay risk for vessels?"
+  ],
+  "steps": [
+    "Collected weather data from dim_cuaca_harian",
+    "Compared historical pattern vs real-time",
+    "Evaluated operational impact factors",
+    "Generated operational recommendation"
+  ],
+  "data_sources": {
+    "weather": "dim_cuaca_harian",
+    "equipment": "fct_operasional_alat",
+    "road": "fct_kondisi_jalan",
+    "vessel": "fct_pemuatan_kapal"
+  }
+}

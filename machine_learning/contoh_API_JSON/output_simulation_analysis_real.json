@@ -1,0 +1,51 @@
+{
+  "input_parameters": {
+    "expected_rainfall_mm": 50.0,
+    "equipment_health_pct": 80.0,
+    "vessel_delay_hours": 5.0,
+    "impact_notes": {
+      "rainfall": "Impact: Road conditions & mining operations",
+      "equipment_health": "Impact: Load efficiency & operating hours",
+      "vessel_delay": "Impact: Port queue & hauling coordination"
+    }
+  },
+  "scenarios": {
+    "baseline": {
+      "title": "Baseline Scenario",
+      "production_output_pct": 55,
+      "cost_efficiency_pct": 76,
+      "risk_level_pct": 70
+    },
+    "optimized": {
+      "title": "Optimized Scenario",
+      "production_output_pct": 67,
+      "cost_efficiency_pct": 92,
+      "risk_level_pct": 52
+    },
+    "conservative": {
+      "title": "Conservative Scenario",
+      "production_output_pct": 48,
+      "cost_efficiency_pct": 82,
+      "risk_level_pct": 42
+    }
+  },
+  "ai_recommendations": {
+    "description": "Rekomendasi AI ini diasumsikan berdasarkan skenario Optimized.",
+    "production_strategy": {
+      "title": "Production Strategy",
+      "detail": "Pindahkan 2 unit dump truck dari PIT A ke PIT B untuk mempercepat proses hauling. Estimasi peningkatan efisiensi produksi: +21.8%."
+    },
+    "equipment_allocation": {
+      "title": "Equipment Allocation",
+      "detail": "Jadwalkan maintenance alat dengan health <80% sebelum 7 Nov untuk mencegah downtime tak terencana ±6 jam/minggu."
+    },
+    "logistics_optimization": {
+      "title": "Logistics Optimization",
+      "detail": "Sinkronkan jadwal hauling dan loading kapal (delay 5.0h) agar idle time berkurang 12%. Potensi penghematan biaya operasional ±Rp110 juta/minggu."
+    },
+    "risk_mitigation": {
+      "title": "Risk Mitigation",
+      "detail": "Tunda aktivitas malam di area PIT C saat curah hujan >50mm (current: 50.0mm) untuk menurunkan risiko kecelakaan hingga 15%."
+    }
+  }
+}
