@@ -1,3 +1,4 @@
+// src/components/mine-planner/EquipmentStatusTable.jsx
 import React, { useEffect, useState } from "react";
 import { getEquipmentStatusMine } from "../../services/minePlannerService";
 import { useFilterQuery } from "../../hooks/useGlobalFilter";
@@ -82,6 +83,7 @@ function EquipmentStatusTable() {
           className="DividerTop self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
+        {/* SUMMARY STATUS PILLS */}
         <section
           aria-label="Equipment condition summary"
           data-layer="status_summary_section"
@@ -157,6 +159,7 @@ function EquipmentStatusTable() {
           </ul>
         </section>
 
+        {/* TABLE SECTION */}
         <section
           aria-label="Equipment details table"
           data-layer="equipment_table_section"
@@ -219,6 +222,7 @@ function EquipmentStatusTable() {
           className="DividerBottom self-stretch h-0 outline outline-[0.50px] outline-offset-[-0.25px] outline-[#bdbdbd]"
         />
 
+        {/* FLEET OVERVIEW */}
         <section
           aria-label="Fleet overview"
           data-layer="fleet_overview_section"
