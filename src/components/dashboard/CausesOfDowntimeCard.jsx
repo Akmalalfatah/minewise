@@ -13,10 +13,17 @@ function CausesOfDowntimeCard({ data }) {
       }))
     : [];
 
-  const top = Object.entries(data.top_causes || {})[0] || [];
+  const [topCauseName] =
+    Object.entries(data.top_causes || {})[0] || ["-", 0];
 
   const totalDowntime = Number(data.total_downtime_hours) || 0;
   const lostOutput = Number(data.lost_output_ton) || 0;
+
+  const aiMessages = Array.isArray(data.ai_breakdown)
+    ? data.ai_breakdown
+    : data.ai_breakdown
+    ? [data.ai_breakdown]
+    : [];
 
   return (
     <KpiCardWrapper className="CausesOfDowntimeCard w-full h-full p-6 bg-white rounded-3xl flex gap-6">
@@ -63,25 +70,23 @@ function CausesOfDowntimeCard({ data }) {
             <h3 className="text-black text-xs font-semibold">
               Top Cause Detailed
             </h3>
-            <p className="text-black text-2xl font-semibold">{top[0]}</p>
-            <ul className="flex flex-col gap-2">
-              <li className="flex gap-2">
-                <img
-                  className="w-[17px] h-[17px]"
-                  src="/icons/icon_importance.png"
-                  alt=""
-                />
-                <p className="text-black text-xs">{data.ai_breakdown?.[0]}</p>
-              </li>
-              <li className="flex gap-2">
-                <img
-                  className="w-[17px] h-[17px]"
-                  src="/icons/icon_importance.png"
-                  alt=""
-                />
-                <p className="text-black text-xs">{data.ai_breakdown?.[1]}</p>
-              </li>
-            </ul>
+            <p className="text-black text-2xl font-semibold">
+              {topCauseName}
+            </p>
+            {aiMessages.length > 0 && (
+              <ul className="flex flex-col gap-2">
+                {aiMessages.map((msg, idx) => (
+                  <li key={idx} className="flex gap-2">
+                    <img
+                      className="w-[17px] h-[17px]"
+                      src="/icons/icon_importance.png"
+                      alt=""
+                    />
+                    <p className="text-black text-xs">{msg}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         </section>
 
