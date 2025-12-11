@@ -5,6 +5,7 @@ import AnimatedNumber from "../animation/AnimatedNumber";
 
 function MineRoadSegmentTable() {
   const [data, setData] = useState(null);
+  const [activeSegmentIndex, setActiveSegmentIndex] = useState(0);
   const { location, timePeriod, shift } = useFilterQuery();
 
   useEffect(() => {
@@ -16,9 +17,11 @@ function MineRoadSegmentTable() {
           shift,
         });
         setData(result);
+        setActiveSegmentIndex(0);
       } catch (error) {
         console.error("Failed to load mine road conditions:", error);
         setData(null);
+        setActiveSegmentIndex(0);
       }
     }
 
@@ -53,7 +56,8 @@ function MineRoadSegmentTable() {
   };
 
   const segments = Array.isArray(data?.segments) ? data.segments : [];
-  const activeSegment = segments[0] || null;
+  const activeSegment =
+    segments[activeSegmentIndex] || segments[0] || null;
 
   const segmentName = activeSegment?.segment_name ?? "Segment A";
   const roadConditionLabel = activeSegment?.road_condition_label ?? "Unknown";
@@ -77,6 +81,13 @@ function MineRoadSegmentTable() {
 
   const isNumber = (v) => typeof v === "number";
 
+  const handleSegmentChange = (event) => {
+    const index = Number(event.target.value);
+    if (!Number.isNaN(index)) {
+      setActiveSegmentIndex(index);
+    }
+  };
+
   return (
     <section
       data-layer="road_condition_card"
@@ -91,28 +102,60 @@ function MineRoadSegmentTable() {
           data-layer="header_container"
           className="HeaderContainer w-full relative flex flex-col justify-center items-start gap-3"
         >
-          <div
-            data-layer="header_left_group"
-            className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
-          >
+          <div className="w-full flex justify-between items-center gap-3">
             <div
-              data-layer="icon_wrapper"
-              className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
+              data-layer="header_left_group"
+              className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
             >
-              <img
-                data-layer="icon_road"
-                className="IconRoad size-[18px]"
-                src="/icons/icon_road.png"
-                alt="Road icon"
-              />
+              <div
+                data-layer="icon_wrapper"
+                className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
+              >
+                <img
+                  data-layer="icon_road"
+                  className="IconRoad size-[18px]"
+                  src="/icons/icon_road.png"
+                  alt="Road icon"
+                />
+              </div>
+              <h2
+                id="mine-road-site-conditions-title"
+                data-layer="road_condition_title"
+                className="RoadConditionTitle text-black text-sm font-semibold"
+              >
+                Mine Road &amp; Site Conditions
+              </h2>
             </div>
-            <h2
-              id="mine-road-site-conditions-title"
-              data-layer="road_condition_title"
-              className="RoadConditionTitle text-black text-sm font-semibold"
-            >
-              Mine Road &amp; Site Conditions
-            </h2>
+
+            {segments.length > 1 && (
+              <form
+                aria-label="Select road segment"
+                className="flex items-center gap-2"
+              >
+                <label
+                  htmlFor="segment-select"
+                  className="text-xs font-semibold text-[#666666]"
+                >
+                  Segment
+                </label>
+                <select
+                  id="segment-select"
+                  name="segment"
+                  value={activeSegmentIndex}
+                  onChange={handleSegmentChange}
+                  className="border border-[#c1ccdd] rounded-full px-3 py-1 text-xs font-semibold bg-white cursor-pointer"
+                >
+                  {segments.map((seg, index) => (
+                    <option
+                      key={seg.segment_name || index}
+                      value={index}
+                    >
+                      {seg.segment_name || `Segment ${index + 1}`}
+                    </option>
+                  ))}
+                </select>
+              </form>
+            )}
           </div>
 
           <hr
