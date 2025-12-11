@@ -7,8 +7,9 @@ function GlobalFilterBar({ locationType = "all" }) {
 
   const locationOptions = useMemo(() => {
     if (locationType === "pit") return ["PIT A", "PIT B"];
-    if (locationType === "port") return ["Port A", "Port B"];
-    return ["PIT A", "PIT B", "PIT C", "Port A", "Port B"];
+    if (locationType === "port") return ["PORT"];
+
+    return ["PIT A", "PIT B", "PORT", "ROAD_01", "STOCKPILE"];
   }, [locationType]);
 
   useEffect(() => {
@@ -41,7 +42,6 @@ function GlobalFilterBar({ locationType = "all" }) {
         inline-flex items-center gap-[18px] overflow-hidden transition-all duration-300
         ${expanded ? "w-[260px]" : "w-[100px]"}`}
       >
-
         <button
           type="button"
           aria-expanded={expanded}
