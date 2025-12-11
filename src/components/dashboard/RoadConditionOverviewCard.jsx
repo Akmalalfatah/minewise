@@ -17,7 +17,7 @@ import KpiCardWrapper from "../animation/KpiCardWrapper";
 function RoadConditionOverviewCard({ data }) {
   if (!data) return null;
 
-  const mappedSegments = data.segments
+  const mappedSegments = Array.isArray(data.segments)
     ? data.segments.map((s) => ({
         road: s.road,
         status: s.status,
@@ -30,17 +30,17 @@ function RoadConditionOverviewCard({ data }) {
   const score = data.route_efficiency_score || 0;
 
   const riskLabel =
-    score <= 40 ? "Low Risk" : score <= 70 ? "Moderate Risk" : "High Risk";
+    score >= 80 ? "Low Risk" : score >= 50 ? "Moderate Risk" : "High Risk";
 
   const surfaceColors = {
     Asphalt: "#464646ff",
     "Coal Road": "#151716",
     Gravel: "#6e5d44ff",
     Laterite: "#CD5C5C",
-    Unknown: "#FFFFFF",
+    Unknown: "#CBD5E1",
   };
 
-  const surfaceSummary = data.segments
+  const surfaceSummary = Array.isArray(data.segments)
     ? Object.entries(
         data.segments.reduce((acc, seg) => {
           const key = seg.surface_type || "Unknown";
@@ -48,6 +48,12 @@ function RoadConditionOverviewCard({ data }) {
           return acc;
         }, {})
       ).map(([label, value]) => ({ label, value }))
+    : [];
+
+  const aiFlags = Array.isArray(data.ai_flag)
+    ? data.ai_flag
+    : data.ai_flag
+    ? [data.ai_flag]
     : [];
 
   return (
@@ -105,25 +111,33 @@ function RoadConditionOverviewCard({ data }) {
           </div>
 
           <section className="flex-1 p-4 bg-[#EFEFEF] rounded-[10px] flex flex-col gap-2">
-            <h4 className="text-xs font-semibold text-black">AI Memprediksi</h4>
+            <h4 className="text-xs font-semibold text-black">
+              AI Memprediksi
+            </h4>
             <p className="text-xs text-black/70">
               friction, water depth, travel time, speed deviation
             </p>
 
             <h4 className="text-xs font-semibold text-black mt-3">AI Flag</h4>
 
-            <ul className="flex flex-col gap-3">
-              {data.ai_flag?.map((text, idx) => (
-                <li className="flex gap-2" key={idx}>
-                  <img
-                    className="w-[17px] h-[17px]"
-                    src="/icons/icon_importance.png"
-                    alt=""
-                  />
-                  <p className="text-black text-xs">{text}</p>
-                </li>
-              ))}
-            </ul>
+            {aiFlags.length === 0 ? (
+              <p className="text-xs text-black/60">
+                No specific alerts for this route.
+              </p>
+            ) : (
+              <ul className="flex flex-col gap-3">
+                {aiFlags.map((text, idx) => (
+                  <li className="flex gap-2" key={idx}>
+                    <img
+                      className="w-[17px] h-[17px]"
+                      src="/icons/icon_importance.png"
+                      alt=""
+                    />
+                    <p className="text-black text-xs">{text}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
           </section>
         </div>
 
@@ -132,34 +146,38 @@ function RoadConditionOverviewCard({ data }) {
             Road Conditions Based on Surface Type
           </h3>
 
-          <div className="w-full h-[220px] rounded-xl border p-4">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={surfaceSummary}
-                layout="vertical"
-                margin={{ left: 35, right: 20, top: 10, bottom: 10 }}
-              >
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis type="number" tick={{ fontSize: 10 }} hide />
-                <YAxis
-                  type="category"
-                  dataKey="label"
-                  tick={{ fontSize: 11 }}
-                  width={80}
-                />
-                <Bar dataKey="value" barSize={20} radius={[4, 4, 4, 4]}>
-                  {surfaceSummary.map((entry, index) => (
-                    <Cell
-                      key={index}
-                      fill={surfaceColors[entry.label] || "#FFFFFF"}
-                      stroke={entry.label === "Laterite" ? "#1C2534" : "none"}
-                      strokeWidth={entry.label === "Laterite" ? 1.5 : 0}
-                    />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
+          {surfaceSummary.length === 0 ? (
+            <div className="w-full h-[220px] rounded-xl border p-4 flex items-center justify-center text-xs text-black/60">
+              No surface type data available for current location.
+            </div>
+          ) : (
+            <div className="w-full h-[220px] rounded-xl border p-4">
+              <ResponsiveContainer width="100%" height={180}>
+                <BarChart
+                  data={surfaceSummary}
+                  layout="vertical"
+                  margin={{ left: 35, right: 20, top: 10, bottom: 10 }}
+                >
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis type="number" tick={{ fontSize: 10 }} hide />
+                  <YAxis
+                    type="category"
+                    dataKey="label"
+                    tick={{ fontSize: 11 }}
+                    width={80}
+                  />
+                  <Bar dataKey="value" barSize={20} radius={[4, 4, 4, 4]}>
+                    {surfaceSummary.map((entry, index) => (
+                      <Cell
+                        key={index}
+                        fill={surfaceColors[entry.label] || "#CBD5E1"}
+                      />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
         </section>
       </section>
     </KpiCardWrapper>
