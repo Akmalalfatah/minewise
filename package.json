@@ -25,6 +25,7 @@
     "recharts": "^2.15.4",
     "shadcn-ui": "^0.9.5",
     "tailwind-merge": "^3.4.0",
+    "uvicorn": "^0.0.1-security",
     "zustand": "^5.0.8"
   },
   "devDependencies": {

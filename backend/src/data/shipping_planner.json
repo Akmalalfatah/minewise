@@ -26,6 +26,10 @@
           {
             "title": "Scenario 2 - Queue Prep",
             "description": "Prepare berthing plan for incoming waiting vessel."
+          },
+          {
+            "title": "Scenario 3 - Stockpile Rebalancing",
+            "description": "Optimize material allocation across stockpiles to prevent feed interruptions and maintain consistent loading rates."
           }
         ],
         "analysis_sources": "Integrated Port Data System",
