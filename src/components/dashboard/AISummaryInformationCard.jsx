@@ -28,7 +28,7 @@ function AISummaryInformationCard({ data }) {
             </h2>
           </header>
 
-          <article className="AiSummarySection self-stretch min-h-[180px] px-[21px] py-7 bg-white/5 rounded-[10px] inline-flex">
+          <article className="AiSummarySection self-stretch min-h-[280px] px-[21px] py-7 bg-white/5 rounded-[10px] inline-flex">
             <p className="AiSummaryInput w-full text-white text-base whitespace-pre-wrap">
               {lines.join("\n")}
             </p>

@@ -40,7 +40,7 @@ function GlobalFilterBar({ locationType = "all" }) {
         data-layer="global_filter_bar"
         className={`GlobalFilterBar h-[71px] px-2 py-3.5 bg-white rounded-[50px]
         inline-flex items-center gap-[18px] overflow-hidden transition-all duration-300
-        ${expanded ? "w-[260px]" : "w-[100px]"}`}
+        ${expanded ? "w-[310px]" : "w-[100px]"}`}
       >
         <button
           type="button"
@@ -78,7 +78,7 @@ function GlobalFilterBar({ locationType = "all" }) {
         >
           <div
             data-layer="filter_item_location"
-            className="w-[150px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2"
+            className="w-[200px] h-[57px] bg-[#efefef] rounded-full flex items-center gap-2 px-2"
           >
             <div className="size-13 bg-[#1c2534] flex justify-center items-center rounded-full shrink-0">
               <img

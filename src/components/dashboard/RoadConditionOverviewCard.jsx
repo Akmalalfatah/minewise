@@ -19,12 +19,12 @@ function RoadConditionOverviewCard({ data }) {
 
   const mappedSegments = Array.isArray(data.segments)
     ? data.segments.map((s) => ({
-        road: s.road,
-        status: s.status,
-        speed: s.speed,
-        friction: s.friction,
-        water: s.water,
-      }))
+      road: s.road,
+      status: s.status,
+      speed: s.speed,
+      friction: s.friction,
+      water: s.water,
+    }))
     : [];
 
   const score = data.route_efficiency_score ?? 0;
@@ -48,31 +48,21 @@ function RoadConditionOverviewCard({ data }) {
     };
   }
 
-  const { label: riskLabel, color: riskColor } = getRiskConfig(score);
+  const { label: riskLabel, color: riskColor } = getRiskConfig(score)
 
-  const surfaceColors = {
-    Asphalt: "#464646ff",
-    "Coal Road": "#151716",
-    Gravel: "#6e5d44ff",
-    Laterite: "#CD5C5C",
-    Unknown: "#CBD5E1",
-  };
-
-  const surfaceSummary = Array.isArray(data.segments)
-    ? Object.entries(
-        data.segments.reduce((acc, seg) => {
-          const key = seg.surface_type || "Unknown";
-          acc[key] = (acc[key] || 0) + 1;
-          return acc;
-        }, {})
-      ).map(([label, value]) => ({ label, value }))
+  const speedSummary = Array.isArray(data.segments)
+    ? data.segments.map((seg) => ({
+      label: seg.road,
+      value: seg.speed,
+    }))
     : [];
+
 
   const aiFlags = Array.isArray(data.ai_flag)
     ? data.ai_flag
     : data.ai_flag
-    ? [data.ai_flag]
-    : [];
+      ? [data.ai_flag]
+      : [];
 
   return (
     <KpiCardWrapper className="w-full p-6 bg-white rounded-3xl flex flex-col gap-6">
@@ -167,23 +157,23 @@ function RoadConditionOverviewCard({ data }) {
 
         <section>
           <h3 className="text-xs text-black font-semibold mb-2">
-            Road Conditions Based on Surface Type
+            Road Speed Distribution
           </h3>
 
-          {surfaceSummary.length === 0 ? (
+          {speedSummary.length === 0 ? (
             <div className="w-full h-[220px] rounded-xl border p-4 flex items-center justify-center text-xs text-black/60">
-              No surface type data available for current location.
+              No speed data available for current location.
             </div>
           ) : (
             <div className="w-full h-[220px] rounded-xl border p-4">
               <ResponsiveContainer width="100%" height={180}>
                 <BarChart
-                  data={surfaceSummary}
+                  data={speedSummary}
                   layout="vertical"
                   margin={{ left: 35, right: 20, top: 10, bottom: 10 }}
                 >
                   <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                  <XAxis type="number" tick={{ fontSize: 10 }} hide />
+                  <XAxis type="number" tick={{ fontSize: 10 }} />
                   <YAxis
                     type="category"
                     dataKey="label"
@@ -191,17 +181,15 @@ function RoadConditionOverviewCard({ data }) {
                     width={80}
                   />
                   <Bar dataKey="value" barSize={20} radius={[4, 4, 4, 4]}>
-                    {surfaceSummary.map((entry, index) => (
-                      <Cell
-                        key={index}
-                        fill={surfaceColors[entry.label] || "#CBD5E1"}
-                      />
+                    {speedSummary.map((entry, index) => (
+                      <Cell key={index} fill="#FF7B54" />
                     ))}
                   </Bar>
                 </BarChart>
               </ResponsiveContainer>
             </div>
           )}
+
         </section>
       </section>
     </KpiCardWrapper>

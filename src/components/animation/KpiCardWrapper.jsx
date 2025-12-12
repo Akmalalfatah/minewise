@@ -18,7 +18,7 @@ return (
     isAlert
         ? {
             duration: 1.5,
-            repeat: Infinity,
+            repeat: 0,
             ease: "easeInOut",
         }
         : {
