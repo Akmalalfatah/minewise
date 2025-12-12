@@ -23,6 +23,14 @@ app.use(express.json());
 
 app.use("/uploads", express.static("uploads"));
 
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "healthy",
+    service: "minewise-backend",
+    timestamp: new Date().toISOString(),
+  });
+});
+
 app.use("/api/auth", authRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/mine-planner", minePlannerRoutes);
