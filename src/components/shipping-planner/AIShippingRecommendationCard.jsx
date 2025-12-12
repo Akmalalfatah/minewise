@@ -1,0 +1,184 @@
+import React, { useEffect, useState } from "react";
+import { getAIShippingRecommendation } from "../../services/shippingPlannerService";
+import { useFilterQuery } from "../../hooks/useGlobalFilter";
+
+function AIShippingRecommendationCard() {
+  const [data, setData] = useState(null);
+  const { location, timePeriod, shift } = useFilterQuery();
+
+  useEffect(() => {
+    async function load() {
+      try {
+        const filters = { location, timePeriod, shift };
+        const result = await getAIShippingRecommendation(filters);
+        setData(result);
+      } catch (error) {
+        console.error("Failed to load AI shipping recommendation:", error);
+      }
+    }
+    load();
+  }, [location, timePeriod, shift]);
+
+  if (!data) return null;
+
+  const scenarios = Array.isArray(data.scenarios) ? data.scenarios : [];
+
+  const makeSafeScenario = (index) => {
+    const item = scenarios[index];
+    return {
+      title: item?.title || "-",
+      description: item?.description || "-",
+    };
+  };
+
+  const scenario1 = makeSafeScenario(0);
+  const scenario2 = makeSafeScenario(1);
+  const scenario3 = makeSafeScenario(2);
+
+  const analysisSources = data.analysis_sources || "-";
+
+  return (
+    <section
+      data-layer="ai_recommendation_card"
+      aria-labelledby="shipping-ai-recommendation-title"
+      className="AiRecommendationCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full"
+    >
+      <div
+        data-layer="ai_recommendation_container"
+        className="AiRecommendationContainer self-stretch flex flex-col justify-start items-start gap-6"
+      >
+        {/* Header */}
+        <header
+          data-layer="header_left_group"
+          className="HeaderLeftGroup inline-flex justify-start items-center gap-3"
+        >
+          <div
+            data-layer="icon_wrapper"
+            className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
+          >
+            <img
+              data-layer="icon_robot"
+              className="IconRobot size-[18px]"
+              src="/icons/icon_robot.png"
+              alt="Robot icon"
+            />
+          </div>
+          <h2
+            id="shipping-ai-recommendation-title"
+            data-layer="ai_recommendation_title"
+            className="AiRecommendationTitle text-black text-sm font-semibold"
+          >
+            AI Recommendation
+          </h2>
+        </header>
+
+        <div
+          data-layer="divider_top"
+          className="DividerTop self-stretch h-0 outline outline-1 outline-offset-[-0.50px] outline-[#bdbdbd]"
+        />
+
+        {/* Content */}
+        <section
+          data-layer="content_container"
+          aria-label="AI shipping recommendation scenarios and analysis"
+          className="ContentContainer self-stretch flex flex-col justify-start items-start gap-6"
+        >
+          {/* Scenario list */}
+          <section
+            data-layer="scenario_list_container"
+            aria-label="AI recommendation scenarios"
+            className="ScenarioListContainer self-stretch flex flex-col justify-start items-start gap-[22px]"
+          >
+            {/* Scenario 1 */}
+            <article
+              data-layer="scenario1_wrapper"
+              className="Scenario1Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-center items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+            >
+              <div
+                data-layer="scenario1_block"
+                className="Scenario1Block w-full flex flex-col justify-start items-start gap-1"
+              >
+                <h3
+                  data-layer="scenario1_title"
+                  className="Scenario1Title self-stretch text-black text-sm font-semibold"
+                >
+                  {scenario1.title}
+                </h3>
+                <p
+                  data-layer="scenario1_description"
+                  className="Scenario1Description self-stretch text-black text-sm font-normal"
+                >
+                  {scenario1.description}
+                </p>
+              </div>
+            </article>
+
+            {/* Scenario 2 */}
+            <article
+              data-layer="scenario2_wrapper"
+              className="Scenario2Wrapper self-stretch px-[26px] py-[11px] bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-start items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+            >
+              <div
+                data-layer="scenario2_block"
+                className="Scenario2Block w-full flex flex-col justify-start items-start gap-1"
+              >
+                <h3 className="Scenario2Title text-black text-sm font-semibold">
+                  {scenario2.title}
+                </h3>
+                <p className="Scenario2Description text-black text-sm font-normal">
+                  {scenario2.description}
+                </p>
+              </div>
+            </article>
+
+            {/* Scenario 3 */}
+            <article
+              data-layer="scenario3_wrapper"
+              className="Scenario3Wrapper self-stretch px-[26px] py-2.5 bg-white rounded-[10px] 
+              outline outline-1 outline-offset-[-1px] outline-[#c1ccdd] 
+              flex flex-col justify-start items-start gap-2.5
+              transition-all duration-200 hover:-translate-y-1 hover:shadow-md"
+            >
+              <div className="Scenario3Block w-full flex flex-col gap-1">
+                <h3 className="Scenario3Title text-black text-sm font-semibold">
+                  {scenario3.title}
+                </h3>
+                <p className="Scenario3Description text-black text-sm font-normal">
+                  {scenario3.description}
+                </p>
+              </div>
+            </article>
+          </section>
+
+          {/* Analysis section */}
+          <section
+            data-layer="analysis_section_container"
+            aria-label="Basis analysis AI shipping recommendation"
+            className="AnalysisSectionContainer self-stretch flex flex-col justify-start items-start gap-3"
+          >
+            <p
+              data-layer="analysis_title"
+              className="AnalysisTitle text-black/60 text-sm font-normal"
+            >
+              Analysis Based On
+            </p>
+            <p
+              data-layer="analysis_sources"
+              className="AnalysisSources text-black text-base font-semibold"
+            >
+              {analysisSources}
+            </p>
+          </section>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+export default AIShippingRecommendationCard;
