@@ -37,6 +37,6 @@ app.use("/api/shipping-planner", shippingPlannerRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/ai", aiChatRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api", simulationRoutes);
+app.use("/api/simulation-analysis", simulationRoutes);
 
 export default app;
