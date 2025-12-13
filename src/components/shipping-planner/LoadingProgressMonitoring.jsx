@@ -30,6 +30,18 @@ function LoadingProgressMonitoring() {
         return Number(String(text).replace(/[^\d.-]/g, "")) || 0;
     };
 
+    const getStatusBadgeClass = (status) => {
+        const s = String(status || "").trim().toLowerCase();
+
+        if (s === "loading") return "bg-[#e6bb30] text-white";
+        if (s === "waiting") return "bg-[#2563eb] text-white";
+        if (s === "ready") return "bg-[#16a34a] text-white";
+        if (s === "scheduled") return "bg-[#6366f1] text-white";
+        if (s === "completed") return "bg-[#111827] text-white";
+
+        return "bg-[#e6bb30] text-white";
+    };
+
     return (
         <section className="LoadingProgressCard w-full p-6 bg-white rounded-3xl flex flex-col items-center gap-6 h-full">
             <div className="LoadingProgressContainer w-full flex flex-col justify-start items-start gap-6">
@@ -46,6 +58,7 @@ function LoadingProgressMonitoring() {
                     {(shipments.length > 0 ? shipments : [1, 2]).map((ship, idx) => {
                         const progressValue = extractNumber(ship?.progress);
                         const loadedValue = extractNumber(ship?.loaded);
+                        const status = ship?.status || "-";
 
                         return (
                             <li
@@ -79,9 +92,11 @@ function LoadingProgressMonitoring() {
 
                                         <div className="flex justify-between items-start">
                                             <dt className="text-black text-sm">Status</dt>
-                                            <dd className="w-[100px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
-                                                <span className="text-white text-xs font-semibold">
-                                                    {ship?.status || "-"}
+                                            <dd
+                                                className={`w-[100px] h-5 px-4 rounded-[7px] flex justify-center items-center ${getStatusBadgeClass(status)}`}
+                                            >
+                                                <span className="text-xs font-semibold">
+                                                    {status}
                                                 </span>
                                             </dd>
                                         </div>

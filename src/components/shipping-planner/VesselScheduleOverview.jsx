@@ -30,6 +30,18 @@ function VesselScheduleOverview() {
         return Number(String(text).replace(/[^\d.-]/g, "")) || 0;
     };
 
+    const getStatusBadgeClass = (status) => {
+        const s = String(status || "").trim().toLowerCase();
+
+        if (s === "loading") return "bg-[#e6bb30] text-white";
+        if (s === "waiting") return "bg-[#2563eb] text-white";
+        if (s === "scheduled") return "bg-[#6366f1] text-white";
+        if (s === "completed") return "bg-[#111827] text-white";
+        if (s === "ready") return "bg-[#16a34a] text-white";
+
+        return "bg-[#e6bb30] text-white";
+    };
+
     return (
         <section className="VesselScheduleCard w-full p-6 bg-white rounded-3xl flex flex-col justify-center items-center gap-2.5 h-full">
             <div className="VesselScheduleContainer self-stretch flex flex-col justify-start items-start gap-6">
@@ -46,6 +58,7 @@ function VesselScheduleOverview() {
                     {(vessels.length > 0 ? vessels.slice(0, 2) : [1, 2]).map((vessel, idx) => {
                         const plannedLoad = extractNumber(vessel?.plannedLoad);
                         const loaded = extractNumber(vessel?.loaded);
+                        const status = vessel?.status || "-";
 
                         return (
                             <article
@@ -88,9 +101,11 @@ function VesselScheduleOverview() {
 
                                         <div className="inline-flex justify-between items-center self-stretch py-[7px]">
                                             <span className="text-black text-sm">Status</span>
-                                            <div className="w-[87px] h-5 px-4 bg-[#e6bb30] rounded-[7px] flex justify-center items-center">
-                                                <span className="text-white text-xs font-semibold">
-                                                    {vessel?.status || "-"}
+                                            <div
+                                                className={`w-[87px] h-5 px-4 rounded-[7px] flex justify-center items-center ${getStatusBadgeClass(status)}`}
+                                            >
+                                                <span className="text-xs font-semibold">
+                                                    {status}
                                                 </span>
                                             </div>
                                         </div>
