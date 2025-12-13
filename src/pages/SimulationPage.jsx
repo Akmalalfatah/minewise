@@ -18,48 +18,62 @@ function SimulationPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        setError(null);
+  const applyResponse = (data) => {
+    setInputParams(data.inputParameters || null);
+    setScenarios(data.scenarios || []);
+    setAiRecommendations(data.aiRecommendations || []);
+    setDescription(data.description || "");
 
-        const data = await getSimulationOverview();
+    if (data.inputParameters) {
+      setExpectedRainfall(data.inputParameters.expectedRainfallMm ?? 0);
+      setEquipmentHealth(data.inputParameters.equipmentHealthPct ?? 0);
+      setVesselDelay(data.inputParameters.vesselDelayHours ?? 0);
+    }
 
-        setInputParams(data.inputParameters || null);
-        setScenarios(data.scenarios || []);
-        setAiRecommendations(data.aiRecommendations || []);
-        setDescription(data.description || "");
+    const optimizedExists = (data.scenarios || []).some(
+      (s) => s.id === "optimized"
+    );
+    if (optimizedExists) {
+      setActiveScenario("optimized");
+    } else if ((data.scenarios || []).length > 0) {
+      setActiveScenario(data.scenarios[0].id);
+    } else {
+      setActiveScenario("baseline");
+    }
+  };
 
-        if (data.inputParameters) {
-          setExpectedRainfall(data.inputParameters.expectedRainfallMm ?? 0);
-          setEquipmentHealth(data.inputParameters.equipmentHealthPct ?? 0);
-          setVesselDelay(data.inputParameters.vesselDelayHours ?? 0);
-        }
+  const fetchInitial = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const data = (await getSimulationOverview()) || {};
+      applyResponse(data);
+    } catch {
+      setError("Failed to load simulation data.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-        const optimizedExists = (data.scenarios || []).some(
-          (s) => s.id === "optimized"
-        );
-        if (optimizedExists) {
-          setActiveScenario("optimized");
-        } else if ((data.scenarios || []).length > 0) {
-          setActiveScenario(data.scenarios[0].id);
-        } else {
-          setActiveScenario("baseline");
-        }
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load simulation data.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const handleRunScenario = async () => {
+    try {
+      setLoading(true);
+      setError(null);
 
-    fetchData();
-  }, []);
+      const data =
+        (await getSimulationOverview({
+          expected_rainfall_mm: expectedRainfall,
+          equipment_health_pct: equipmentHealth,
+          vessel_delay_hours: vesselDelay
+        })) || {};
 
-  const handleRunScenario = () => {
-    setLastRun(new Date().toLocaleTimeString());
+      applyResponse(data);
+      setLastRun(new Date().toLocaleTimeString());
+    } catch {
+      setError("Failed to run simulation.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleReset = () => {
@@ -75,14 +89,13 @@ function SimulationPage() {
 
   const getScenarioLabel = () => {
     const found = scenarios.find((s) => s.id === activeScenario);
-    if (!found) {
-      if (activeScenario === "baseline") return "Baseline";
-      if (activeScenario === "optimized") return "Optimized";
-      if (activeScenario === "conservative") return "Conservative";
-      return "Selected";
-    }
+    if (!found) return "Selected";
     return found.title || "Selected";
   };
+
+  useEffect(() => {
+    fetchInitial();
+  }, []);
 
   if (loading) {
     return (
@@ -107,10 +120,7 @@ function SimulationPage() {
   return (
     <main className="min-h-screen bg-[#f5f5f7] px-8 py-6">
       <div className="max-w-[1440px] mx-auto flex flex-col gap-6">
-        <section
-          aria-label="AI simulation scenario controls"
-          className="bg-white rounded-3xl p-6 flex flex-col gap-6"
-        >
+        <section className="bg-white rounded-3xl p-6 flex flex-col gap-6">
           <div className="flex items-center gap-3">
             <div className="IconWrapper size-8 px-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center">
               <img
@@ -119,47 +129,34 @@ function SimulationPage() {
                 alt=""
               />
             </div>
-            <div>
-              <h2 className="text-lg font-semibold text-gray-900">
-                AI Scenario
-              </h2>
-            </div>
+            <h2 className="text-lg font-semibold text-gray-900">
+              AI Scenario
+            </h2>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <ScenarioControlCard
               label="Expected Rainfall"
               valueLabel={`${expectedRainfall} mm`}
-              impactText={
-                inputParams?.impactNotes?.rainfall ||
-                "Impact: Road conditions & mining operations"
-              }
+              impactText={inputParams?.impactNotes?.rainfall}
               min={0}
               max={100}
               value={expectedRainfall}
               onChange={setExpectedRainfall}
             />
-
             <ScenarioControlCard
               label="Equipment Health"
               valueLabel={`${equipmentHealth}%`}
-              impactText={
-                inputParams?.impactNotes?.equipmentHealth ||
-                "Impact: Load efficiency & operating hours"
-              }
+              impactText={inputParams?.impactNotes?.equipmentHealth}
               min={0}
               max={100}
               value={equipmentHealth}
               onChange={setEquipmentHealth}
             />
-
             <ScenarioControlCard
               label="Vessel Delay"
               valueLabel={`${vesselDelay} jam`}
-              impactText={
-                inputParams?.impactNotes?.vesselDelay ||
-                "Impact: Port queue & hauling coordination"
-              }
+              impactText={inputParams?.impactNotes?.vesselDelay}
               min={0}
               max={12}
               value={vesselDelay}
@@ -192,10 +189,7 @@ function SimulationPage() {
           </div>
         </section>
 
-        <section
-          aria-label="Scenario comparison cards"
-          className="grid grid-cols-1 md:grid-cols-3 gap-4"
-        >
+        <section className="grid grid-cols-1 md:grid-cols-3 gap-4">
           {scenarios.map((scenario) => (
             <ScenarioResultCard
               key={scenario.id}
@@ -209,10 +203,7 @@ function SimulationPage() {
           ))}
         </section>
 
-        <section
-          aria-label="AI optimization recommendations"
-          className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white"
-        >
+        <section className="bg-[#101828] rounded-3xl p-6 flex flex-col gap-4 text-white">
           <div className="flex items-center gap-3">
             <div className="IconWrapper size-8 p-[7px] bg-white rounded-2xl flex justify-center items-center">
               <img
@@ -228,20 +219,22 @@ function SimulationPage() {
               <p className="text-xs text-gray-300">
                 {description ||
                   "Rekomendasi di bawah ini diasumsikan berdasarkan skenario terpilih."}{" "}
-                Saat ini berdasarkan skenario{" "}
+                Saat ini berdasarkan{" "}
                 <span className="font-semibold">{getScenarioLabel()}</span>.
               </p>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {aiRecommendations.map((item) => (
-              <RecommendationCard
-                key={item.id}
-                title={item.title}
-                description={item.detail}
-              />
-            ))}
+            {aiRecommendations
+              .filter((item) => item?.title && item?.detail)
+              .map((item) => (
+                <RecommendationCard
+                  key={item.id}
+                  title={item.title}
+                  description={item.detail}
+                />
+              ))}
           </div>
         </section>
       </div>
@@ -256,7 +249,7 @@ function ScenarioControlCard({
   min,
   max,
   value,
-  onChange,
+  onChange
 }) {
   return (
     <div className="bg-[#efefef] rounded-[20px] p-4 flex flex-col gap-3 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
@@ -283,7 +276,7 @@ function ScenarioResultCard({
   onSelect,
   productionOutput,
   costEfficiency,
-  riskLevel,
+  riskLevel
 }) {
   return (
     <div className="rounded-3xl px-5 py-6 bg-gradient-to-br from-[#111827] to-[#1f2937] text-white flex flex-col gap-4 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
@@ -292,10 +285,8 @@ function ScenarioResultCard({
         <button
           type="button"
           onClick={onSelect}
-          className={`w-4 h-4 rounded-full border-2 ${
-            isActive ? "border-white bg-white" : "border-white/50"
-          }`}
-          aria-label={`Select ${title}`}
+          className={`w-4 h-4 rounded-full border-2 ${isActive ? "border-white bg-white" : "border-white/50"
+            }`}
         />
       </div>
 
@@ -309,28 +300,15 @@ function ScenarioResultCard({
 }
 
 function ScenarioMetric({ label, value }) {
-  const numericValue =
-    typeof value === "number"
-      ? value
-      : parseFloat(String(value).replace("%", ""));
-  const displayValue =
-    typeof value === "number" ? `${value}%` : String(value);
-
-  const width = Number.isFinite(numericValue) ? `${numericValue}%` : "0%";
-  const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
+  const width = Number.isFinite(value) ? `${value}%` : "0%";
+  const safeValue = Number.isFinite(value) ? value : 0;
 
   return (
     <div className="flex flex-col gap-1">
       <div className="flex justify-between items-center">
         <span>{label}</span>
         <span className="font-semibold">
-          {Number.isFinite(numericValue) ? (
-            <>
-              <AnimatedNumber value={safeValue} decimals={0} />%
-            </>
-          ) : (
-            displayValue
-          )}
+          <AnimatedNumber value={safeValue} decimals={0} />%
         </span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-white/20 overflow-hidden">
