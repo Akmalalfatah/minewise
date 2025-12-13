@@ -169,14 +169,14 @@ function EquipmentStatusTable() {
           </ul>
         </section>
 
-        {/* TABLE (✅ scroll vertikal, tampil semua alat) */}
+        {/* TABLE */}
         <section className="w-full flex flex-col justify-start items-start gap-2.5">
           {equipments.length === 0 ? (
             <p className="text-xs text-[#666666]">
               No equipment records available for the current filters.
             </p>
           ) : (
-            <div className="w-full max-h-[260px] overflow-y-auto pr-2">
+            <div className="w-full max-h-[260px] overflow-y-auto pr-2 overscroll-contain">
               <table className="w-full text-left text-sm min-w-max">
                 <thead className="sticky top-0 bg-white z-10">
                   <tr className="text-[#666666]">

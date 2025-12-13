@@ -197,8 +197,8 @@ function MineRoadSegmentTable() {
             data-layer="segment_info_container"
             className="SegmentInfoContainer w-full inline-flex flex-col justify-start items-start gap-[19px]"
           >
-            {/* ✅ filter segment tetap ada (muncul kalau > 1 segment) */}
-            {segments.length > 1 && (
+            {/* ✅ dropdown muncul jika ada segment, disabled jika cuma 1 */}
+            {segments.length >= 1 && (
               <form
                 aria-label="Select road segment"
                 className="flex items-center gap-2"
@@ -209,12 +209,19 @@ function MineRoadSegmentTable() {
                 >
                   Segment:
                 </label>
+
                 <select
                   id="segment-select"
                   name="segment"
                   value={activeSegmentIndex}
                   onChange={handleSegmentChange}
-                  className="border border-[#c1ccdd] rounded-[5px] px-3 py-1 text-sm font-semibold bg-white cursor-pointer"
+                  disabled={segments.length === 1}
+                  className={`border border-[#c1ccdd] rounded-[5px] px-3 py-1 text-sm font-semibold bg-white
+                    ${
+                      segments.length === 1
+                        ? "opacity-60 cursor-not-allowed"
+                        : "cursor-pointer"
+                    }`}
                 >
                   {segments.map((seg, index) => (
                     <option key={`${seg.segment_name}-${index}`} value={index}>
@@ -348,9 +355,7 @@ function MineRoadSegmentTable() {
 
           <div className="self-stretch inline-flex justify-between items-center">
             <div className="w-[97px] inline-flex flex-col justify-start items-start gap-[11px]">
-              <p className="text-[#666666] text-xs font-semibold">
-                Speed Limit
-              </p>
+              <p className="text-[#666666] text-xs font-semibold">Speed Limit</p>
               <p className="text-black text-2xl font-semibold flex items-baseline gap-1">
                 {speedLimit.num !== null ? (
                   <>
