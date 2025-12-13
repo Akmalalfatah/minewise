@@ -1,149 +1,61 @@
-import { loadJSON } from "../utils/jsonLoader.js";
+import fs from "fs/promises";
+import path from "path";
+import { fileURLToPath } from "url";
 
-const USE_ML_API = String(process.env.USE_ML_API || "").toLowerCase() === "true";
-const ML_API_URL = process.env.ML_API_URL || "http://localhost:8000";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-function normalizeKey(key) {
-  return String(key || "").replace(/\s+/g, "").replace(/_/g, "").toUpperCase();
+const DATA_PATH = path.join(__dirname, "../data/mine_planner.json");
+
+let CACHE = null;
+
+async function readMinePlannerData() {
+  if (CACHE) return CACHE;
+
+  const raw = await fs.readFile(DATA_PATH, "utf-8");
+  CACHE = JSON.parse(raw);
+  return CACHE;
 }
 
-function pickSection(obj, snakeKey, camelKey) {
-  if (!obj) return null;
-  return obj[snakeKey] ?? obj[camelKey] ?? null;
+function normalizeLocation(location) {
+  if (!location) return "";
+  return String(location)
+    .trim()
+    .toUpperCase()
+    .replace(/\s+/g, "_")
+    .replace(/-+/g, "_");
 }
 
-function normalizeMinePlannerShape(raw = {}) {
-  return {
-    environment_conditions: pickSection(raw, "environment_conditions", "environmentConditions"),
-    ai_recommendation: pickSection(raw, "ai_recommendation", "aiRecommendation"),
-    road_conditions: pickSection(raw, "road_conditions", "roadConditions"),
-    equipment_status: pickSection(raw, "equipment_status", "equipmentStatus"),
-  };
+function pickLocationKey(data, locationRaw) {
+  const loc = normalizeLocation(locationRaw);
+
+  if (loc && data[loc]) return loc;
+
+  return data.PIT_A ? "PIT_A" : Object.keys(data)[0];
 }
 
-function withSourceLocation(rawSlice, matchedKey) {
-  const uiLocation =
-    matchedKey === "PIT_A" ? "PIT A" : matchedKey === "PIT_B" ? "PIT B" : matchedKey;
-
-  const slice = normalizeMinePlannerShape(rawSlice);
-
-  const out = { ...slice };
-
-  if (out.environment_conditions) {
-    out.environment_conditions = {
-      ...out.environment_conditions,
-      source_location: out.environment_conditions.source_location || uiLocation,
-    };
-  }
-
-  if (out.ai_recommendation) {
-    out.ai_recommendation = {
-      ...out.ai_recommendation,
-      source_location: out.ai_recommendation.source_location || uiLocation,
-    };
-  }
-
-  if (out.road_conditions) {
-    out.road_conditions = {
-      ...out.road_conditions,
-      source_location: out.road_conditions.source_location || uiLocation,
-    };
-  }
-
-  if (out.equipment_status) {
-    out.equipment_status = {
-      ...out.equipment_status,
-      source_location: out.equipment_status.source_location || uiLocation,
-    };
-  }
-
-  return out;
-}
-
-function getLocationSliceFromJson(filters = {}) {
-  const json = loadJSON("mine_planner.json");
-  const locations = json.locations || json;
-
-  if (!locations || !Object.keys(locations).length) {
-    return { json, slice: withSourceLocation({}, "PIT_A") };
-  }
-
-  const requestedRaw = filters.location || "PIT A";
-  const requestedNorm = normalizeKey(requestedRaw);
-
-  const matchedKey =
-    Object.keys(locations).find((key) => normalizeKey(key) === requestedNorm) ||
-    Object.keys(locations)[0];
-
-  const rawSlice = locations[matchedKey] || {};
-  const slice = withSourceLocation(rawSlice, matchedKey);
-
-  return { json, slice };
-}
-
-async function fetchMinePlannerFromML(filters = {}) {
-  const location = encodeURIComponent(filters.location || "PIT A");
-  const timePeriod = encodeURIComponent(filters.timePeriod || "");
-  const shift = encodeURIComponent(filters.shift || "");
-
-  const url =
-    `${ML_API_URL}/api/mine-planner?location=${location}` +
-    (timePeriod ? `&timePeriod=${timePeriod}` : "") +
-    (shift ? `&shift=${shift}` : "");
-
-  const res = await fetch(url);
-  if (!res.ok) throw new Error(`ML API error: ${res.status}`);
-
-  const data = await res.json();
-
-  const loc =
-    data?.environment_conditions?.source_location ||
-    data?.ai_recommendation?.source_location ||
-    data?.road_conditions?.source_location ||
-    data?.equipment_status?.source_location ||
-    data?.environmentConditions?.source_location ||
-    data?.aiRecommendation?.source_location ||
-    data?.roadConditions?.source_location ||
-    data?.equipmentStatus?.source_location ||
-    filters.location ||
-    "PIT A";
-
-  const norm = normalizeKey(loc);
-  const matchedKey = norm === "PITA" ? "PIT_A" : norm === "PITB" ? "PIT_B" : String(loc);
-
-  return withSourceLocation(data, matchedKey);
-}
-
-async function getMinePlanner(filters = {}) {
-  if (USE_ML_API) {
-    try {
-      return await fetchMinePlannerFromML(filters);
-    } catch {
-      const { slice } = getLocationSliceFromJson(filters);
-      return slice;
-    }
-  }
-
-  const { slice } = getLocationSliceFromJson(filters);
-  return slice;
+async function getLocationPayload(filters = {}) {
+  const data = await readMinePlannerData();
+  const key = pickLocationKey(data, filters.location);
+  return data[key] || {};
 }
 
 export async function getEnvironmentConditions(filters = {}) {
-  const data = await getMinePlanner(filters);
-  return data.environment_conditions || null;
+  const payload = await getLocationPayload(filters);
+  return payload.environment_conditions || {};
 }
 
 export async function getMineRoadConditions(filters = {}) {
-  const data = await getMinePlanner(filters);
-  return data.road_conditions || null;
+  const payload = await getLocationPayload(filters);
+  return payload.road_conditions || { segments: [], summary: {} };
 }
 
 export async function getEquipmentStatusMine(filters = {}) {
-  const data = await getMinePlanner(filters);
-  return data.equipment_status || null;
+  const payload = await getLocationPayload(filters);
+  return payload.equipment_status || { summary: {}, equipments: [], fleet_overview: [] };
 }
 
 export async function getAIMineRecommendation(filters = {}) {
-  const data = await getMinePlanner(filters);
-  return data.ai_recommendation || null;
+  const payload = await getLocationPayload(filters);
+  return payload.ai_recommendation || { scenarios: [], analysis_sources: "" };
 }
