@@ -11,9 +11,15 @@ function loadFallbackData() {
     __dirname,
     "../data/output_simulation_analysis_real.json"
   );
+
+  if (!fs.existsSync(filePath)) {
+    return null;
+  }
+
   const raw = fs.readFileSync(filePath, "utf-8");
   return JSON.parse(raw);
 }
+
 
 function mapResponse(input, mlResult) {
   const { description, ...recommendations } = mlResult.ai_recommendations || {};
@@ -76,11 +82,23 @@ export async function getSimulationOverview(req, res) {
   };
 
   try {
-    const mlResult = await fetchMLDataByIntent("PRODUCTION_OPTIMIZATION");
-    const response = mapResponse(input, mlResult);
+    const mlResponse = await fetchMLDataByIntent(
+      "PRODUCTION_OPTIMIZATION",
+      input
+    );
+
+    const response = mapResponse(input, mlResponse.data);
     res.json(response);
   } catch (error) {
     const fallback = loadFallbackData();
+
+    if (!fallback) {
+      return res.status(503).json({
+        message: "Simulation service unavailable",
+        reason: "ML service unreachable and fallback data not found"
+      });
+    }
+
     const mappedFallback = {
       inputParameters: {
         expectedRainfallMm: fallback.input_parameters.expected_rainfall_mm,
@@ -109,6 +127,8 @@ export async function getSimulationOverview(req, res) {
       description:
         "Rekomendasi di bawah ini diasumsikan berdasarkan skenario terpilih."
     };
+
     res.json(mappedFallback);
   }
+
 }

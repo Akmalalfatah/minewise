@@ -12,12 +12,9 @@ export async function fetchMLDataByIntent(intent, payload = {}) {
 
         case "PRODUCTION_OPTIMIZATION":
             return axios.get(`${ML_BASE_URL}/api/simulation-analysis`, {
-                params: {
-                    expected_rainfall_mm: 25,
-                    equipment_health_pct: 80,
-                    vessel_delay_hours: 5
-                }
+                params: payload
             });
+
 
         case "WEATHER_IMPACT":
             return axios.get(`${ML_BASE_URL}/api/simulation-analysis`, {
