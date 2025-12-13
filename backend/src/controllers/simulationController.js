@@ -2,8 +2,21 @@ import { getSimulationOverview as getSimulationOverviewService } from "../servic
 
 export async function getSimulationOverview(req, res, next) {
   try {
-    const data = await getSimulationOverviewService();
+    const input = req.query || {};
+    const data = await getSimulationOverviewService(input);
+    res.json({
+      status: "success",
+      data,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
+export async function runSimulation(req, res, next) {
+  try {
+    const input = req.body || {};
+    const data = await getSimulationOverviewService(input);
     res.json({
       status: "success",
       data,

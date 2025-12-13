@@ -1,7 +1,10 @@
 import { loadJSON } from "../utils/jsonLoader.js";
 import { applyFilters } from "../utils/filterUtil.js";
 
-function getLocationSlice(filters = {}) {
+const USE_ML_API = String(process.env.USE_ML_API || "").toLowerCase() === "true";
+const ML_API_URL = process.env.ML_API_URL || "http://localhost:8000";
+
+function getLocationSliceFromJson(filters = {}) {
   const json = loadJSON("dashboard.json");
   const locations = json.locations || {};
 
@@ -19,45 +22,68 @@ function getLocationSlice(filters = {}) {
   return { json, slice: locations[matchedKey] || locations["PIT A"] || {} };
 }
 
-export function getDashboard(filters = {}) {
-  const { slice } = getLocationSlice(filters);
+async function fetchDashboardFromML(filters = {}) {
+  const location = encodeURIComponent(filters.location || "PIT A");
+  const timePeriod = encodeURIComponent(filters.timePeriod || "");
+  const shift = encodeURIComponent(filters.shift || "");
+
+  const url =
+    `${ML_API_URL}/api/dashboard?location=${location}` +
+    (timePeriod ? `&timePeriod=${timePeriod}` : "") +
+    (shift ? `&shift=${shift}` : "");
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error("ML API error");
+  return await res.json();
+}
+
+export async function getDashboard(filters = {}) {
+  if (USE_ML_API) {
+    try {
+      return await fetchDashboardFromML(filters);
+    } catch {
+      const { slice } = getLocationSliceFromJson(filters);
+      return slice;
+    }
+  }
+
+  const { slice } = getLocationSliceFromJson(filters);
   return slice;
 }
 
-export function getTotalProduction(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.total_production || null;
+export async function getTotalProduction(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.total_production || null;
 }
 
-export function getWeatherCondition(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.weather_condition || null;
+export async function getWeatherCondition(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.weather_condition || null;
 }
 
-export function getProductionEfficiency(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.production_efficiency || null;
+export async function getProductionEfficiency(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.production_efficiency || null;
 }
 
-export function getEquipmentStatus(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.equipment_status || null;
+export async function getEquipmentStatus(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.equipment_status || null;
 }
 
-export function getVesselStatus(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.vessel_status || null;
+export async function getVesselStatus(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.vessel_status || null;
 }
 
-export function getProductionWeatherOverview(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  const overview = slice.production_weather_overview || {};
-  return overview;
+export async function getProductionWeatherOverview(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.production_weather_overview || {};
 }
 
-export function getRoadConditionOverview(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  const rc = slice.road_condition_overview || {};
+export async function getRoadConditionOverview(filters = {}) {
+  const data = await getDashboard(filters);
+  const rc = data.road_condition_overview || {};
 
   if (rc.segments && Array.isArray(rc.segments)) {
     rc.segments = applyFilters(rc.segments, filters);
@@ -66,17 +92,17 @@ export function getRoadConditionOverview(filters = {}) {
   return rc;
 }
 
-export function getCausesOfDowntime(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.causes_of_downtime || null;
+export async function getCausesOfDowntime(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.causes_of_downtime || null;
 }
 
-export function getDecisionImpact(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.decision_impact || null;
+export async function getDecisionImpact(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.decision_impact || null;
 }
 
-export function getAISummary(filters = {}) {
-  const { slice } = getLocationSlice(filters);
-  return slice.ai_summary || null;
+export async function getAISummary(filters = {}) {
+  const data = await getDashboard(filters);
+  return data.ai_summary || null;
 }

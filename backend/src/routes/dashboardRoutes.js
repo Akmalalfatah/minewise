@@ -1,5 +1,6 @@
 import express from "express";
 import {
+  getDashboard,
   getTotalProduction,
   getWeatherCondition,
   getProductionEfficiency,
@@ -11,17 +12,10 @@ import {
   getDecisionImpact,
   getAISummary,
 } from "../controllers/dashboardController.js";
-import { getDashboard } from "../services/dashboardService.js";
-import { parseFilters } from "../utils/filterUtil.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  const filters = parseFilters(req.query);
-  const payload = getDashboard(filters);
-  res.json(payload);
-});
-
+router.get("/", getDashboard);
 router.get("/total-production", getTotalProduction);
 router.get("/weather-condition", getWeatherCondition);
 router.get("/production-efficiency", getProductionEfficiency);
