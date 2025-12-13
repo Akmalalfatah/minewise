@@ -24,8 +24,9 @@ function EnvironmentConditionTable() {
 
         load();
     }, [location, timePeriod, shift]);
-    const area = data?.area ?? "-";
-    const loc = data?.location ?? "-";
+    const sourceLoc = data?.source_location ?? null;
+    const area = data?.area ?? sourceLoc ?? "-";
+    const loc = data?.location ?? sourceLoc ?? "-";
     const rainfall = data?.rainfall ?? "-";
     const temperature = data?.temperature ?? "-";
     const humidity = data?.humidity ?? "-";
