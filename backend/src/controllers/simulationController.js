@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
-import { getSimulationPrediction } from "../services/mlService.js";
+import { fetchMLDataByIntent } from "../services/mlService.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -76,7 +76,7 @@ export async function getSimulationOverview(req, res) {
   };
 
   try {
-    const mlResult = await getSimulationPrediction(input);
+    const mlResult = await fetchMLDataByIntent("PRODUCTION_OPTIMIZATION");
     const response = mapResponse(input, mlResult);
     res.json(response);
   } catch (error) {

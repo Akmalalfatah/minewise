@@ -788,7 +788,7 @@ async def chatbox_interaction(request: ChatboxRequest):
         # For now, return rule-based response
         
         # Analyze question and generate response
-        ai_answer = f"Based on current operational data and weather conditions, {human_question.lower()}"
+        human_question = request.human_answer
         
         # Generate context steps
         steps = [
@@ -815,16 +815,14 @@ async def chatbox_interaction(request: ChatboxRequest):
         ]
         
         response = {
-            "ai_answer": ai_answer,
-            "ai_time": datetime.now().strftime("%H:%M"),
-            "human_answer": human_question,
-            "human_time": (datetime.now()).strftime("%H:%M"),
-            "quick_questions": quick_questions,
+            "analysis_type": "chat_reasoning",
+            "question": human_question,
             "steps": steps,
-            "data_sources": data_sources
+            "data_sources": data_sources,
+            "quick_questions": quick_questions
         }
         
-        logger.info(f"✓ Chatbox response generated for: {human_question[:50]}...")
+        logger.info(f"Chatbox response generated for: {human_question[:50]}...")
         return response
         
     except Exception as e:
