@@ -20,7 +20,6 @@ app.use(
 );
 
 app.use(express.json());
-
 app.use("/uploads", express.static("uploads"));
 
 app.get("/health", (req, res) => {
@@ -38,6 +37,6 @@ app.use("/api/shipping-planner", shippingPlannerRoutes);
 app.use("/api/reports", reportsRoutes);
 app.use("/api/ai", aiChatRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/simulation", simulationRoutes);
+app.use("/api", simulationRoutes);
 
 export default app;

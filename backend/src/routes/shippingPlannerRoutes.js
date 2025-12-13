@@ -1,15 +1,17 @@
 import express from "express";
 import {
-    getPortWeatherConditions,
-    getAIShippingRecommendation,
-    getVesselSchedules,
-    getCoalVolumeReady,
-    getLoadingProgress,
-    getPortCongestionStatus,
+  getShippingPlanner,
+  getPortWeatherConditions,
+  getAIShippingRecommendation,
+  getVesselSchedules,
+  getCoalVolumeReady,
+  getLoadingProgress,
+  getPortCongestionStatus,
 } from "../controllers/shippingPlannerController.js";
 
 const router = express.Router();
 
+router.get("/", getShippingPlanner);
 router.get("/port-weather", getPortWeatherConditions);
 router.get("/ai-recommendation", getAIShippingRecommendation);
 router.get("/vessel-schedules", getVesselSchedules);

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { getSimulationOverview } from "../services/simulationService";
+import {
+  getSimulationOverview,
+  runSimulation,
+} from "../services/simulationService";
 import AnimatedNumber from "../components/animation/AnimatedNumber";
 
 function SimulationPage() {
@@ -16,7 +19,27 @@ function SimulationPage() {
   const [lastRun, setLastRun] = useState(null);
 
   const [loading, setLoading] = useState(true);
+  const [running, setRunning] = useState(false);
   const [error, setError] = useState(null);
+
+  const applyResponseToState = (data) => {
+    setInputParams(data.inputParameters || null);
+    setScenarios(data.scenarios || []);
+    setAiRecommendations(data.aiRecommendations || []);
+    setDescription(data.description || "");
+
+    if (data.inputParameters) {
+      setExpectedRainfall(data.inputParameters.expectedRainfallMm ?? 0);
+      setEquipmentHealth(data.inputParameters.equipmentHealthPct ?? 0);
+      setVesselDelay(data.inputParameters.vesselDelayHours ?? 0);
+    }
+
+    const list = data.scenarios || [];
+    const optimizedExists = list.some((s) => s.id === "optimized");
+    if (optimizedExists) setActiveScenario("optimized");
+    else if (list.length > 0) setActiveScenario(list[0].id);
+    else setActiveScenario("baseline");
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -25,28 +48,7 @@ function SimulationPage() {
         setError(null);
 
         const data = await getSimulationOverview();
-
-        setInputParams(data.inputParameters || null);
-        setScenarios(data.scenarios || []);
-        setAiRecommendations(data.aiRecommendations || []);
-        setDescription(data.description || "");
-
-        if (data.inputParameters) {
-          setExpectedRainfall(data.inputParameters.expectedRainfallMm ?? 0);
-          setEquipmentHealth(data.inputParameters.equipmentHealthPct ?? 0);
-          setVesselDelay(data.inputParameters.vesselDelayHours ?? 0);
-        }
-
-        const optimizedExists = (data.scenarios || []).some(
-          (s) => s.id === "optimized"
-        );
-        if (optimizedExists) {
-          setActiveScenario("optimized");
-        } else if ((data.scenarios || []).length > 0) {
-          setActiveScenario(data.scenarios[0].id);
-        } else {
-          setActiveScenario("baseline");
-        }
+        applyResponseToState(data);
       } catch (err) {
         console.error(err);
         setError("Failed to load simulation data.");
@@ -58,8 +60,27 @@ function SimulationPage() {
     fetchData();
   }, []);
 
-  const handleRunScenario = () => {
-    setLastRun(new Date().toLocaleTimeString());
+  const handleRunScenario = async () => {
+    try {
+      setRunning(true);
+      setError(null);
+
+      const input = {
+        expected_rainfall_mm: expectedRainfall,
+        equipment_health_pct: equipmentHealth,
+        vessel_delay_hours: vesselDelay,
+      };
+
+      const data = await runSimulation(input);
+      applyResponseToState(data);
+
+      setLastRun(new Date().toLocaleTimeString());
+    } catch (err) {
+      console.error(err);
+      setError("Failed to run simulation.");
+    } finally {
+      setRunning(false);
+    }
   };
 
   const handleReset = () => {
@@ -171,15 +192,17 @@ function SimulationPage() {
             <button
               type="button"
               onClick={handleRunScenario}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] bg-[#1c2534] text-white text-sm font-semibold hover:bg-black transition-colors"
+              disabled={running}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] bg-[#1c2534] text-white text-sm font-semibold hover:bg-black transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              ▶ Run Scenario
+              ▶ {running ? "Running..." : "Run Scenario"}
             </button>
 
             <button
               type="button"
               onClick={handleReset}
-              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] border border-gray-300 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors"
+              disabled={running}
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-[15px] border border-gray-300 text-sm font-semibold text-gray-700 bg-white hover:bg-gray-50 transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               ⟲ Reset Parameter
             </button>
@@ -313,8 +336,7 @@ function ScenarioMetric({ label, value }) {
     typeof value === "number"
       ? value
       : parseFloat(String(value).replace("%", ""));
-  const displayValue =
-    typeof value === "number" ? `${value}%` : String(value);
+  const displayValue = typeof value === "number" ? `${value}%` : String(value);
 
   const width = Number.isFinite(numericValue) ? `${numericValue}%` : "0%";
   const safeValue = Number.isFinite(numericValue) ? numericValue : 0;
@@ -334,10 +356,7 @@ function ScenarioMetric({ label, value }) {
         </span>
       </div>
       <div className="w-full h-1.5 rounded-full bg-white/20 overflow-hidden">
-        <div
-          className="h-1.5 rounded-full bg-[#ff7b54]"
-          style={{ width }}
-        />
+        <div className="h-1.5 rounded-full bg-[#ff7b54]" style={{ width }} />
       </div>
     </div>
   );
