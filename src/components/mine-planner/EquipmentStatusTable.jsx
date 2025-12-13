@@ -21,7 +21,11 @@ function EquipmentStatusTable() {
 
     async function load() {
       try {
-        const result = await getEquipmentStatusMine({ location, timePeriod, shift });
+        const result = await getEquipmentStatusMine({
+          location,
+          timePeriod,
+          shift,
+        });
         if (!mounted) return;
         setData(result);
       } catch (error) {
@@ -39,12 +43,23 @@ function EquipmentStatusTable() {
 
   const summary = data?.summary || data?.summary_status || {};
 
-  // ✅ support camelCase dan snake_case
   const summaryExcellent = pick(summary, ["excellent"], 0);
   const summaryGood = pick(summary, ["good"], 0);
-  const summaryMaintenanceRequired = pick(summary, ["maintenanceRequired", "maintenance_required"], 0);
-  const summarySlightlyDamaged = pick(summary, ["slightlyDamaged", "slightly_damaged"], 0);
-  const summarySeverelyDamaged = pick(summary, ["severelyDamaged", "severely_damaged"], 0);
+  const summaryMaintenanceRequired = pick(
+    summary,
+    ["maintenanceRequired", "maintenance_required"],
+    0
+  );
+  const summarySlightlyDamaged = pick(
+    summary,
+    ["slightlyDamaged", "slightly_damaged"],
+    0
+  );
+  const summarySeverelyDamaged = pick(
+    summary,
+    ["severelyDamaged", "severely_damaged"],
+    0
+  );
 
   const equipments = useMemo(() => {
     const raw = data?.equipments || data?.equipment || data?.items || [];
@@ -84,7 +99,10 @@ function EquipmentStatusTable() {
           data-layer="header_container"
           className="HeaderContainer w-full inline-flex justify-between items-center"
         >
-          <div data-layer="header_left_group" className="HeaderLeftGroup flex justify-start items-center gap-3">
+          <div
+            data-layer="header_left_group"
+            className="HeaderLeftGroup flex justify-start items-center gap-3"
+          >
             <div
               data-layer="icon_wrapper"
               className="IconWrapper size-8 p-[7px] bg-[#1c2534] rounded-2xl flex justify-center items-center gap-2.5"
@@ -151,21 +169,23 @@ function EquipmentStatusTable() {
           </ul>
         </section>
 
-        {/* TABLE (✅ sudah scroll vertikal) */}
+        {/* TABLE (✅ scroll vertikal, tampil semua alat) */}
         <section className="w-full flex flex-col justify-start items-start gap-2.5">
           {equipments.length === 0 ? (
-            <p className="text-xs text-[#666666]">No equipment records available for the current filters.</p>
+            <p className="text-xs text-[#666666]">
+              No equipment records available for the current filters.
+            </p>
           ) : (
             <div className="w-full max-h-[260px] overflow-y-auto pr-2">
               <table className="w-full text-left text-sm min-w-max">
-                <thead>
+                <thead className="sticky top-0 bg-white z-10">
                   <tr className="text-[#666666]">
-                    <th className="font-normal pr-4">Equipment_ID</th>
-                    <th className="font-normal pr-4">Equipment_Type</th>
-                    <th className="font-normal pr-4">Equipment_Model</th>
-                    <th className="font-normal pr-4">Conditions</th>
-                    <th className="font-normal pr-4">Operating Hours (hrs)</th>
-                    <th className="font-normal pr-4">Maintenance (hrs)</th>
+                    <th className="font-normal pr-4 py-2">Equipment_ID</th>
+                    <th className="font-normal pr-4 py-2">Equipment_Type</th>
+                    <th className="font-normal pr-4 py-2">Equipment_Model</th>
+                    <th className="font-normal pr-4 py-2">Conditions</th>
+                    <th className="font-normal pr-4 py-2">Operating Hours (hrs)</th>
+                    <th className="font-normal pr-4 py-2">Maintenance (hrs)</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -185,7 +205,9 @@ function EquipmentStatusTable() {
           )}
 
           {equipments.length > 0 && (
-            <p className="text-[11px] text-[#888888]">Showing {equipments.length} equipment records</p>
+            <p className="text-[11px] text-[#888888]">
+              Showing {equipments.length} equipment records
+            </p>
           )}
         </section>
 
