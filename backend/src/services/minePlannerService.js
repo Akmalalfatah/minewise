@@ -7,11 +7,27 @@ function normalizeKey(key) {
   return String(key || "").replace(/\s+/g, "").replace(/_/g, "").toUpperCase();
 }
 
-function withSourceLocation(slice, matchedKey) {
+function pickSection(obj, snakeKey, camelKey) {
+  if (!obj) return null;
+  return obj[snakeKey] ?? obj[camelKey] ?? null;
+}
+
+function normalizeMinePlannerShape(raw = {}) {
+  return {
+    environment_conditions: pickSection(raw, "environment_conditions", "environmentConditions"),
+    ai_recommendation: pickSection(raw, "ai_recommendation", "aiRecommendation"),
+    road_conditions: pickSection(raw, "road_conditions", "roadConditions"),
+    equipment_status: pickSection(raw, "equipment_status", "equipmentStatus"),
+  };
+}
+
+function withSourceLocation(rawSlice, matchedKey) {
   const uiLocation =
     matchedKey === "PIT_A" ? "PIT A" : matchedKey === "PIT_B" ? "PIT B" : matchedKey;
 
-  const out = { ...(slice || {}) };
+  const slice = normalizeMinePlannerShape(rawSlice);
+
+  const out = { ...slice };
 
   if (out.environment_conditions) {
     out.environment_conditions = {
@@ -49,7 +65,7 @@ function getLocationSliceFromJson(filters = {}) {
   const locations = json.locations || json;
 
   if (!locations || !Object.keys(locations).length) {
-    return { json, slice: {} };
+    return { json, slice: withSourceLocation({}, "PIT_A") };
   }
 
   const requestedRaw = filters.location || "PIT A";
@@ -59,8 +75,10 @@ function getLocationSliceFromJson(filters = {}) {
     Object.keys(locations).find((key) => normalizeKey(key) === requestedNorm) ||
     Object.keys(locations)[0];
 
-  const slice = locations[matchedKey] || {};
-  return { json, slice: withSourceLocation(slice, matchedKey) };
+  const rawSlice = locations[matchedKey] || {};
+  const slice = withSourceLocation(rawSlice, matchedKey);
+
+  return { json, slice };
 }
 
 async function fetchMinePlannerFromML(filters = {}) {
@@ -74,7 +92,8 @@ async function fetchMinePlannerFromML(filters = {}) {
     (shift ? `&shift=${shift}` : "");
 
   const res = await fetch(url);
-  if (!res.ok) throw new Error("ML API error");
+  if (!res.ok) throw new Error(`ML API error: ${res.status}`);
+
   const data = await res.json();
 
   const loc =
@@ -82,6 +101,10 @@ async function fetchMinePlannerFromML(filters = {}) {
     data?.ai_recommendation?.source_location ||
     data?.road_conditions?.source_location ||
     data?.equipment_status?.source_location ||
+    data?.environmentConditions?.source_location ||
+    data?.aiRecommendation?.source_location ||
+    data?.roadConditions?.source_location ||
+    data?.equipmentStatus?.source_location ||
     filters.location ||
     "PIT A";
 
